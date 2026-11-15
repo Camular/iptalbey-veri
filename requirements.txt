@@ -1,0 +1,4 @@
+# Fiyat kontrol otomasyonu (scripts/fiyat_kontrol.py) ve testleri
+requests==2.34.2
+jsonschema==4.26.0
+pytest==9.2.0

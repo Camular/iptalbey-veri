@@ -1,0 +1,62 @@
+# Günlük fiyat kontrolü — ayrıntı: scripts/fiyat_kontrol.py
+# Fiyat değişikliği yalnızca PR olarak hazırlanır; birleştirmeden yayınlanmaz.
+name: Fiyat kontrol
+
+on:
+  schedule:
+    - cron: "0 6 * * *" # 06:00 UTC = 09:00 TR
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Kuru çalıştırma (GitHub'a ve dosyalara hiçbir şey yazmaz)"
+        type: boolean
+        default: false
+      haftalik:
+        description: "Haftalık işleri de çalıştır (izlenemeyenler, link kontrolü, heartbeat)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: fiyat-kontrol
+  cancel-in-progress: false
+
+jobs:
+  kontrol:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Depoyu al
+        uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Python kur
+        uses: actions/setup-python@v7.1.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Bağımlılıkları kur
+        run: python -m pip install -r requirements.txt
+
+      - name: Birim testleri
+        run: python -m pytest -m "not veri"
+
+      - name: Fiyatları kontrol et
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
+          GH_TOKEN: ${{ github.token }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          HAFTALIK: ${{ inputs.haftalik }}
+        run: |
+          args=()
+          if [ "$DRY_RUN" = "true" ]; then args+=(--dry-run); fi
+          if [ "$HAFTALIK" = "true" ]; then args+=(--haftalik); fi
+          python scripts/fiyat_kontrol.py "${args[@]}"
