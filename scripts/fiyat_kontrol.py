@@ -51,6 +51,9 @@ TR_TZ = dt.timezone(dt.timedelta(hours=3))  # Türkiye kalıcı olarak UTC+3
 BRANCH = "fiyat/guncelleme"
 ISSUE_LABEL = "fiyat-kontrol"
 UNUSUAL_LABEL = "olağandışı"
+# Bot PR/issue'larını bu kullanıcıya atar → GitHub mobilde "Assigned" bildirimi gelir (K2/K7).
+# Boş bırakılırsa (FIYAT_ATANAN="") atama yapılmaz.
+ASSIGNEE = os.environ.get("FIYAT_ATANAN", "Camular").strip()
 FALSE_POSITIVE_LABEL = "yanlis-tespit"
 FALSE_POSITIVE_DAYS = 30
 CONFIDENCE_THRESHOLD = 0.8
@@ -1172,7 +1175,10 @@ class GitHub:
             self.log(f"[dry-run] issue açılırdı: {title}")
             return
         self.ensure_labels()
-        self._gh("issue", "create", "--title", title, "--label", ISSUE_LABEL, "--body-file", "-", body=body)
+        args = ["issue", "create", "--title", title, "--label", ISSUE_LABEL, "--body-file", "-"]
+        if ASSIGNEE:
+            args += ["--assignee", ASSIGNEE]
+        self._gh(*args, body=body)
 
     def edit_issue(self, number: int, body: str) -> None:
         if self.dry_run:
@@ -1239,6 +1245,8 @@ class GitHub:
         args = ["pr", "create", "--base", "main", "--head", branch, "--title", title, "--body-file", "-"]
         for label in labels:
             args += ["--label", label]
+        if ASSIGNEE:
+            args += ["--assignee", ASSIGNEE]
         self._gh(*args, body=body)
 
     def edit_pr(self, number: int, title: str, body: str, labels: list[str]) -> None:
