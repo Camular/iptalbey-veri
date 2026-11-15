@@ -6,11 +6,11 @@
 
 .DESCRIPTION
     Gorev Zamanlayici her gun calistirir (bkz. yerel_kurulum.ps1 -Kaydet).
-    1. Ayri klonda (varsayilan %LOCALAPPDATA%\IptalBey\veri-yerel) main'e gecer ve gunceller.
+    1. Ayri klonda (varsayilan %USERPROFILE%\IptalBey\veri-yerel) main'e gecer ve gunceller.
        Calisma deposunu klon olarak VERMEYIN: `git checkout -f main` commit edilmemis degisiklikleri siler.
     2. requirements.txt degistiyse pip install yapar; klonun .venv'indeki Python ile
        `scripts/fiyat_kontrol.py --yerel` calistirir.
-    3. Tum ciktiyi %LOCALAPPDATA%\IptalBey\loglar\YYYY-MM-DD.log dosyasina yazar; 30 gunden
+    3. Tum ciktiyi %USERPROFILE%\IptalBey\loglar\YYYY-MM-DD.log dosyasina yazar; 30 gunden
        eski loglari siler. GEMINI_API_KEY degeri loga asla yazilmaz (gecerse *** ile maskelenir).
     Pencere acmaz: komutlar CreateNoWindow ile calistirilir; gorev conhost --headless ile baslatilir.
 
@@ -19,8 +19,8 @@
 #>
 [CmdletBinding()]
 param(
-    [string]$KlonYolu = (Join-Path $env:LOCALAPPDATA 'IptalBey\veri-yerel'),
-    [string]$LogKlasoru = (Join-Path $env:LOCALAPPDATA 'IptalBey\loglar'),
+    [string]$KlonYolu = (Join-Path $env:USERPROFILE 'IptalBey\veri-yerel'),
+    [string]$LogKlasoru = (Join-Path $env:USERPROFILE 'IptalBey\loglar'),
     [int]$LogGun = 30
 )
 

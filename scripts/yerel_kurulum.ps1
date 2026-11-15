@@ -5,7 +5,7 @@
 
 .DESCRIPTION
     Kurulum (her calistirmada guvenle tekrarlanabilir):
-      - Ayri klon: %LOCALAPPDATA%\IptalBey\veri-yerel (yoksa git clone; varsa dokunulmaz).
+      - Ayri klon: %USERPROFILE%\IptalBey\veri-yerel (yoksa git clone; varsa dokunulmaz).
       - Klonun git kimligi parametreden (-GitName, -GitEmail) klonun yerel ayarina yazilir.
       - Klonda .venv (python -m venv) ve `pip install -r requirements.txt`.
       - gh girisi ve GEMINI_API_KEY (kullanici ortam degiskeni) kontrol edilir; yoksa uyarilir.
@@ -31,7 +31,7 @@ param(
     [Parameter(ParameterSetName = 'Kur')][string]$GitEmail,
     [Parameter(ParameterSetName = 'Kur')][switch]$Kaydet,
     [Parameter(ParameterSetName = 'Kaldir', Mandatory = $true)][switch]$Kaldir,
-    [string]$KlonYolu = (Join-Path $env:LOCALAPPDATA 'IptalBey\veri-yerel'),
+    [string]$KlonYolu = (Join-Path $env:USERPROFILE 'IptalBey\veri-yerel'),
     [string]$DepoUrl = 'https://github.com/Camular/iptalbey-veri.git',
     [string]$Saat = '10:00'
 )
@@ -68,7 +68,7 @@ $IsaretDosyasi = 'iptalbey-yerel-klon'  # .git icinde; yalnizca bu betigin actig
 function Assert-AyriKlon {
     <# KlonYolu'ndaki depo bu betigin actigi ayri klon olmali (calisma deposu verilirse degisiklikler kaybolur). #>
     if ((Test-Path (Join-Path $KlonYolu '.git')) -and -not (Test-Path (Join-Path $KlonYolu ".git\$IsaretDosyasi"))) {
-        throw "KlonYolu ($KlonYolu) bu betigin actigi ayri klon degil (calisma deposu olabilir). Ayri ve bos bir yol verin (varsayilan: %LOCALAPPDATA%\IptalBey\veri-yerel)."
+        throw "KlonYolu ($KlonYolu) bu betigin actigi ayri klon degil (calisma deposu olabilir). Ayri ve bos bir yol verin (varsayilan: %USERPROFILE%\IptalBey\veri-yerel)."
     }
 }
 
@@ -141,7 +141,7 @@ function Register-YerelGorev {
     if (-not (Test-Path $calistir)) { throw "Bulunamadi: $calistir (klon guncel mi?)" }
     $powershell = Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershell.exe'
     $conhost = Join-Path $env:WINDIR 'System32\conhost.exe'
-    $psArgs = "-NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$calistir`""
+    $psArgs = "-NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$calistir`" -KlonYolu `"$KlonYolu`""
     # conhost --headless: konsol penceresi hic acilmaz.
     $eylem = New-ScheduledTaskAction -Execute $conhost -Argument "--headless `"$powershell`" $psArgs" -WorkingDirectory $KlonYolu
     $tetik = New-ScheduledTaskTrigger -Daily -At $Saat
@@ -152,7 +152,7 @@ function Register-YerelGorev {
     Register-ScheduledTask -TaskName $GorevAdi -Action $eylem -Trigger $tetik -Settings $ayarlar -Principal $kimlik `
         -Description 'IptalBey: Netflix/YouTube fiyatlarini Turkiye IP ile kontrol eder (KR-014).' -Force | Out-Null
     Write-Host "Gorev kaydedildi: '$GorevAdi' (her gun $Saat). Hemen denemek icin: Start-ScheduledTask -TaskName '$GorevAdi'"
-    Write-Host ("Loglar: " + (Join-Path $env:LOCALAPPDATA 'IptalBey\loglar'))
+    Write-Host ("Loglar: " + (Join-Path $env:USERPROFILE 'IptalBey\loglar'))
 }
 
 function Unregister-YerelGorev {
