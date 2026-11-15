@@ -1,4 +1,90 @@
 {
- "kaynaklar": {},
- "planlar": {}
+ "kaynaklar": {
+  "https://help.netflix.com/tr/node/24926": {
+   "ardisik": 1,
+   "ilk_hata": "2026-11-15",
+   "son_hata": "2026-11-15",
+   "neden": "sayfada TL fiyatı yok (bölge/dil yönlendirmesi olabilir)"
+  },
+  "https://www.youtube.com/premium?hl=tr&gl=TR": {
+   "ardisik": 1,
+   "ilk_hata": "2026-11-15",
+   "son_hata": "2026-11-15",
+   "neden": "sayfada TL fiyatı yok (bölge/dil yönlendirmesi olabilir)"
+  }
+ },
+ "planlar": {
+  "spotify/ogrenci": {
+   "ardisik": 1,
+   "ilk_hata": "2026-11-15",
+   "son_hata": "2026-11-15",
+   "neden": "Kanıt alıntısında bu planın adı geçmiyor (başka plana ait olabilir)."
+  },
+  "spotify/duo": {
+   "ardisik": 1,
+   "ilk_hata": "2026-11-15",
+   "son_hata": "2026-11-15",
+   "neden": "Kanıt alıntısı birden çok plana uyuyor: spotify/ogrenci."
+  },
+  "spotify/aile": {
+   "ardisik": 1,
+   "ilk_hata": "2026-11-15",
+   "son_hata": "2026-11-15",
+   "neden": "Kanıt alıntısı birden çok plana uyuyor: spotify/duo."
+  },
+  "apple-music/ogrenci": {
+   "ardisik": 1,
+   "ilk_hata": "2026-11-15",
+   "son_hata": "2026-11-15",
+   "neden": "Fiyat alıntıda kampanya / ilk ay / eski fiyat ifadesiyle birlikte geçiyor."
+  },
+  "icloud-plus/50gb": {
+   "ardisik": 1,
+   "ilk_hata": "2026-11-15",
+   "son_hata": "2026-11-15",
+   "neden": "Kanıt alıntısı sayfa metninde birebir bulunamadı. Kanıt alıntısında bu planın adı geçmiyor (başka plana ait olabilir)."
+  },
+  "icloud-plus/200gb": {
+   "ardisik": 1,
+   "ilk_hata": "2026-11-15",
+   "son_hata": "2026-11-15",
+   "neden": "Kanıt alıntısı sayfa metninde birebir bulunamadı. Kanıt alıntısında bu planın adı geçmiyor (başka plana ait olabilir)."
+  },
+  "icloud-plus/2tb": {
+   "ardisik": 1,
+   "ilk_hata": "2026-11-15",
+   "son_hata": "2026-11-15",
+   "neden": "Kanıt alıntısı sayfa metninde birebir bulunamadı. Kanıt alıntısında bu planın adı geçmiyor (başka plana ait olabilir)."
+  },
+  "icloud-plus/6tb": {
+   "ardisik": 1,
+   "ilk_hata": "2026-11-15",
+   "son_hata": "2026-11-15",
+   "neden": "Kanıt alıntısı sayfa metninde birebir bulunamadı. Kanıt alıntısında bu planın adı geçmiyor (başka plana ait olabilir)."
+  },
+  "icloud-plus/12tb": {
+   "ardisik": 1,
+   "ilk_hata": "2026-11-15",
+   "son_hata": "2026-11-15",
+   "neden": "Kanıt alıntısı sayfa metninde birebir bulunamadı. Kanıt alıntısında bu planın adı geçmiyor (başka plana ait olabilir)."
+  },
+  "paket/turkcell-one-star": {
+   "ardisik": 1,
+   "ilk_hata": "2026-11-15",
+   "son_hata": "2026-11-15",
+   "neden": "Kanıt alıntısında bu planın adı geçmiyor (başka plana ait olabilir)."
+  },
+  "paket/turkcell-one-premium": {
+   "ardisik": 1,
+   "ilk_hata": "2026-11-15",
+   "son_hata": "2026-11-15",
+   "neden": "Kanıt alıntısında bu planın adı geçmiyor (başka plana ait olabilir)."
+  },
+  "paket/turkcell-one-ekstra": {
+   "ardisik": 1,
+   "ilk_hata": "2026-11-15",
+   "son_hata": "2026-11-15",
+   "neden": "Kanıt alıntısında bu planın adı geçmiyor (başka plana ait olabilir)."
+  }
+ }
 }

@@ -1,1 +1,42 @@
-{}
+{
+ "https://www.spotify.com/tr/premium/": {
+  "karma": "097e07458be41cb555b75019ba6b26f0247bf538498b910a21f49c9fb8e63ea6",
+  "degisim_tarihi": "2026-11-15"
+ },
+ "https://www.apple.com/tr/apple-music/": {
+  "karma": "68cf72292eb53b1637a79cf8334f8a137e8909eca4d0ef2befe73333d3d5caad",
+  "degisim_tarihi": "2026-11-15"
+ },
+ "https://support.apple.com/tr-tr/108047": {
+  "karma": "d2d5b59b40c687c380bbab9270a2fa557c24bc44548d6ffeabb6aec944b0221a",
+  "degisim_tarihi": "2026-11-15"
+ },
+ "https://www.storytel.com/tr": {
+  "karma": "7f6afd703343f48d7ff72e74294af91a9029362d1828687248e47bb77d087b0e",
+  "degisim_tarihi": "2026-11-15"
+ },
+ "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one/turkcell-one-star": {
+  "karma": "299a7d8d790d2bad4ffd6f714badd289aff3b8a86f878fafb69f3b9920dc869b",
+  "degisim_tarihi": "2026-11-15"
+ },
+ "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one/turkcell-one-premium": {
+  "karma": "50a6094b975237ba869ad1d3b76b79e1d1e94ff394efbdd148312d04a2aa3b28",
+  "degisim_tarihi": "2026-11-15"
+ },
+ "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one/turkcell-one-ekstra": {
+  "karma": "a1289a310eb90817114df628a93df9715f439b350b1007d2a97b1e24c3774eca",
+  "degisim_tarihi": "2026-11-15"
+ },
+ "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one-diger-paketler/turkcell-one-mega": {
+  "karma": "ca9acb67a0cbf635223edcc8934a93a6a58d8283c8e081a35dc6263fb99fc784",
+  "degisim_tarihi": "2026-11-15"
+ },
+ "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one-diger-paketler/turkcell-one-maksi": {
+  "karma": "1be6ac868f6e839b2270f0be2dabc419a646a48b53b1bac3671e0e95de0efe43",
+  "degisim_tarihi": "2026-11-15"
+ },
+ "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one-diger-paketler/turkcell-one-ultra": {
+  "karma": "299a7d8d790d2bad4ffd6f714badd289aff3b8a86f878fafb69f3b9920dc869b",
+  "degisim_tarihi": "2026-11-15"
+ }
+}
