@@ -26,6 +26,7 @@ Yanlış veya eski bir fiyat gördüyseniz bu depoda bir issue açın; kaynağı
 - **Pull request (PR) = onay bekleyen fiyat değişikliği.** Bot fiyatın değiştiğinden eminse `fiyat/guncelleme` dalında PR açar (açık PR varsa ona ekler): eski → yeni fiyat, % değişim, kanıt alıntısı ve kaynak linkiyle. PR **birleştirilmeden hiçbir fiyat yayınlanmaz**. Fiyat düştüyse ya da %200'den fazla arttıysa PR "olağandışı" etiketi alır.
 - **Issue = elle bakılması gereken durum.** Bot emin değilse, kayıt tahminiyse (`dogrulandi: false`), sayfa 3 gün üst üste okunamazsa, şema doğrulaması geçmezse ya da Gemini'ye ulaşılamayıp sayfadaki fiyatlar değiştiyse issue açar. Aynı başlıkta açık issue varsa yenisini açmaz.
 - Haftalık (pazartesi): izlenemeyen kayıtların özeti, `iptal-rehberleri.json` link kontrolü, 7 günden eski açık fiyat PR'ı için hatırlatma ve `durum/son-calisma.json` sağlık kaydı.
+- `.github/workflows/sema-dogrulama.yml`, `fiyatlar.json` / `iptal-rehberleri.json` / `sema/` değişen her PR ve push'ta `python scripts/sema_dogrula.py` ile şema ve referans bütünlüğünü doğrular (yerelde de aynı komut).
 - Bot doğrudan `main`'e yalnızca `durum/` klasörüne yazar (fiyat içermez).
 - Yerelde deneme: `pip install -r requirements.txt`, `python -m pytest`, `python scripts/fiyat_kontrol.py --dry-run` (anahtar yoksa yalnızca sayfa indirme ve metin çıkarma raporlanır).
 - Gerekenler: depo sırrı `GEMINI_API_KEY`; isteğe bağlı depo değişkeni `GEMINI_MODEL`; Settings → Actions → "Allow GitHub Actions to create and approve pull requests" açık.
