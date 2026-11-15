@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Camular/iptalbey-veri/main/sema/fiyatlar.schema.json",
+  "title": "İptalBey fiyat kataloğu",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["sema_surumu", "surum", "guncelleme", "servisler", "operator_paketleri"],
+  "properties": {
+    "sema_surumu": { "const": 1 },
+    "surum": { "type": "integer", "minimum": 1 },
+    "guncelleme": { "$ref": "#/$defs/tarih" },
+    "servisler": { "type": "array", "items": { "$ref": "#/$defs/servis" } },
+    "operator_paketleri": { "type": "array", "items": { "$ref": "#/$defs/paket" } }
+  },
+  "$defs": {
+    "tarih": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+    "tarihVeyaNull": { "oneOf": [ { "$ref": "#/$defs/tarih" }, { "type": "null" } ] },
+    "kimlik": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "url": { "type": "string", "pattern": "^https://" },
+    "urlVeyaNull": { "oneOf": [ { "$ref": "#/$defs/url" }, { "type": "null" } ] },
+    "metinVeyaNull": { "type": ["string", "null"] },
+    "fiyat": { "type": "number", "exclusiveMinimum": 0 },
+    "periyot": { "enum": ["haftalik", "aylik", "yillik"] },
+    "servis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "ad", "kategori", "planlar"],
+      "properties": {
+        "id": { "$ref": "#/$defs/kimlik" },
+        "ad": { "type": "string", "minLength": 1 },
+        "kategori": { "enum": ["video", "muzik", "bulut", "yapay-zeka", "kitap", "spor", "oyun", "diger"] },
+        "planlar": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/plan" } }
+      }
+    },
+    "plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "ad", "seviye", "fiyat_tl", "periyot", "ogrenci", "onceki_fiyat_tl", "gecerlilik",
+                   "kaynak", "kontrol_tarihi", "dogrulandi", "kaynak_notu", "izleme_url", "degisim_turu", "degisim_surumu"],
+      "properties": {
+        "id": { "$ref": "#/$defs/kimlik" },
+        "ad": { "type": "string", "minLength": 1 },
+        "seviye": { "type": "integer", "minimum": 1 },
+        "fiyat_tl": { "$ref": "#/$defs/fiyat" },
+        "periyot": { "$ref": "#/$defs/periyot" },
+        "ogrenci": { "type": "boolean" },
+        "onceki_fiyat_tl": { "oneOf": [ { "$ref": "#/$defs/fiyat" }, { "type": "null" } ] },
+        "gecerlilik": { "$ref": "#/$defs/tarihVeyaNull" },
+        "kaynak": { "$ref": "#/$defs/url" },
+        "kontrol_tarihi": { "$ref": "#/$defs/tarih" },
+        "dogrulandi": { "type": "boolean" },
+        "kaynak_notu": { "$ref": "#/$defs/metinVeyaNull" },
+        "izleme_url": { "$ref": "#/$defs/urlVeyaNull" },
+        "degisim_turu": { "enum": ["zam", "indirim", "duzeltme", null] },
+        "degisim_surumu": { "oneOf": [ { "type": "integer", "minimum": 1 }, { "type": "null" } ] }
+      },
+      "allOf": [
+        { "if": { "properties": { "degisim_turu": { "enum": ["zam", "indirim"] } } },
+          "then": { "properties": { "onceki_fiyat_tl": { "$ref": "#/$defs/fiyat" }, "degisim_surumu": { "type": "integer" } } } },
+        { "if": { "properties": { "degisim_turu": { "const": null } } },
+          "then": { "properties": { "degisim_surumu": { "type": "null" } } } }
+      ]
+    },
+    "paket": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "operator", "ad", "fiyat_tl", "periyot", "icerir", "kaynak", "kontrol_tarihi", "dogrulandi", "izleme_url", "kaynak_notu"],
+      "properties": {
+        "id": { "$ref": "#/$defs/kimlik" },
+        "operator": { "enum": ["Turkcell", "Vodafone", "Türk Telekom"] },
+        "ad": { "type": "string", "minLength": 1 },
+        "fiyat_tl": { "$ref": "#/$defs/fiyat" },
+        "periyot": { "$ref": "#/$defs/periyot" },
+        "icerir": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["servis", "plan"],
+            "properties": { "servis": { "$ref": "#/$defs/kimlik" }, "plan": { "oneOf": [ { "$ref": "#/$defs/kimlik" }, { "type": "null" } ] } }
+          }
+        },
+        "kaynak": { "$ref": "#/$defs/url" },
+        "kontrol_tarihi": { "$ref": "#/$defs/tarih" },
+        "dogrulandi": { "type": "boolean" },
+        "izleme_url": { "$ref": "#/$defs/urlVeyaNull" },
+        "kaynak_notu": { "$ref": "#/$defs/metinVeyaNull" }
+      }
+    }
+  }
+}

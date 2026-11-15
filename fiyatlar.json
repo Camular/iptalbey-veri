@@ -1,0 +1,1101 @@
+{
+ "sema_surumu": 1,
+ "surum": 1,
+ "guncelleme": "2026-11-15",
+ "servisler": [
+  {
+   "id": "netflix",
+   "ad": "Netflix",
+   "kategori": "video",
+   "planlar": [
+    {
+     "id": "temel",
+     "ad": "Temel",
+     "seviye": 1,
+     "fiyat_tl": 259.99,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": 189.99,
+     "gecerlilik": "2026-10-03",
+     "kaynak": "https://help.netflix.com/tr/node/24926",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": "https://help.netflix.com/tr/node/24926",
+     "degisim_turu": "zam",
+     "degisim_surumu": 1
+    },
+    {
+     "id": "standart",
+     "ad": "Standart",
+     "seviye": 2,
+     "fiyat_tl": 389.99,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": 289.99,
+     "gecerlilik": "2026-10-03",
+     "kaynak": "https://help.netflix.com/tr/node/24926",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": "https://help.netflix.com/tr/node/24926",
+     "degisim_turu": "zam",
+     "degisim_surumu": 1
+    },
+    {
+     "id": "premium",
+     "ad": "Premium",
+     "seviye": 3,
+     "fiyat_tl": 499.99,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": 379.99,
+     "gecerlilik": "2026-10-03",
+     "kaynak": "https://help.netflix.com/tr/node/24926",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": "https://help.netflix.com/tr/node/24926",
+     "degisim_turu": "zam",
+     "degisim_surumu": 1
+    }
+   ]
+  },
+  {
+   "id": "youtube-premium",
+   "ad": "YouTube Premium",
+   "kategori": "video",
+   "planlar": [
+    {
+     "id": "lite",
+     "ad": "Premium Lite",
+     "seviye": 1,
+     "fiyat_tl": 79.99,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": 49.99,
+     "gecerlilik": "2026-06-11",
+     "kaynak": "https://www.youtube.com/premium?hl=tr&gl=TR",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": "Fiyatlar sayfanın gömülü verisinde; önceki fiyat ve tarih haberlerden (DonanımHaber, CNBC-e, Webtekno).",
+     "izleme_url": "https://www.youtube.com/premium?hl=tr&gl=TR",
+     "degisim_turu": "zam",
+     "degisim_surumu": 1
+    },
+    {
+     "id": "bireysel",
+     "ad": "Bireysel",
+     "seviye": 2,
+     "fiyat_tl": 119.99,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": 79.99,
+     "gecerlilik": "2026-06-11",
+     "kaynak": "https://www.youtube.com/premium?hl=tr&gl=TR",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": "https://www.youtube.com/premium?hl=tr&gl=TR",
+     "degisim_turu": "zam",
+     "degisim_surumu": 1
+    },
+    {
+     "id": "ogrenci",
+     "ad": "Öğrenci",
+     "seviye": 2,
+     "fiyat_tl": 79.99,
+     "periyot": "aylik",
+     "ogrenci": true,
+     "onceki_fiyat_tl": 52.99,
+     "gecerlilik": "2026-06-11",
+     "kaynak": "https://www.youtube.com/premium?hl=tr&gl=TR",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": "https://www.youtube.com/premium?hl=tr&gl=TR",
+     "degisim_turu": "zam",
+     "degisim_surumu": 1
+    },
+    {
+     "id": "aile",
+     "ad": "Aile",
+     "seviye": 3,
+     "fiyat_tl": 239.99,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": 159.99,
+     "gecerlilik": "2026-06-11",
+     "kaynak": "https://www.youtube.com/premium?hl=tr&gl=TR",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": "https://www.youtube.com/premium?hl=tr&gl=TR",
+     "degisim_turu": "zam",
+     "degisim_surumu": 1
+    }
+   ]
+  },
+  {
+   "id": "amazon-prime",
+   "ad": "Amazon Prime",
+   "kategori": "video",
+   "planlar": [
+    {
+     "id": "aylik",
+     "ad": "Aylık üyelik",
+     "seviye": 1,
+     "fiyat_tl": 69.9,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": 49.9,
+     "gecerlilik": "2025-10-14",
+     "kaynak": "https://www.dunya.com/sektorler/bilim-ve-teknoloji/amazon-prime-videoda-yeni-donem-turkiyede-reklamsiz-paket-ucreti-aciklandi-haberi-824987",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": "amazon.com.tr okunamadı (503); Dünya, Medyascope, Teknoblog, Webrazzi aynı fiyatı veriyor. 17.06.2026'dan beri Prime Video reklamlı; reklamsız için aylık +59,90 TL ek.",
+     "izleme_url": null,
+     "degisim_turu": "zam",
+     "degisim_surumu": 1
+    }
+   ]
+  },
+  {
+   "id": "disney-plus",
+   "ad": "Disney+",
+   "kategori": "video",
+   "planlar": [
+    {
+     "id": "reklamli",
+     "ad": "Reklamlı (aylık)",
+     "seviye": 1,
+     "fiyat_tl": 249.9,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": 164.9,
+     "gecerlilik": "2025-09-30",
+     "kaynak": "https://www.disneyplus.com/tr-tr",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": "Resmi sayfa şu an kampanya fiyatı gösteriyor (24.11.2026'ya kadar); normal fiyat resmi sayfadaki 'başlayan' fiyat ve CNBC-e haberiyle teyitli.",
+     "izleme_url": null,
+     "degisim_turu": "zam",
+     "degisim_surumu": 1
+    },
+    {
+     "id": "reklamsiz",
+     "ad": "Reklamsız (aylık)",
+     "seviye": 2,
+     "fiyat_tl": 449.9,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": 349.9,
+     "gecerlilik": "2025-09-30",
+     "kaynak": "https://www.disneyplus.com/tr-tr",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": "Kampanya indiriminden türetildi; CNBC-e ve Dünya haberleriyle aynı.",
+     "izleme_url": null,
+     "degisim_turu": "zam",
+     "degisim_surumu": 1
+    },
+    {
+     "id": "reklamli-yillik",
+     "ad": "Reklamlı (yıllık)",
+     "seviye": 1,
+     "fiyat_tl": 2499,
+     "periyot": "yillik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.disneyplus.com/tr-tr",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": "Resmi sayfada 'Basic' adıyla; reklamlı eşleşmesi bağlantı parametresinden çıkarım.",
+     "izleme_url": null,
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "reklamsiz-yillik",
+     "ad": "Reklamsız (yıllık)",
+     "seviye": 2,
+     "fiyat_tl": 4499,
+     "periyot": "yillik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.disneyplus.com/tr-tr",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": "Resmi sayfada 'Premium' adıyla; reklamsız eşleşmesi çıkarım.",
+     "izleme_url": null,
+     "degisim_turu": null,
+     "degisim_surumu": null
+    }
+   ]
+  },
+  {
+   "id": "hbo-max",
+   "ad": "HBO Max",
+   "kategori": "video",
+   "planlar": [
+    {
+     "id": "standart",
+     "ad": "Standart (aylık)",
+     "seviye": 1,
+     "fiyat_tl": 229.9,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.hbomax.com/tr/tr",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": null,
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "ozel",
+     "ad": "Özel (aylık)",
+     "seviye": 2,
+     "fiyat_tl": 299.9,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.hbomax.com/tr/tr",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": null,
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "standart-yillik",
+     "ad": "Standart (yıllık)",
+     "seviye": 1,
+     "fiyat_tl": 2299,
+     "periyot": "yillik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.hbomax.com/tr/tr",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": null,
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "ozel-yillik",
+     "ad": "Özel (yıllık)",
+     "seviye": 2,
+     "fiyat_tl": 2999,
+     "periyot": "yillik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.hbomax.com/tr/tr",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": null,
+     "degisim_turu": null,
+     "degisim_surumu": null
+    }
+   ]
+  },
+  {
+   "id": "exxen",
+   "ad": "Exxen",
+   "kategori": "video",
+   "planlar": [
+    {
+     "id": "reklamli",
+     "ad": "Reklamlı",
+     "seviye": 1,
+     "fiyat_tl": 270.5,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.karekod.org/blog/exxen-uyelik-ucretleri-exxenspor-fiyati/",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": false,
+     "kaynak_notu": "Tahmini: kaynaklar çelişiyor (219 / 275 / 270,50 TL); en yeni tek kaynak (Eylül 2026) esas alındı. Resmi sayfa okunamadı.",
+     "izleme_url": null,
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "reklamsiz",
+     "ad": "Reklamsız",
+     "seviye": 2,
+     "fiyat_tl": 381.66,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.karekod.org/blog/exxen-uyelik-ucretleri-exxenspor-fiyati/",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": false,
+     "kaynak_notu": "Tahmini: kaynaklar çelişiyor (309 / 388 / 381,66 TL).",
+     "izleme_url": null,
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "exxenspor",
+     "ad": "ExxenSpor (reklamlı)",
+     "seviye": 3,
+     "fiyat_tl": 478.05,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.karekod.org/blog/exxen-uyelik-ucretleri-exxenspor-fiyati/",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": false,
+     "kaynak_notu": "Tahmini: 478,05 (Karekod) / 486 (DonanımHaber) çelişiyor.",
+     "izleme_url": null,
+     "degisim_turu": null,
+     "degisim_surumu": null
+    }
+   ]
+  },
+  {
+   "id": "gain",
+   "ad": "GAİN",
+   "kategori": "video",
+   "planlar": [
+    {
+     "id": "aylik",
+     "ad": "Premium (aylık)",
+     "seviye": 1,
+     "fiyat_tl": 249,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.webtekno.com/gain-nedir-nasil-kullanilir-ucreti-h120324.html",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": false,
+     "kaynak_notu": "Tahmini: resmi sayfa okunamadı; en yeni kaynak Şubat 2026 (Webtekno, Tamindir).",
+     "izleme_url": null,
+     "degisim_turu": null,
+     "degisim_surumu": null
+    }
+   ]
+  },
+  {
+   "id": "tabii",
+   "ad": "Tabii",
+   "kategori": "video",
+   "planlar": [
+    {
+     "id": "premium",
+     "ad": "Premium",
+     "seviye": 1,
+     "fiyat_tl": 99,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.milligazete.com.tr/tabii-spor-ucreti-2026-ne-kadar-aylik-kac-tl-trt-tabii-premium-uyelik-ucretli-mi-ucretsiz-mac-nasil-izlenir",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": "Resmi tabii.com JS ile yükleniyor. Milli Gazete (21.10.2026) ve Sporx (29.12.2025, https://www.sporx.com/trt-tabii-spor-ucretli-mi-2026-trt-tabii-fiyatlari-ne-kadar-SXHBQ1054327SXQ) aynı fiyatı veriyor. Ücretsiz reklamlı katman da var.",
+     "izleme_url": null,
+     "degisim_turu": null,
+     "degisim_surumu": null
+    }
+   ]
+  },
+  {
+   "id": "tod",
+   "ad": "TOD",
+   "kategori": "spor",
+   "planlar": [
+    {
+     "id": "eglence",
+     "ad": "Eğlence",
+     "seviye": 1,
+     "fiyat_tl": 129,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.milligazete.com.tr/tod-tv-ucreti-ne-kadar-2026-super-lig-paketi-kac-tl-giris-nasil-yapilir-hangi-diziler-ve-maclar-var",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": false,
+     "kaynak_notu": "Tahmini: tek güncel kaynak (Milli Gazete 23.09.2026, taahhütsüz aylık); Webtekno Şubat 2026'da 99 TL diyor. tod.tv bot engelli.",
+     "izleme_url": null,
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "spor-extra",
+     "ad": "Spor Extra",
+     "seviye": 2,
+     "fiyat_tl": 350,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.milligazete.com.tr/tod-tv-ucreti-ne-kadar-2026-super-lig-paketi-kac-tl-giris-nasil-yapilir-hangi-diziler-ve-maclar-var",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": "tod.tv bot engelli. Milli Gazete (23.09.2026) ve Webtekno (24.02.2026, https://www.webtekno.com/tod-nedir-nasil-kullanilir-h130876.html) aynı fiyatı veriyor (taahhütsüz aylık).",
+     "izleme_url": null,
+     "degisim_turu": null,
+     "degisim_surumu": null
+    }
+   ]
+  },
+  {
+   "id": "spotify",
+   "ad": "Spotify Premium",
+   "kategori": "muzik",
+   "planlar": [
+    {
+     "id": "bireysel",
+     "ad": "Premium Bireysel",
+     "seviye": 1,
+     "fiyat_tl": 115,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": 99,
+     "gecerlilik": "2026-10-01",
+     "kaynak": "https://www.spotify.com/tr/premium/",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": "https://www.spotify.com/tr/premium/",
+     "degisim_turu": "zam",
+     "degisim_surumu": 1
+    },
+    {
+     "id": "ogrenci",
+     "ad": "Premium Öğrenci",
+     "seviye": 1,
+     "fiyat_tl": 60,
+     "periyot": "aylik",
+     "ogrenci": true,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": "2026-10-01",
+     "kaynak": "https://www.spotify.com/tr/premium/",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": "https://www.spotify.com/tr/premium/",
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "duo",
+     "ad": "Premium Duo",
+     "seviye": 2,
+     "fiyat_tl": 159,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": 135,
+     "gecerlilik": "2026-10-01",
+     "kaynak": "https://www.spotify.com/tr/premium/",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": "https://www.spotify.com/tr/premium/",
+     "degisim_turu": "zam",
+     "degisim_surumu": 1
+    },
+    {
+     "id": "aile",
+     "ad": "Premium Aile",
+     "seviye": 3,
+     "fiyat_tl": 199,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": 165,
+     "gecerlilik": "2026-10-01",
+     "kaynak": "https://www.spotify.com/tr/premium/",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": "https://www.spotify.com/tr/premium/",
+     "degisim_turu": "zam",
+     "degisim_surumu": 1
+    }
+   ]
+  },
+  {
+   "id": "apple-music",
+   "ad": "Apple Music",
+   "kategori": "muzik",
+   "planlar": [
+    {
+     "id": "bireysel",
+     "ad": "Bireysel",
+     "seviye": 1,
+     "fiyat_tl": 89.99,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.apple.com/tr/apple-music/",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": "https://www.apple.com/tr/apple-music/",
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "ogrenci",
+     "ad": "Öğrenci",
+     "seviye": 1,
+     "fiyat_tl": 49.99,
+     "periyot": "aylik",
+     "ogrenci": true,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.apple.com/tr/apple-music/",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": "https://www.apple.com/tr/apple-music/",
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "aile",
+     "ad": "Aile",
+     "seviye": 2,
+     "fiyat_tl": 149.99,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.apple.com/tr/apple-music/",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": "https://www.apple.com/tr/apple-music/",
+     "degisim_turu": null,
+     "degisim_surumu": null
+    }
+   ]
+  },
+  {
+   "id": "icloud-plus",
+   "ad": "iCloud+",
+   "kategori": "bulut",
+   "planlar": [
+    {
+     "id": "50gb",
+     "ad": "50 GB",
+     "seviye": 1,
+     "fiyat_tl": 49.99,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://support.apple.com/tr-tr/108047",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": "https://support.apple.com/tr-tr/108047",
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "200gb",
+     "ad": "200 GB",
+     "seviye": 2,
+     "fiyat_tl": 169.99,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://support.apple.com/tr-tr/108047",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": "https://support.apple.com/tr-tr/108047",
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "2tb",
+     "ad": "2 TB",
+     "seviye": 3,
+     "fiyat_tl": 549.99,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://support.apple.com/tr-tr/108047",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": "https://support.apple.com/tr-tr/108047",
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "6tb",
+     "ad": "6 TB",
+     "seviye": 4,
+     "fiyat_tl": 1699.99,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://support.apple.com/tr-tr/108047",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": "https://support.apple.com/tr-tr/108047",
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "12tb",
+     "ad": "12 TB",
+     "seviye": 5,
+     "fiyat_tl": 3399.99,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://support.apple.com/tr-tr/108047",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": "https://support.apple.com/tr-tr/108047",
+     "degisim_turu": null,
+     "degisim_surumu": null
+    }
+   ]
+  },
+  {
+   "id": "google-one",
+   "ad": "Google One",
+   "kategori": "bulut",
+   "planlar": [
+    {
+     "id": "100gb",
+     "ad": "Basic 100 GB",
+     "seviye": 1,
+     "fiyat_tl": 84.99,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://one.google.com/about/plans?hl=tr&gl=TR",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": null,
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "2tb",
+     "ad": "Google AI Plus 2 TB",
+     "seviye": 2,
+     "fiyat_tl": 359.99,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://one.google.com/about/plans?hl=tr&gl=TR",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": null,
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "5tb",
+     "ad": "Google AI Pro 5 TB",
+     "seviye": 3,
+     "fiyat_tl": 869.99,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://one.google.com/about/plans?hl=tr&gl=TR",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": null,
+     "degisim_turu": null,
+     "degisim_surumu": null
+    }
+   ]
+  },
+  {
+   "id": "chatgpt-plus",
+   "ad": "ChatGPT Plus",
+   "kategori": "yapay-zeka",
+   "planlar": [
+    {
+     "id": "plus",
+     "ad": "Plus",
+     "seviye": 1,
+     "fiyat_tl": 999.99,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.teknoblog.com/chatgpt-plus-fiyati-ikiye-katlandi/",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": false,
+     "kaynak_notu": "Tahmini: 999,99 TL App Store fiyatı (haberler). Web'den 20 USD faturalanır, TL karşılığı kura bağlı. Resmi sayfa okunamadı; Zam Radarı bu serviste çalışmaz.",
+     "izleme_url": null,
+     "degisim_turu": null,
+     "degisim_surumu": null
+    }
+   ]
+  },
+  {
+   "id": "storytel",
+   "ad": "Storytel",
+   "kategori": "kitap",
+   "planlar": [
+    {
+     "id": "sinirsiz",
+     "ad": "Sınırsız",
+     "seviye": 1,
+     "fiyat_tl": 329.99,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.storytel.com/tr",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": "https://www.storytel.com/tr",
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "sinirsiz-yillik",
+     "ad": "Sınırsız (yıllık)",
+     "seviye": 1,
+     "fiyat_tl": 1979.99,
+     "periyot": "yillik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.storytel.com/tr",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": "https://www.storytel.com/tr",
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "aile-2",
+     "ad": "Aile (2 hesap)",
+     "seviye": 2,
+     "fiyat_tl": 499.99,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.storytel.com/tr",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": "https://www.storytel.com/tr",
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "aile-3",
+     "ad": "Aile (3 hesap)",
+     "seviye": 3,
+     "fiyat_tl": 626.99,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.storytel.com/tr",
+     "kontrol_tarihi": "2026-11-15",
+     "dogrulandi": true,
+     "kaynak_notu": null,
+     "izleme_url": "https://www.storytel.com/tr",
+     "degisim_turu": null,
+     "degisim_surumu": null
+    }
+   ]
+  }
+ ],
+ "operator_paketleri": [
+  {
+   "id": "turkcell-one-star",
+   "operator": "Turkcell",
+   "ad": "Turkcell One Star",
+   "fiyat_tl": 500,
+   "periyot": "aylik",
+   "icerir": [
+    {
+     "servis": "netflix",
+     "plan": "temel"
+    },
+    {
+     "servis": "hbo-max",
+     "plan": null
+    },
+    {
+     "servis": "amazon-prime",
+     "plan": "aylik"
+    },
+    {
+     "servis": "youtube-premium",
+     "plan": "bireysel"
+    }
+   ],
+   "kaynak": "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one/turkcell-one-star",
+   "kontrol_tarihi": "2026-11-15",
+   "dogrulandi": true,
+   "izleme_url": "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one/turkcell-one-star",
+   "kaynak_notu": "12 ay taahhütlü fiyat (taahhütsüz 750 TL). Sayfada hem 'Netflix Basic' hem 'Netflix Premium' geçiyor; SSS'ye göre Temel (1 cihaz HD) alındı."
+  },
+  {
+   "id": "turkcell-one-plus",
+   "operator": "Turkcell",
+   "ad": "Turkcell One Plus",
+   "fiyat_tl": 600,
+   "periyot": "aylik",
+   "icerir": [
+    {
+     "servis": "netflix",
+     "plan": "standart"
+    },
+    {
+     "servis": "hbo-max",
+     "plan": null
+    },
+    {
+     "servis": "amazon-prime",
+     "plan": "aylik"
+    },
+    {
+     "servis": "youtube-premium",
+     "plan": "bireysel"
+    }
+   ],
+   "kaynak": "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one/turkcell-one-plus",
+   "kontrol_tarihi": "2026-11-15",
+   "dogrulandi": false,
+   "izleme_url": null,
+   "kaynak_notu": "Resmi sayfa okunamadı (içerik JS ile); fiyat ve içerik tek haber kaynağından (Teknoblog). Sayfada 850 TL de geçiyor olabilir (taahhütsüz?)."
+  },
+  {
+   "id": "turkcell-one-premium",
+   "operator": "Turkcell",
+   "ad": "Turkcell One Premium",
+   "fiyat_tl": 690,
+   "periyot": "aylik",
+   "icerir": [
+    {
+     "servis": "netflix",
+     "plan": "premium"
+    },
+    {
+     "servis": "hbo-max",
+     "plan": null
+    },
+    {
+     "servis": "amazon-prime",
+     "plan": "aylik"
+    },
+    {
+     "servis": "youtube-premium",
+     "plan": "bireysel"
+    }
+   ],
+   "kaynak": "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one/turkcell-one-premium",
+   "kontrol_tarihi": "2026-11-15",
+   "dogrulandi": true,
+   "izleme_url": "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one/turkcell-one-premium",
+   "kaynak_notu": "12 ay taahhütlü fiyat (taahhütsüz 950 TL)."
+  },
+  {
+   "id": "turkcell-one-ekstra",
+   "operator": "Turkcell",
+   "ad": "Turkcell One Ekstra",
+   "fiyat_tl": 650,
+   "periyot": "aylik",
+   "icerir": [
+    {
+     "servis": "netflix",
+     "plan": "temel"
+    },
+    {
+     "servis": "hbo-max",
+     "plan": null
+    },
+    {
+     "servis": "amazon-prime",
+     "plan": "aylik"
+    },
+    {
+     "servis": "youtube-premium",
+     "plan": "bireysel"
+    },
+    {
+     "servis": "disney-plus",
+     "plan": "reklamli"
+    }
+   ],
+   "kaynak": "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one/turkcell-one-ekstra",
+   "kontrol_tarihi": "2026-11-15",
+   "dogrulandi": true,
+   "izleme_url": "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one/turkcell-one-ekstra",
+   "kaynak_notu": "12 ay taahhütlü (taahhütsüz 900 TL). Yeni abone alımı 21.09.2026'da kapandı; mevcut aboneler için tutuluyor."
+  },
+  {
+   "id": "turkcell-one-mega",
+   "operator": "Turkcell",
+   "ad": "Turkcell One Mega",
+   "fiyat_tl": 330,
+   "periyot": "aylik",
+   "icerir": [
+    {
+     "servis": "netflix",
+     "plan": "temel"
+    },
+    {
+     "servis": "amazon-prime",
+     "plan": "aylik"
+    },
+    {
+     "servis": "youtube-premium",
+     "plan": "bireysel"
+    }
+   ],
+   "kaynak": "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one-diger-paketler/turkcell-one-mega",
+   "kontrol_tarihi": "2026-11-15",
+   "dogrulandi": true,
+   "izleme_url": "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one-diger-paketler/turkcell-one-mega",
+   "kaynak_notu": "12 ay taahhütlü (taahhütsüz 500 TL). HBO Max yok."
+  },
+  {
+   "id": "turkcell-one-maksi",
+   "operator": "Turkcell",
+   "ad": "Turkcell One Maksi",
+   "fiyat_tl": 600,
+   "periyot": "aylik",
+   "icerir": [
+    {
+     "servis": "netflix",
+     "plan": "standart"
+    },
+    {
+     "servis": "amazon-prime",
+     "plan": "aylik"
+    },
+    {
+     "servis": "youtube-premium",
+     "plan": null
+    }
+   ],
+   "kaynak": "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one-diger-paketler/turkcell-one-maksi",
+   "kontrol_tarihi": "2026-11-15",
+   "dogrulandi": true,
+   "izleme_url": "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one-diger-paketler/turkcell-one-maksi",
+   "kaynak_notu": "Taahhüt durumu sayfada çelişkili. YouTube Premium planı belirtilmemiş."
+  },
+  {
+   "id": "turkcell-one-ultra",
+   "operator": "Turkcell",
+   "ad": "Turkcell One Ultra",
+   "fiyat_tl": 500,
+   "periyot": "aylik",
+   "icerir": [
+    {
+     "servis": "netflix",
+     "plan": "premium"
+    },
+    {
+     "servis": "amazon-prime",
+     "plan": "aylik"
+    },
+    {
+     "servis": "youtube-premium",
+     "plan": null
+    }
+   ],
+   "kaynak": "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one-diger-paketler/turkcell-one-ultra",
+   "kontrol_tarihi": "2026-11-15",
+   "dogrulandi": true,
+   "izleme_url": "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one-diger-paketler/turkcell-one-ultra",
+   "kaynak_notu": "12 ay taahhütlü (taahhütsüz 750 TL). Abone alımı Eylül 2026'da geçici kapatıldı. YouTube Premium planı belirtilmemiş."
+  },
+  {
+   "id": "vodafone-red-40gb",
+   "operator": "Vodafone",
+   "ad": "5G Red 40GB Sınırsız Sosyal",
+   "fiyat_tl": 790,
+   "periyot": "aylik",
+   "icerir": [
+    {
+     "servis": "youtube-premium",
+     "plan": null
+    }
+   ],
+   "kaynak": "https://www.vodafone.com.tr/red",
+   "kontrol_tarihi": "2026-11-15",
+   "dogrulandi": false,
+   "izleme_url": null,
+   "kaynak_notu": "YouTube Premium yalnızca ilk 3 ay ücretsiz (kampanya); sonrasında pakette değil. Bu yüzden kesin değil, 'muhtemel' uyarı verir. Fiyat 12 dönem taahhütlü (taahhütsüz 2.070 TL); sayfa içeriği JS ile yükleniyor. Netflix/Spotify/Prime ifadeleri yalnızca kotadan düşmeyen internet, abonelik değil."
+  },
+  {
+   "id": "vodafone-red-60gb",
+   "operator": "Vodafone",
+   "ad": "5G Red 60GB Sınırsız Eğlence",
+   "fiyat_tl": 1000,
+   "periyot": "aylik",
+   "icerir": [
+    {
+     "servis": "youtube-premium",
+     "plan": null
+    }
+   ],
+   "kaynak": "https://www.vodafone.com.tr/red",
+   "kontrol_tarihi": "2026-11-15",
+   "dogrulandi": false,
+   "izleme_url": null,
+   "kaynak_notu": "YouTube Premium yalnızca ilk 3 ay ücretsiz (kampanya); sonrasında pakette değil. Bu yüzden kesin değil, 'muhtemel' uyarı verir. Fiyat 12 dönem taahhütlü (taahhütsüz 2.780 TL); sayfa içeriği JS ile yükleniyor. Netflix/Spotify/Prime ifadeleri yalnızca kotadan düşmeyen internet, abonelik değil."
+  },
+  {
+   "id": "vodafone-red-100gb",
+   "operator": "Vodafone",
+   "ad": "5G Red 100GB Sınırsız Tiktok",
+   "fiyat_tl": 1200,
+   "periyot": "aylik",
+   "icerir": [
+    {
+     "servis": "youtube-premium",
+     "plan": null
+    }
+   ],
+   "kaynak": "https://www.vodafone.com.tr/red",
+   "kontrol_tarihi": "2026-11-15",
+   "dogrulandi": false,
+   "izleme_url": null,
+   "kaynak_notu": "YouTube Premium yalnızca ilk 3 ay ücretsiz (kampanya); sonrasında pakette değil. Bu yüzden kesin değil, 'muhtemel' uyarı verir. Fiyat 12 dönem taahhütlü (taahhütsüz 3.040 TL); sayfa içeriği JS ile yükleniyor. Netflix/Spotify/Prime ifadeleri yalnızca kotadan düşmeyen internet, abonelik değil."
+  }
+ ]
+}
