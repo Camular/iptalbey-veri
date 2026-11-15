@@ -209,18 +209,45 @@ class FakeGitHub:
 
 
 class FakeGit:
-    def __init__(self, branch_files: dict[str, str] | None = None):
+    """`reject_pushes`: ilk N publish_branch çağrısı PushRejected fırlatır;
+    `on_reject` o anda çağrılır (diğer koşunun dala yazmasını taklit eder)."""
+
+    def __init__(self, branch_files: dict[str, str] | None = None, reject_pushes: int = 0, on_reject=None):
         self.branch_files = branch_files or {}
+        self.sha = "sha-1" if self.branch_files else ""
+        self.fresh = False  # PR'sız dal taze mi (diğer koşu az önce push etti)
+        self.fresh_checks: list[str] = []
+        self.reject_pushes = reject_pushes
+        self.on_reject = on_reject
         self.published: list[dict] = []
+        self.rejected: list[dict] = []
         self.main_commits: list[list[str]] = []
 
-    def read_branch_file(self, branch, path):
+    def remote_branch_sha(self, branch):
+        return self.sha
+
+    def branch_is_fresh_unmerged(self, sha):
+        self.fresh_checks.append(sha)
+        return self.fresh
+
+    def read_branch_file(self, branch, path, sha=None):
         return self.branch_files.get(path)
 
-    def publish_branch(self, branch, from_existing, files, message):
-        self.published.append(
-            {"branch": branch, "from_existing": from_existing, "files": files, "message": message}
-        )
+    def publish_branch(self, branch, from_existing, files, message, expected_sha=""):
+        item = {
+            "branch": branch,
+            "from_existing": from_existing,
+            "files": files,
+            "message": message,
+            "expected_sha": expected_sha,
+        }
+        if self.reject_pushes:
+            self.reject_pushes -= 1
+            self.rejected.append(item)
+            if self.on_reject:
+                self.on_reject(self)
+            raise fk.PushRejected("uzak dal değişti")
+        self.published.append(item)
 
     def commit_main(self, paths, message):
         self.main_commits.append(list(paths))
@@ -239,6 +266,9 @@ def run(
     dry_run=False,
     links=None,
     now=None,
+    mode=fk.MODE_ACTIONS,
+    local_urls=(),
+    sleep=None,
 ):
     page_map = pages() if page_map is None else page_map
     gh = gh or FakeGitHub()
@@ -256,6 +286,9 @@ def run(
         git=git,
         log=lambda msg: None,
         now=now,
+        mode=mode,
+        local_urls=local_urls,
+        sleep=sleep or (lambda s: None),
     )
     summary = runner.execute()
     return summary, gh, git

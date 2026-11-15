@@ -7,12 +7,19 @@ metni çıkarır, Gemini'ye sorar; güvenilir bir değişiklik bulursa
 Hiçbir fiyat insan onayı (PR birleştirme) olmadan `main`'e girmez.
 
 Kullanım:
-    python scripts/fiyat_kontrol.py [--dry-run] [--haftalik]
+    python scripts/fiyat_kontrol.py [--dry-run] [--haftalik] [--yerel]
+
+İki koşu modu vardır (KR-014):
+    actions  GitHub Actions (ABD). `scripts/yerel_kaynaklar.json`daki adresleri
+             atlar; özette "yerelden-izleniyor" görünür.
+    --yerel  Kullanıcının Windows bilgisayarı (Türkiye IP'si). Yalnızca o
+             adresleri işler; durumunu `durum/yerel-*.json` dosyalarına yazar,
+             git kimliği deponun kendi ayarıdır, `gh` mevcut girişi kullanır.
 
 Ortam değişkenleri:
-    GEMINI_API_KEY  Gemini API anahtarı (asla loglanmaz)
+    GEMINI_API_KEY  Gemini API anahtarı (asla loglanmaz; --yerel'de zorunlu)
     GEMINI_MODEL    İsteğe bağlı; yoksa DEFAULT_MODELS sırayla denenir
-    GH_TOKEN        `gh` CLI için (iş akışında GITHUB_TOKEN)
+    GH_TOKEN        `gh` CLI için (iş akışında GITHUB_TOKEN; yerelde gerekmez)
 """
 
 from __future__ import annotations
@@ -71,6 +78,22 @@ HTTP_HEADERS = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     "Accept-Language": "tr-TR,tr;q=0.9",
 }
+
+MODE_ACTIONS = "actions"
+MODE_LOCAL = "yerel"
+LOCAL_SOURCES_FILE = ROOT / "scripts" / "yerel_kaynaklar.json"
+LOCAL_STATUS = "yerelden-izleniyor"
+LOCAL_STALE_DAYS = 3  # haftalık Actions koşusu, yerel koşu bu kadar gündür yoksa uyarır
+# (okuma hataları, sayfa özetleri, sağlık kaydı) — iki mod aynı dosyaya yazmaz.
+STATE_FILES = {
+    MODE_ACTIONS: ("okuma-hatalari.json", "sayfa-ozetleri.json", "son-calisma.json"),
+    MODE_LOCAL: ("yerel-okuma-hatalari.json", "yerel-sayfa-ozetleri.json", "yerel-son-calisma.json"),
+}
+EXIT_NO_KEY = 2
+# PR'sız fiyat dalı bu kadar yeniyse diğer koşunun az önce açtığı dal sayılır, ezilmez.
+FRESH_BRANCH_SECONDS = 600
+FRESH_BRANCH_WAIT = 30.0  # saniye
+FRESH_BRANCH_RETRIES = 3
 
 BOT_GIT_IDENTITY = (
     "-c",
@@ -590,6 +613,12 @@ def load_json(path: Path, default: Any = None) -> Any:
     if not path.exists():
         return copy.deepcopy(default)
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def load_local_sources(path: Path = LOCAL_SOURCES_FILE) -> frozenset[str]:
+    """Türkiye IP'si gerektiren, yalnız yerel koşunun işlediği adresler."""
+    data = load_json(path, {"kaynaklar": []})
+    return frozenset(str(u) for u in data.get("kaynaklar", []))
 
 
 def validate_catalog(catalog: dict, schema: dict) -> list[str]:
@@ -1223,48 +1252,127 @@ class GitHub:
         self._gh(*args, body=body)
 
 
+class PushRejected(RuntimeError):
+    """Uzak dal beklenenden farklı (başka bir koşu önce yazdı) ya da push başarısız."""
+
+
 class Git:
-    def __init__(self, root: Path, dry_run: bool, log: Callable[[str], None] = print) -> None:
+    """git sarmalayıcısı.
+
+    `identity`: Actions'ta bot kimliği; yerel koşuda boş (deponun kendi
+    `user.name`/`user.email` ayarı kullanılır).
+    """
+
+    def __init__(
+        self,
+        root: Path,
+        dry_run: bool,
+        log: Callable[[str], None] = print,
+        identity: tuple[str, ...] = BOT_GIT_IDENTITY,
+    ) -> None:
         self.root, self.dry_run, self.log = root, dry_run, log
+        self.identity = identity
 
     def _git(self, *args: str, check: bool = True) -> str:
-        return _run(["git", *BOT_GIT_IDENTITY, *args], self.root, check=check)
+        return _run(["git", *self.identity, *args], self.root, check=check)
 
-    def read_branch_file(self, branch: str, path: str) -> str | None:
+    def _push(self, *args: str) -> None:
+        try:
+            self._git("push", *args)
+        except RuntimeError as exc:
+            raise PushRejected(str(exc)) from None
+
+    def remote_branch_sha(self, branch: str) -> str:
+        """Uzak dalın şu anki ucu ('' = dal yok); yerel izleme dalı da tazelenir."""
+        if self.dry_run:
+            return ""
+        out = self._git("ls-remote", "--heads", "origin", f"refs/heads/{branch}")
+        sha = next((ln.split()[0] for ln in out.splitlines() if ln.strip()), "")
+        if sha:
+            self._git("fetch", "origin", f"+refs/heads/{branch}:refs/remotes/origin/{branch}")
+        return sha
+
+    def branch_is_fresh_unmerged(self, sha: str, now: float | None = None) -> bool:
+        """Dal ucu main'e girmemiş ve son commit'i FRESH_BRANCH_SECONDS'tan yeni mi?
+
+        PR'sız ama böyle bir dal, diğer koşunun az önce push edip henüz PR açmadığı
+        dal olabilir; ezilmez.
+        """
+        if self.dry_run or not sha:
+            return False
+        self._git("fetch", "origin", "main")
+        merged = subprocess.run(
+            ["git", *self.identity, "merge-base", "--is-ancestor", sha, "origin/main"],
+            cwd=str(self.root),
+            capture_output=True,
+            check=False,
+        )
+        if merged.returncode == 0:
+            return False
+        committed = int(self._git("show", "-s", "--format=%ct", sha).strip())
+        return (time.time() if now is None else now) - committed < FRESH_BRANCH_SECONDS
+
+    def read_branch_file(self, branch: str, path: str, sha: str | None = None) -> str | None:
         if self.dry_run:
             return None
-        self._git("fetch", "origin", branch)
-        return self._git("show", f"origin/{branch}:{path}")
+        if not sha:
+            self._git("fetch", "origin", branch)
+        return self._git("show", f"{sha or 'origin/' + branch}:{path}")
 
-    def publish_branch(self, branch: str, from_existing: bool, files: dict[str, str], message: str) -> None:
-        """Dalı (varsa uzaktakinden, yoksa main'den) kurar, dosyaları yazar, push eder."""
+    def publish_branch(
+        self,
+        branch: str,
+        from_existing: bool,
+        files: dict[str, str],
+        message: str,
+        expected_sha: str = "",
+    ) -> None:
+        """Dalı kurar, dosyaları yazar ve "lease" ile push eder.
+
+        `expected_sha`: durumun okunduğu andaki uzak dal ucu ('' = dal yoktu).
+        Açık PR varsa bu uca eklenir; yoksa main'den yeni dal kurulur. Uzak dal o
+        andan beri değiştiyse (aynı gün çalışan diğer koşu yazdıysa) push
+        reddedilir ve `PushRejected` fırlatılır; çağıran durumu yeniden okur.
+        """
         if self.dry_run:
             self.log(f"[dry-run] {branch} dalına commit + push yapılırdı: {message}")
             return
+        if from_existing and not expected_sha:
+            raise PushRejected(f"{branch} uzakta yok")
         self._git("fetch", "origin", "main")
-        self._git("checkout", "-B", branch, f"origin/{branch}" if from_existing else "origin/main")
+        self._git("checkout", "-B", branch, expected_sha if from_existing else "origin/main")
         try:
             for rel, content in files.items():
                 (self.root / rel).write_text(content, encoding="utf-8", newline="\n")
             self._git("add", *files.keys())
             self._git("commit", "-m", message)
-            if from_existing:
-                self._git("push", "origin", branch)
-            else:
-                self._git("push", "--force", "origin", branch)
+            self._push(
+                f"--force-with-lease=refs/heads/{branch}:{expected_sha}",
+                "origin",
+                f"HEAD:refs/heads/{branch}",
+            )
         finally:
             self._git("checkout", "main")
 
     def commit_main(self, paths: list[str], message: str) -> bool:
+        """`durum/` dosyalarını main'e yazar: commit → pull --rebase → push (red olursa 1 kez daha)."""
         if self.dry_run:
             self.log(f"[dry-run] main'e commit yapılırdı: {', '.join(paths)}")
             return False
+        self._git("checkout", "main")  # HEAD fiyat dalında kalmış olmasın
         self._git("add", "--", *paths)
         if not self._git("diff", "--cached", "--name-only"):
             return False
         self._git("commit", "-m", message)
-        self._git("pull", "--rebase", "origin", "main")
-        self._git("push", "origin", "HEAD:main")
+        for attempt in range(2):
+            self._git("pull", "--rebase", "origin", "main")
+            try:
+                self._push("origin", "HEAD:main")
+                return True
+            except PushRejected:
+                if attempt:
+                    raise
+                self.log("main'e push reddedildi; yeniden çekilip bir kez daha deneniyor")
         return True
 
 
@@ -1373,7 +1481,7 @@ def check_link(session: requests.Session, url: str) -> str | None:
 class SourceResult:
     url: str
     targets: list[Target]
-    status: str  # ok | okunamadi | gemini-yok | atlandi
+    status: str  # ok | okunamadi | gemini-yok | yerelden-izleniyor
     detail: str = ""
     text_len: int = 0
     price_samples: list[str] = field(default_factory=list)
@@ -1397,7 +1505,15 @@ class Runner:
         git: Git,
         log: Callable[[str], None] = print,
         now: dt.datetime | None = None,
+        mode: str = MODE_ACTIONS,
+        local_urls: Iterable[str] = (),
+        sleep: Callable[[float], None] = time.sleep,
     ) -> None:
+        if mode not in STATE_FILES:
+            raise ValueError(f"bilinmeyen mod: {mode}")
+        self.sleep = sleep
+        self.mode = mode
+        self.local_urls = frozenset(local_urls)
         self.root = root
         self.today = today.isoformat()
         self.dry_run = dry_run
@@ -1425,8 +1541,13 @@ class Runner:
         self.log(f"HATA: {what}: {exc}")
 
     # -- yardımcılar --
+    @property
+    def is_local(self) -> bool:
+        return self.mode == MODE_LOCAL
+
     def _issue_body(self, *lines: str) -> str:
-        footer = f"\n\n---\n_Otomatik: fiyat kontrol botu, {self.today}"
+        who = "fiyat kontrol botu (yerel, TR)" if self.is_local else "fiyat kontrol botu"
+        footer = f"\n\n---\n_Otomatik: {who}, {self.today}"
         if self.gemini is not None and self.gemini.model:
             footer += f", model `{self.gemini.model}`"
         return "\n".join(lines) + footer + "_"
@@ -1482,15 +1603,32 @@ class Runner:
         catalog = load_json(self.root / "fiyatlar.json")
         schema = load_json(self.root / "sema" / "fiyatlar.schema.json")
         durum = self.root / "durum"
-        errors_state = load_json(durum / "okuma-hatalari.json", {"kaynaklar": {}, "planlar": {}})
+        errors_name, hashes_name, heartbeat_name = STATE_FILES[self.mode]
+        errors_state = load_json(durum / errors_name, {"kaynaklar": {}, "planlar": {}})
         errors_state.setdefault("kaynaklar", {})
         errors_state.setdefault("planlar", {})
-        hashes = load_json(durum / "sayfa-ozetleri.json", {})
+        hashes = load_json(durum / hashes_name, {})
 
         targets = collect_targets(catalog)
-        groups = group_by_url(targets)
+        all_groups = group_by_url(targets)
+        if self.is_local:
+            groups = {u: g for u, g in all_groups.items() if u in self.local_urls}
+        else:
+            groups = {u: g for u, g in all_groups.items() if u not in self.local_urls}
+            for url, group in all_groups.items():
+                if url in self.local_urls:
+                    # Türkiye IP'si gerekir; yerel koşu izler (KR-014). Eski sayaçlar temizlenir.
+                    reset_counter(errors_state["kaynaklar"], url)
+                    hashes.pop(url, None)
+                    for t in group:
+                        reset_counter(errors_state["planlar"], t.key)
+                    self.results.append(
+                        SourceResult(url, group, LOCAL_STATUS, "Türkiye IP'li bilgisayardan izleniyor")
+                    )
         for url, group in groups.items():
             self.results.append(self._check_source(url, group, errors_state, hashes))
+        if not self.is_local:
+            self._check_local_heartbeat(errors_state, any(u in self.local_urls for u in all_groups))
 
         pr_findings: list[Finding] = []
         for res in self.results:
@@ -1501,17 +1639,19 @@ class Runner:
             pr_state_known = True
             open_pr: dict | None = None
             branch_catalog: dict | None = None
+            branch_sha = ""
+            adopt = False
             try:
-                open_pr = self.gh.find_open_pr(BRANCH)
-                if open_pr is not None:
-                    raw = self.git.read_branch_file(BRANCH, "fiyatlar.json")
-                    branch_catalog = json.loads(raw) if raw else None
+                if pr_findings:
+                    open_pr, branch_sha, branch_catalog, adopt = self._resolve_pr_state()
+                else:
+                    open_pr, branch_sha, branch_catalog = self._pr_state()
             except Exception as exc:
                 pr_state_known = False  # açık PR bilinmeden yeni PR açılmaz (dalın üzerine yazılmasın)
                 self._fail("açık fiyat PR'ı okunamadı", exc)
             if pr_findings and pr_state_known:
                 try:
-                    self._prepare_pr(catalog, schema, pr_findings, open_pr, branch_catalog)
+                    self._prepare_pr(catalog, schema, pr_findings, open_pr, branch_catalog, branch_sha, adopt)
                 except Exception as exc:
                     self._fail("fiyat PR'ı hazırlanamadı", exc)
                     self.pr_note = "PR hazırlanamadı (hata)."
@@ -1521,9 +1661,12 @@ class Runner:
                 except Exception as exc:
                     self._fail("açık PR'a uyarı yazılamadı", exc)
 
+        gemini_title = (
+            "Otomasyon (yerel): Gemini erişilemedi" if self.is_local else "Otomasyon: Gemini erişilemedi"
+        )
         if self.gemini is None and groups and not self.dry_run:
             self.issues.open(
-                "Otomasyon: Gemini erişilemedi",
+                gemini_title,
                 self._issue_body(
                     f"Gemini çağrılamadı: {self.gemini_skip_reason}.",
                     "Fiyatlar yalnızca yedek planla (sayfa fiyat özeti değişti mi) izlendi.",
@@ -1533,7 +1676,7 @@ class Runner:
             1 for r in self.results if r.status in ("ok", "gemini-yok")
         ):
             self.issues.open(
-                "Otomasyon: Gemini erişilemedi",
+                gemini_title,
                 self._issue_body(
                     "Bugün hiçbir kaynak için Gemini yanıtı alınamadı:",
                     *[f"- {e}" for e in self.gemini_errors],
@@ -1541,30 +1684,33 @@ class Runner:
                 ),
             )
 
-        if self.weekly:
+        if self.weekly and not self.is_local:  # haftalık işler yalnız Actions'ta
             try:
                 self._weekly(targets)
             except Exception as exc:
                 self._fail("haftalık işler tamamlanamadı", exc)
 
         changed_files = []
-        if self._write(durum / "okuma-hatalari.json", errors_state):
-            changed_files.append("durum/okuma-hatalari.json")
-        if self._write(durum / "sayfa-ozetleri.json", hashes):
-            changed_files.append("durum/sayfa-ozetleri.json")
-        if self.weekly:
+        if self._write(durum / errors_name, errors_state):
+            changed_files.append(f"durum/{errors_name}")
+        if self._write(durum / hashes_name, hashes):
+            changed_files.append(f"durum/{hashes_name}")
+        # Yerel koşunun sağlık kaydı her gün yazılır (bilgisayar kapalı kaldıysa Actions fark eder).
+        if self.weekly or self.is_local:
+            checked = [r for r in self.results if r.status != LOCAL_STATUS]
             heartbeat = {
                 "tarih": self.today,
-                "kontrol_edilen_kaynak": sum(1 for r in self.results if r.status != "okunamadi"),
-                "toplam_kaynak": len(self.results),
+                "kontrol_edilen_kaynak": sum(1 for r in checked if r.status != "okunamadi"),
+                "toplam_kaynak": len(checked),
                 "hata": self.errors,
                 "model": self.gemini.model if self.gemini is not None else None,
             }
-            if self._write(durum / "son-calisma.json", heartbeat):
-                changed_files.append("durum/son-calisma.json")
+            if self._write(durum / heartbeat_name, heartbeat):
+                changed_files.append(f"durum/{heartbeat_name}")
         if changed_files:
+            label = "fiyat kontrolü (yerel)" if self.is_local else "fiyat kontrolü"
             try:
-                self.git.commit_main(changed_files, f"durum: fiyat kontrolü {self.today}")
+                self.git.commit_main(changed_files, f"durum: {label} {self.today}")
             except Exception as exc:
                 self._fail("durum/ commit edilemedi", exc)
         return self.summary()
@@ -1587,6 +1733,15 @@ class Runner:
         self.errors += 1
         days = bump_counter(errors_state["kaynaklar"], url, self.today, reason)
         if days >= ERROR_ISSUE_DAYS:
+            local_note = (
+                [
+                    "",
+                    "Bu kaynak yerel (Türkiye) bilgisayardan izleniyor. Bilgisayar yurt dışındaysa "
+                    "ya da VPN açıksa sayfa TL göstermez; bu durumda okunamadı sayılır.",
+                ]
+                if self.is_local
+                else []
+            )
             self.issues.open(
                 f"Manuel kontrol: {self._source_label(group)} fiyat sayfası okunamıyor",
                 self._issue_body(
@@ -1596,6 +1751,7 @@ class Runner:
                     "- Etkilenen kayıtlar: " + ", ".join(f"`{t.key}`" for t in group),
                     "",
                     "Sayfayı elle kontrol et; adres değiştiyse `izleme_url`'yi güncelleyen bir PR aç.",
+                    *local_note,
                 ),
             )
         return SourceResult(url, group, "okunamadi", reason)
@@ -1694,6 +1850,36 @@ class Runner:
             )
         return []
 
+    def _pr_state(self) -> tuple[dict | None, str, dict | None]:
+        """(açık PR, uzak dal ucu, PR dalındaki katalog) — her denemede tazelenir."""
+        open_pr = self.gh.find_open_pr(BRANCH)
+        sha = self.git.remote_branch_sha(BRANCH)
+        branch_catalog: dict | None = None
+        if open_pr is not None:
+            raw = self.git.read_branch_file(BRANCH, "fiyatlar.json", sha or None)
+            branch_catalog = json.loads(raw) if raw else None
+        return open_pr, sha, branch_catalog
+
+    def _resolve_pr_state(self) -> tuple[dict | None, str, dict | None, bool]:
+        """`_pr_state` + taze PR'sız dal koruması; son öğe: dal benimsensin mi.
+
+        PR yok ama uzak dal main'e girmemiş ve son commit'i < 10 dk ise diğer koşu
+        dalı az önce push etmiş, PR'ı henüz açmamış olabilir: ezilmez. 30 sn
+        beklenip durum yeniden okunur (en çok 3 kez); PR açıldıysa ona eklenir,
+        hâlâ yoksa dalın üzerine eklenir (benimsenir) ve PR açılır. Eski (≥ 10 dk)
+        PR'sız dal ise eskisi gibi main'den yeniden kurulur.
+        """
+        for wait in range(FRESH_BRANCH_RETRIES + 1):
+            open_pr, sha, branch_catalog = self._pr_state()
+            if open_pr is not None or not sha or not self.git.branch_is_fresh_unmerged(sha):
+                return open_pr, sha, branch_catalog, False
+            if wait < FRESH_BRANCH_RETRIES:
+                self.log(f"{BRANCH} dalı yeni ama PR'ı yok; {FRESH_BRANCH_WAIT:.0f} sn bekleniyor")
+                self.sleep(FRESH_BRANCH_WAIT)
+        raw = self.git.read_branch_file(BRANCH, "fiyatlar.json", sha)
+        self.log(f"{BRANCH} dalında PR yok; dalın üzerine eklenip PR açılacak")
+        return None, sha, (json.loads(raw) if raw else None), True
+
     def _prepare_pr(
         self,
         main_catalog: dict,
@@ -1701,37 +1887,56 @@ class Runner:
         findings: list[Finding],
         open_pr: dict | None,
         branch_catalog: dict | None,
+        branch_sha: str = "",
+        adopt: bool = False,
     ) -> None:
-        catalog, applied = apply_changes(main_catalog, branch_catalog, findings, self.today)
-        if not applied:
-            self.pr_note = "Değişiklikler açık PR'da zaten var."
-            return
-        errors = validate_catalog(catalog, schema)
-        if errors:
-            self.errors += 1
-            self.issues.open(
-                "Otomasyon: fiyat güncellemesi şema doğrulamasından geçmedi",
-                self._issue_body(
-                    "Bulunan fiyat değişiklikleri şemaya uymadığı için PR açılmadı.",
-                    "",
-                    "Değişiklikler:",
-                    *[
-                        f"- {c.finding.target.name}: {fmt_tl(c.old_price)} → {fmt_tl(c.new_price)}"
-                        for c in applied
-                    ],
-                    "",
-                    "Şema hataları:",
-                    *[f"- {e}" for e in errors[:30]],
-                ),
-            )
-            self.pr_note = "Şema doğrulaması başarısız; issue açıldı."
-            return
+        # Actions ve yerel koşu aynı gün çalışabilir: push reddedilirse (diğer koşu dala
+        # yazdı) PR ve dal yeniden okunur, değişiklik tazelenen dalın üzerine bir kez daha uygulanır.
+        for attempt in range(2):
+            if attempt:
+                open_pr, branch_sha, branch_catalog, adopt = self._resolve_pr_state()
+            catalog, applied = apply_changes(main_catalog, branch_catalog, findings, self.today)
+            if not applied:
+                self.pr_note = "Değişiklikler açık PR'da zaten var."
+                return
+            errors = validate_catalog(catalog, schema)
+            if errors:
+                self.errors += 1
+                self.issues.open(
+                    "Otomasyon: fiyat güncellemesi şema doğrulamasından geçmedi",
+                    self._issue_body(
+                        "Bulunan fiyat değişiklikleri şemaya uymadığı için PR açılmadı.",
+                        "",
+                        "Değişiklikler:",
+                        *[
+                            f"- {c.finding.target.name}: {fmt_tl(c.old_price)} → {fmt_tl(c.new_price)}"
+                            for c in applied
+                        ],
+                        "",
+                        "Şema hataları:",
+                        *[f"- {e}" for e in errors[:30]],
+                    ),
+                )
+                self.pr_note = "Şema doğrulaması başarısız; issue açıldı."
+                return
+            names = ", ".join(c.finding.target.name for c in applied)
+            try:
+                self.git.publish_branch(
+                    BRANCH,
+                    open_pr is not None or adopt,
+                    {"fiyatlar.json": dump_json(catalog)},
+                    f"Fiyat güncellemesi: {names}",
+                    branch_sha,
+                )
+            except PushRejected:
+                if attempt:
+                    raise
+                self.log(f"{BRANCH} dalı bu arada değişti; PR yeniden okunup bir kez daha deneniyor")
+                continue
+            break
 
         unusual = any(c.unusual for c in applied)
         section = self._pr_section(applied)
-        names = ", ".join(c.finding.target.name for c in applied)
-        message = f"Fiyat güncellemesi: {names}"
-        self.git.publish_branch(BRANCH, open_pr is not None, {"fiyatlar.json": dump_json(catalog)}, message)
         labels = [UNUSUAL_LABEL] if unusual else []
         if open_pr is None:
             title = f"Fiyat güncellemesi (katalog sürümü {catalog['surum']})"
@@ -1743,21 +1948,33 @@ class Runner:
                 "Not: `gecerlilik` tespit tarihi olarak yazıldı; kaynakta yürürlük tarihi varsa "
                 "birleştirmeden önce düzelt.\n\n" + section
             )
-            self.gh.create_pr(BRANCH, title, body, labels)
-            self.pr_note = f"Yeni PR: {title}"
-        else:
-            title = open_pr.get("title") or f"Fiyat güncellemesi (katalog sürümü {catalog['surum']})"
-            if unusual and "olağandışı" not in title:
-                title = "⚠️ olağandışı — " + title
-            body = (open_pr.get("body") or "").rstrip() + "\n\n" + section
-            self.gh.edit_pr(int(open_pr["number"]), title, body, labels)
-            self.pr_note = f"Açık PR #{open_pr['number']} güncellendi"
+            try:
+                self.gh.create_pr(BRANCH, title, body, labels)
+                self.pr_note = f"Yeni PR: {title}"
+                return
+            except Exception:
+                # Diğer koşu PR'ı az önce açmış olabilir: açıksa ona ekle, değilse hatayı yükselt.
+                open_pr = self.gh.find_open_pr(BRANCH)
+                if open_pr is None:
+                    raise
+        title = open_pr.get("title") or f"Fiyat güncellemesi (katalog sürümü {catalog['surum']})"
+        if unusual and "olağandışı" not in title:
+            title = "⚠️ olağandışı — " + title
+        body = (open_pr.get("body") or "").rstrip() + "\n\n" + section
+        self.gh.edit_pr(int(open_pr["number"]), title, body, labels)
+        self.pr_note = f"Açık PR #{open_pr['number']} güncellendi"
 
     def _pr_section(self, applied: list[AppliedChange]) -> str:
         model = next((c.finding.model for c in applied if c.finding.model), None)
+        source = (
+            "yerel (TR) — Türkiye IP'li bilgisayardaki günlük koşu"
+            if self.is_local
+            else "GitHub Actions — günlük koşu"
+        )
         lines = [
             f"## Fiyat değişiklikleri — {self.today}",
             f"Model: `{model or 'bilinmiyor'}`",
+            f"Kaynak koşu: {source}",
             "",
             "| Kayıt | Eski | Yeni | Değişim | Tür |",
             "|---|---|---|---|---|",
@@ -1824,6 +2041,13 @@ class Runner:
 
     def _weekly(self, targets: list[Target]) -> None:
         unmonitored = [t for t in targets if not t.url]
+        local = [t for t in targets if t.url and t.url in self.local_urls]
+        local_note = (
+            "\n\nYerelden izlenenler (Türkiye IP'li bilgisayar, KR-014): "
+            + ", ".join(f"`{t.key}`" for t in local)
+            if local
+            else ""
+        )
         rows = [
             f"| `{t.key}` | {t.name} | {fmt_tl(t.price)} / {t.period} | "
             f"{'evet' if t.verified else 'tahmini'} |"
@@ -1834,7 +2058,7 @@ class Runner:
             "Bu kayıtların resmi, Türkiye fiyatını gösteren bir `izleme_url`'si yok; "
             "günlük kontrol bunları okuyamaz. Haftalık özet (her hafta güncellenir).\n\n"
             f"Toplam: {len(unmonitored)} kayıt\n\n"
-            "| Kayıt | Ad | Fiyat | Doğrulandı |\n|---|---|---|---|\n" + "\n".join(rows),
+            "| Kayıt | Ad | Fiyat | Doğrulandı |\n|---|---|---|---|\n" + "\n".join(rows) + local_note,
         )
 
         guides = load_json(self.root / "iptal-rehberleri.json", {"rehberler": []})
@@ -1869,9 +2093,41 @@ class Runner:
                     ),
                 )
 
+    def _check_local_heartbeat(self, errors_state: dict, local_in_catalog: bool) -> None:
+        """Her Actions koşusunda: yerel koşu LOCAL_STALE_DAYS gündür çalışmadıysa issue açar.
+
+        `durum/yerel-son-calisma.json` hiç yoksa ilk fark edildiği gün
+        `okuma-hatalari.json` → `yerel_kosu_yok` altında tutulur; o günden 3 gün sonra uyarılır.
+        """
+        if not local_in_catalog:
+            errors_state.pop("yerel_kosu_yok", None)
+            return
+        path = self.root / "durum" / STATE_FILES[MODE_LOCAL][2]
+        last = (load_json(path, {}) or {}).get("tarih")
+        today = dt.date.fromisoformat(self.today)
+        if last:
+            errors_state.pop("yerel_kosu_yok", None)
+            age = (today - dt.date.fromisoformat(last)).days
+            reason = f"yerel kontrol {age} gündür çalışmadı (son: {last})"
+        else:
+            first = errors_state.setdefault("yerel_kosu_yok", {"ilk_fark": self.today})["ilk_fark"]
+            age = (today - dt.date.fromisoformat(first)).days
+            reason = f"yerel kontrol hiç çalışmadı (`durum/yerel-son-calisma.json` yok; ilk fark: {first})"
+        if age >= LOCAL_STALE_DAYS:
+            self.issues.open(
+                "Otomasyon: yerel fiyat kontrolü çalışmıyor",
+                self._issue_body(
+                    f"Türkiye IP'si gereken kaynakların (Netflix, YouTube) {reason}.",
+                    "Bilgisayar kapalı kalmış, Görev Zamanlayıcı görevi kurulmamış/silinmiş ya da hata "
+                    "veriyor olabilir.",
+                    "Günlükler: `%LOCALAPPDATA%\\IptalBey\\loglar`. Kurulum: README → Otomasyon.",
+                ),
+            )
+
     def summary(self) -> dict:
         return {
             "tarih": self.today,
+            "mod": self.mode,
             "model": self.gemini.model if self.gemini is not None else None,
             "kaynaklar": [
                 {
@@ -1904,8 +2160,9 @@ class Runner:
 
 
 def render_summary(summary: dict) -> str:
+    title = "Fiyat kontrolü (yerel)" if summary.get("mod") == MODE_LOCAL else "Fiyat kontrolü"
     lines = [
-        f"# Fiyat kontrolü — {summary['tarih']}",
+        f"# {title} — {summary['tarih']}",
         f"- Model: {summary['model'] or 'yok'}",
         f"- Hata sayısı: {summary['hata']}",
         f"- PR: {summary['pr'] or 'yok'}",
@@ -1935,18 +2192,33 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
     p.add_argument("--dry-run", action="store_true", help="Hiçbir şey yazma, yalnızca raporla")
     p.add_argument("--haftalik", action="store_true", help="Haftalık işleri de çalıştır")
     p.add_argument("--tarih", help="Bugünün tarihi (YYYY-MM-DD; test için)")
+    p.add_argument(
+        "--yerel",
+        action="store_true",
+        help="Yalnızca scripts/yerel_kaynaklar.json adreslerini işle (Türkiye IP'li bilgisayar, KR-014)",
+    )
     return p.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> int:
-    if hasattr(sys.stdout, "reconfigure"):
-        sys.stdout.reconfigure(encoding="utf-8")
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8")
     args = parse_args(argv)
     today = dt.date.fromisoformat(args.tarih) if args.tarih else dt.datetime.now(TR_TZ).date()
-    weekly = args.haftalik or today.weekday() == 0
+    mode = MODE_LOCAL if args.yerel else MODE_ACTIONS
+    weekly = (args.haftalik or today.weekday() == 0) and mode == MODE_ACTIONS
+
+    api_key = os.environ.get("GEMINI_API_KEY", "").strip()
+    if mode == MODE_LOCAL and not api_key and not args.dry_run:
+        print(
+            "HATA: GEMINI_API_KEY ortam değişkeni tanımlı değil; yerel fiyat kontrolü çalışmadı.\n"
+            'Tanımlamak için: setx GEMINI_API_KEY "<anahtar>" (ardından oturumu kapatıp açın).',
+            file=sys.stderr,
+        )
+        return EXIT_NO_KEY
 
     session = requests.Session()
-    api_key = os.environ.get("GEMINI_API_KEY", "").strip()
     env_model = os.environ.get("GEMINI_MODEL", "").strip()
     gemini = None
     skip_reason = None
@@ -1967,7 +2239,9 @@ def main(argv: list[str] | None = None) -> int:
         gemini=gemini,
         gemini_skip_reason=skip_reason,
         gh=GitHub(ROOT, args.dry_run),
-        git=Git(ROOT, args.dry_run),
+        git=Git(ROOT, args.dry_run, identity=() if mode == MODE_LOCAL else BOT_GIT_IDENTITY),
+        mode=mode,
+        local_urls=load_local_sources(),
     )
     summary = runner.execute()
     report = render_summary(summary)
