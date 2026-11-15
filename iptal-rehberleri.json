@@ -1,6 +1,485 @@
 {
- "sema_surumu": 1,
- "surum": 1,
- "guncelleme": "2026-11-15",
- "rehberler": []
+  "sema_surumu": 1,
+  "surum": 2,
+  "guncelleme": "2026-11-15",
+  "rehberler": [
+    {
+      "servis": "netflix",
+      "yollar": [
+        {
+          "kanal": "web",
+          "adimlar": [
+            "netflix.com/cancelplan sayfasını aç ve gerekirse giriş yap",
+            "\"İptal\" seçeneğini seç",
+            "\"İptal İşlemini Tamamla\"ya bas",
+            "Hesaptaki e-postana gelen onay mesajını kontrol et"
+          ],
+          "kaynak": "https://help.netflix.com/tr/node/407",
+          "kontrol_tarihi": "2026-11-15"
+        },
+        {
+          "kanal": "google_play",
+          "adimlar": [
+            "Google Play'de aboneliğin bağlı olduğu Google Hesabı ile oturum aç",
+            "Play Store'da Abonelikler sayfasını aç",
+            "Netflix aboneliğini seç",
+            "\"Aboneliği iptal et\"e dokun ve ekrandaki adımları izle"
+          ],
+          "kaynak": "https://support.google.com/googleplay/answer/7018481?hl=tr",
+          "kontrol_tarihi": "2026-11-15"
+        },
+        {
+          "kanal": "app_store",
+          "adimlar": [
+            "iPhone'da Ayarlar > adın > Abonelikler yolunu aç",
+            "Netflix'i seç",
+            "\"Aboneliği İptal Et\"e dokun"
+          ],
+          "kaynak": "https://support.apple.com/tr-tr/118428",
+          "kontrol_tarihi": "2026-11-15"
+        }
+      ],
+      "notlar": "Netflix hesabında iptal seçeneği görünmüyorsa Hesap sayfasındaki Üyelik bölümüne bak: faturalayan iş ortağı orada yazar, iptal ona yapılır. Uygulamayı silmek iptal etmez. Erişim ödenen dönem sonuna kadar sürer."
+    },
+    {
+      "servis": "youtube-premium",
+      "yollar": [
+        {
+          "kanal": "web",
+          "adimlar": [
+            "youtube.com/paid_memberships sayfasını aç",
+            "\"Üyeliği yönet\"i seç",
+            "\"Devre dışı bırak\"ı seçip devam et",
+            "İptal nedenini seç ve iptali onayla"
+          ],
+          "kaynak": "https://support.google.com/youtube/answer/6308278?hl=tr",
+          "kontrol_tarihi": "2026-11-15"
+        },
+        {
+          "kanal": "google_play",
+          "adimlar": [
+            "Google Play'de aboneliğin bağlı olduğu Google Hesabı ile oturum aç",
+            "Play Store'da Abonelikler sayfasını aç",
+            "YouTube Premium aboneliğini seç",
+            "\"Aboneliği iptal et\"e dokun ve ekrandaki adımları izle"
+          ],
+          "kaynak": "https://support.google.com/googleplay/answer/7018481?hl=tr",
+          "kontrol_tarihi": "2026-11-15"
+        },
+        {
+          "kanal": "app_store",
+          "adimlar": [
+            "iPhone'da Ayarlar > adın > Abonelikler yolunu aç",
+            "YouTube'u seç",
+            "\"Aboneliği İptal Et\"e dokun"
+          ],
+          "kaynak": "https://support.apple.com/tr-tr/118428",
+          "kontrol_tarihi": "2026-11-15"
+        }
+      ],
+      "notlar": "iOS uygulamasından abone olduysan iptal Apple hesabından yapılır. Premium avantajları mevcut fatura dönemi sonuna kadar sürer."
+    },
+    {
+      "servis": "amazon-prime",
+      "yollar": [
+        {
+          "kanal": "google_play",
+          "adimlar": [
+            "Google Play'de aboneliğin bağlı olduğu Google Hesabı ile oturum aç",
+            "Play Store'da Abonelikler sayfasını aç",
+            "Amazon Prime aboneliğini seç",
+            "\"Aboneliği iptal et\"e dokun ve ekrandaki adımları izle"
+          ],
+          "kaynak": "https://support.google.com/googleplay/answer/7018481?hl=tr",
+          "kontrol_tarihi": "2026-11-15"
+        },
+        {
+          "kanal": "app_store",
+          "adimlar": [
+            "iPhone'da Ayarlar > adın > Abonelikler yolunu aç",
+            "Amazon Prime aboneliğini seç",
+            "\"Aboneliği İptal Et\"e dokun"
+          ],
+          "kaynak": "https://support.apple.com/tr-tr/118428",
+          "kontrol_tarihi": "2026-11-15"
+        }
+      ],
+      "notlar": "Servisin kendi sitesindeki iptal adımları henüz doğrulanmadı. Web'den abone olduysan servisin hesap sayfasındaki \"Abonelik\" / \"Üyelik\" bölümüne bak. Uygulama mağazasından abone olduysan iptal mağazadan yapılır."
+    },
+    {
+      "servis": "disney-plus",
+      "yollar": [
+        {
+          "kanal": "google_play",
+          "adimlar": [
+            "Google Play'de aboneliğin bağlı olduğu Google Hesabı ile oturum aç",
+            "Play Store'da Abonelikler sayfasını aç",
+            "Disney+ aboneliğini seç",
+            "\"Aboneliği iptal et\"e dokun ve ekrandaki adımları izle"
+          ],
+          "kaynak": "https://support.google.com/googleplay/answer/7018481?hl=tr",
+          "kontrol_tarihi": "2026-11-15"
+        },
+        {
+          "kanal": "app_store",
+          "adimlar": [
+            "iPhone'da Ayarlar > adın > Abonelikler yolunu aç",
+            "Disney+ aboneliğini seç",
+            "\"Aboneliği İptal Et\"e dokun"
+          ],
+          "kaynak": "https://support.apple.com/tr-tr/118428",
+          "kontrol_tarihi": "2026-11-15"
+        }
+      ],
+      "notlar": "Servisin kendi sitesindeki iptal adımları henüz doğrulanmadı. Web'den abone olduysan servisin hesap sayfasındaki \"Abonelik\" / \"Üyelik\" bölümüne bak. Uygulama mağazasından abone olduysan iptal mağazadan yapılır."
+    },
+    {
+      "servis": "hbo-max",
+      "yollar": [
+        {
+          "kanal": "web",
+          "adimlar": [
+            "hbomax.com/subscription adresine git ve giriş yap (uygulamada: profil > Abonelik)",
+            "Aboneliği kimin faturaladığını kontrol et",
+            "\"Aboneliğinizi İptal Edin\"i seçip onayla ve bitiş tarihini not et"
+          ],
+          "kaynak": "https://help.hbomax.com/tr/Answer/Detail/000002526",
+          "kontrol_tarihi": "2026-11-15"
+        },
+        {
+          "kanal": "google_play",
+          "adimlar": [
+            "Play Store > profil simgesi > Ödemeler ve abonelikler > Abonelikler yolunu aç",
+            "HBO Max'i seç",
+            "\"Aboneliği iptal et\"e dokun"
+          ],
+          "kaynak": "https://help.hbomax.com/tr/Answer/Detail/000002526",
+          "kontrol_tarihi": "2026-11-15"
+        },
+        {
+          "kanal": "app_store",
+          "adimlar": [
+            "iPhone/iPad'de Ayarlar > adın > Abonelikler yolunu aç",
+            "HBO Max'i seç",
+            "\"Aboneliği iptal et\"e dokun"
+          ],
+          "kaynak": "https://help.hbomax.com/tr/Answer/Detail/000002526",
+          "kontrol_tarihi": "2026-11-15"
+        },
+        {
+          "kanal": "operator",
+          "adimlar": [
+            "İnternet, mobil veya TV sağlayıcının web sitesine, yardım merkezine ya da müşteri hizmetlerine başvur",
+            "HBO Max aboneliğini oradan iptal ettir"
+          ],
+          "kaynak": "https://help.hbomax.com/tr/Answer/Detail/000002526",
+          "kontrol_tarihi": "2026-11-15"
+        }
+      ],
+      "notlar": "Uygulamayı silmek iptal etmez. Sonraki fatura tarihinden önce iptal et; dönem sonuna kadar izlemeye devam edersin. Yıllık pakette erişim yıllık dönem sonuna kadar sürer ve banka taksitleri çekilmeye devam edebilir."
+    },
+    {
+      "servis": "exxen",
+      "yollar": [
+        {
+          "kanal": "web",
+          "adimlar": [
+            "Bilgisayarda Exxen web sitesine giriş yap",
+            "\"Hesap ve Ayarlar\"ı aç",
+            "\"Üyelik Bilgilerim\" altında \"Aboneliğimi İptal Et\"e tıkla",
+            "Hesap şifreni gir",
+            "Abonelik İptali ekranında \"Evet\"e tıkla"
+          ],
+          "kaynak": "https://www.donanimhaber.com/exxen-uyelik-abonelik-iptal-etme-nasil-yapilir--160603",
+          "kontrol_tarihi": "2026-11-15"
+        }
+      ],
+      "notlar": "Bu adımlar resmi sayfadan değil, haber kaynaklarından derlendi; arayüz değişmiş olabilir. Spor paketi varsa ana paket ve ek paketler ayrı ayrı iptal edilir. Üyelik ödenen dönemin sonunda kapanır."
+    },
+    {
+      "servis": "gain",
+      "yollar": [
+        {
+          "kanal": "web",
+          "adimlar": [
+            "gain.tv'de hesabınla giriş yap",
+            "Hesabım bölümünü aç",
+            "\"Cancel Subscription\" düğmesine dokun",
+            "\"Continue\" seçeneğini seç",
+            "İptal ekranında en alta inip \"Continue Cancellation\" düğmesine bas"
+          ],
+          "kaynak": "https://destek.gain.tv/en/abonelik-iptal.html",
+          "kontrol_tarihi": "2026-11-15"
+        },
+        {
+          "kanal": "google_play",
+          "adimlar": [
+            "Google Play'de aboneliğin bağlı olduğu Google Hesabı ile oturum aç",
+            "Play Store'da Abonelikler sayfasını aç",
+            "GAİN aboneliğini seç",
+            "\"Aboneliği iptal et\"e dokun ve ekrandaki adımları izle"
+          ],
+          "kaynak": "https://support.google.com/googleplay/answer/7018481?hl=tr",
+          "kontrol_tarihi": "2026-11-15"
+        },
+        {
+          "kanal": "app_store",
+          "adimlar": [
+            "iPhone'da Ayarlar > adın > Abonelikler yolunu aç",
+            "GAİN aboneliğini seç",
+            "\"Aboneliği İptal Et\"e dokun"
+          ],
+          "kaynak": "https://support.apple.com/tr-tr/118428",
+          "kontrol_tarihi": "2026-11-15"
+        }
+      ],
+      "notlar": "Google Play veya App Store'dan alınan abonelik GAİN sitesinden iptal edilemez; iptal mağazadan yapılır. Uygulamayı silmek aboneliği iptal etmez."
+    },
+    {
+      "servis": "tabii",
+      "yollar": [
+        {
+          "kanal": "web",
+          "adimlar": [
+            "tabii web sitesinde hesabınla giriş yap",
+            "Hesap bölümündeki abonelik ayarlarına git ve iptal et"
+          ],
+          "kaynak": "https://corporate.tabii.com/terms-of-use",
+          "kontrol_tarihi": "2026-11-15"
+        },
+        {
+          "kanal": "google_play",
+          "adimlar": [
+            "Google Play'de aboneliğin bağlı olduğu Google Hesabı ile oturum aç",
+            "Play Store'da Abonelikler sayfasını aç",
+            "tabii aboneliğini seç",
+            "\"Aboneliği iptal et\"e dokun ve ekrandaki adımları izle"
+          ],
+          "kaynak": "https://support.google.com/googleplay/answer/7018481?hl=tr",
+          "kontrol_tarihi": "2026-11-15"
+        },
+        {
+          "kanal": "app_store",
+          "adimlar": [
+            "iPhone'da Ayarlar > adın > Abonelikler yolunu aç",
+            "tabii aboneliğini seç",
+            "\"Aboneliği İptal Et\"e dokun"
+          ],
+          "kaynak": "https://support.apple.com/tr-tr/118428",
+          "kontrol_tarihi": "2026-11-15"
+        }
+      ],
+      "notlar": "Web'den abone olduysan web'den, uygulama mağazasından abone olduysan mağazadan iptal edersin. Web sitesindeki iptal menüsünün adı henüz doğrulanmadı."
+    },
+    {
+      "servis": "tod",
+      "yollar": [
+        {
+          "kanal": "google_play",
+          "adimlar": [
+            "Google Play'de aboneliğin bağlı olduğu Google Hesabı ile oturum aç",
+            "Play Store'da Abonelikler sayfasını aç",
+            "TOD aboneliğini seç",
+            "\"Aboneliği iptal et\"e dokun ve ekrandaki adımları izle"
+          ],
+          "kaynak": "https://support.google.com/googleplay/answer/7018481?hl=tr",
+          "kontrol_tarihi": "2026-11-15"
+        },
+        {
+          "kanal": "app_store",
+          "adimlar": [
+            "iPhone'da Ayarlar > adın > Abonelikler yolunu aç",
+            "TOD aboneliğini seç",
+            "\"Aboneliği İptal Et\"e dokun"
+          ],
+          "kaynak": "https://support.apple.com/tr-tr/118428",
+          "kontrol_tarihi": "2026-11-15"
+        }
+      ],
+      "notlar": "Servisin kendi sitesindeki iptal adımları henüz doğrulanmadı. Web'den abone olduysan servisin hesap sayfasındaki \"Abonelik\" / \"Üyelik\" bölümüne bak. Uygulama mağazasından abone olduysan iptal mağazadan yapılır."
+    },
+    {
+      "servis": "spotify",
+      "yollar": [
+        {
+          "kanal": "web",
+          "adimlar": [
+            "Spotify hesap sayfanı aç",
+            "Plan bölümünden \"Planı iptal et\"i seç",
+            "Onay adımlarını tamamla"
+          ],
+          "kaynak": "https://support.spotify.com/tr/article/how-to-cancel-your-subscription/",
+          "kontrol_tarihi": "2026-11-15"
+        },
+        {
+          "kanal": "operator",
+          "adimlar": [
+            "Hesap sayfanda \"Planını yönet\" bağlantısına gir",
+            "\"Ödeme\" bölümünden iş ortağının iletişim bilgisine bak",
+            "İptali telefon veya internet sağlayıcın üzerinden yap"
+          ],
+          "kaynak": "https://support.spotify.com/tr/article/how-to-cancel-your-subscription/",
+          "kontrol_tarihi": "2026-11-15"
+        }
+      ],
+      "notlar": "Premium sonraki fatura tarihine kadar sürer, sonra ücretsiz plana geçilir; çalma listelerin korunur. Aile/Duo planını yalnızca plan yöneticisi iptal edebilir."
+    },
+    {
+      "servis": "apple-music",
+      "yollar": [
+        {
+          "kanal": "web",
+          "adimlar": [
+            "music.apple.com/tr adresine git ve \"Giriş Yap\"ı seç",
+            "Hesap simgesine tıkla, \"Ayarlar\"ı seç",
+            "\"Abonelikler\" bölümünde \"Yönet\"i seç",
+            "\"Aboneliği İptal Et\"i seç"
+          ],
+          "kaynak": "https://support.apple.com/tr-tr/118399",
+          "kontrol_tarihi": "2026-11-15"
+        },
+        {
+          "kanal": "app_store",
+          "adimlar": [
+            "iPhone'da Ayarlar'da adına dokun",
+            "\"Abonelikler\"e dokun",
+            "Apple Music'i seç",
+            "\"Aboneliği İptal Et\"e dokun"
+          ],
+          "kaynak": "https://support.apple.com/tr-tr/118428",
+          "kontrol_tarihi": "2026-11-15"
+        },
+        {
+          "kanal": "google_play",
+          "adimlar": [
+            "Google Play'de aboneliğin bağlı olduğu Google Hesabı ile oturum aç",
+            "Play Store'da Abonelikler sayfasını aç",
+            "Apple Music aboneliğini seç",
+            "\"Aboneliği iptal et\"e dokun ve ekrandaki adımları izle"
+          ],
+          "kaynak": "https://support.google.com/googleplay/answer/7018481?hl=tr",
+          "kontrol_tarihi": "2026-11-15"
+        }
+      ],
+      "notlar": "Android'de Google Play ile abone olduysan iptal Google Play'den yapılır. Denemenin yenilenmemesi için bitişten en az 24 saat önce iptal et."
+    },
+    {
+      "servis": "icloud-plus",
+      "yollar": [
+        {
+          "kanal": "app_store",
+          "adimlar": [
+            "iPhone'da Ayarlar > adın > Abonelikler yolunu aç",
+            "iCloud+'ı seç",
+            "\"Aboneliği İptal Et\"e dokun (eski iOS: Ayarlar > adın > iCloud > Planı Yönet > Düşürme Seçenekleri > 5 GB ücretsiz plan)"
+          ],
+          "kaynak": "https://support.apple.com/tr-tr/108318",
+          "kontrol_tarihi": "2026-11-15"
+        },
+        {
+          "kanal": "web",
+          "adimlar": [
+            "Mac'te Sistem Ayarları > Apple Hesabı > iCloud yolunu aç",
+            "\"iCloud+ Özellikleri\" > \"Planı Yönetin\"i seç",
+            "\"Aboneliği İptal Et\"i seç",
+            "Windows'ta: Windows için iCloud > Yönet > Saklama Alanı Planını Değiştir > Düşürme Seçenekleri"
+          ],
+          "kaynak": "https://support.apple.com/tr-tr/108318",
+          "kontrol_tarihi": "2026-11-15"
+        }
+      ],
+      "notlar": "Değişiklik mevcut fatura dönemi bitince geçerli olur. İptalden önce yeni sınırı aşan içeriği indir veya sil; yoksa eşzamanlama ve yedekleme durur."
+    },
+    {
+      "servis": "google-one",
+      "yollar": [
+        {
+          "kanal": "web",
+          "adimlar": [
+            "Bilgisayarda one.google.com adresine git",
+            "Ayarlar simgesine tıkla",
+            "\"Üyeliği iptal et\"e tıkla",
+            "Onaylamak için yine \"Üyeliği iptal et\"e tıkla"
+          ],
+          "kaynak": "https://support.google.com/googleone/answer/9056360?hl=tr",
+          "kontrol_tarihi": "2026-11-15"
+        },
+        {
+          "kanal": "google_play",
+          "adimlar": [
+            "Google Play'de aboneliğin bağlı olduğu Google Hesabı ile oturum aç",
+            "Play Store'da Abonelikler sayfasını aç",
+            "Google One aboneliğini seç",
+            "\"Aboneliği iptal et\"e dokun ve ekrandaki adımları izle"
+          ],
+          "kaynak": "https://support.google.com/googleplay/answer/7018481?hl=tr",
+          "kontrol_tarihi": "2026-11-15"
+        },
+        {
+          "kanal": "app_store",
+          "adimlar": [
+            "App Store'u aç, adına dokun",
+            "Abonelikler > Google One > Aboneliği İptal Et'e dokun"
+          ],
+          "kaynak": "https://support.google.com/googleone/answer/9056360?hl=tr",
+          "kontrol_tarihi": "2026-11-15"
+        }
+      ],
+      "notlar": "İptal fatura döneminin sonunda geçerli olur; sonra 15 GB ücretsiz alana dönülür. Depolama planı için çoğunlukla geri ödeme yapılmaz."
+    },
+    {
+      "servis": "chatgpt-plus",
+      "yollar": [
+        {
+          "kanal": "google_play",
+          "adimlar": [
+            "Google Play'de aboneliğin bağlı olduğu Google Hesabı ile oturum aç",
+            "Play Store'da Abonelikler sayfasını aç",
+            "ChatGPT Plus aboneliğini seç",
+            "\"Aboneliği iptal et\"e dokun ve ekrandaki adımları izle"
+          ],
+          "kaynak": "https://support.google.com/googleplay/answer/7018481?hl=tr",
+          "kontrol_tarihi": "2026-11-15"
+        },
+        {
+          "kanal": "app_store",
+          "adimlar": [
+            "iPhone'da Ayarlar > adın > Abonelikler yolunu aç",
+            "ChatGPT Plus aboneliğini seç",
+            "\"Aboneliği İptal Et\"e dokun"
+          ],
+          "kaynak": "https://support.apple.com/tr-tr/118428",
+          "kontrol_tarihi": "2026-11-15"
+        }
+      ],
+      "notlar": "Servisin kendi sitesindeki iptal adımları henüz doğrulanmadı. Web'den abone olduysan servisin hesap sayfasındaki \"Abonelik\" / \"Üyelik\" bölümüne bak. Uygulama mağazasından abone olduysan iptal mağazadan yapılır."
+    },
+    {
+      "servis": "storytel",
+      "yollar": [
+        {
+          "kanal": "google_play",
+          "adimlar": [
+            "Google Play'de aboneliğin bağlı olduğu Google Hesabı ile oturum aç",
+            "Play Store'da Abonelikler sayfasını aç",
+            "Storytel aboneliğini seç",
+            "\"Aboneliği iptal et\"e dokun ve ekrandaki adımları izle"
+          ],
+          "kaynak": "https://support.google.com/googleplay/answer/7018481?hl=tr",
+          "kontrol_tarihi": "2026-11-15"
+        },
+        {
+          "kanal": "app_store",
+          "adimlar": [
+            "iPhone'da Ayarlar > adın > Abonelikler yolunu aç",
+            "Storytel aboneliğini seç",
+            "\"Aboneliği İptal Et\"e dokun"
+          ],
+          "kaynak": "https://support.apple.com/tr-tr/118428",
+          "kontrol_tarihi": "2026-11-15"
+        }
+      ],
+      "notlar": "Servisin kendi sitesindeki iptal adımları henüz doğrulanmadı. Web'den abone olduysan servisin hesap sayfasındaki \"Abonelik\" / \"Üyelik\" bölümüne bak. Uygulama mağazasından abone olduysan iptal mağazadan yapılır."
+    }
+  ]
 }
