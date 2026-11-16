@@ -2,6 +2,8 @@
  "aciklama": "Fiyatı IP adresine göre gösteren sayfalar. GitHub Actions (ABD) bunları atlar; kullanıcının Türkiye IP'li Windows bilgisayarında `fiyat_kontrol.py --yerel` işler (KR-014).",
  "kaynaklar": [
   "https://help.netflix.com/tr/node/24926",
-  "https://www.youtube.com/premium?hl=tr&gl=TR"
+  "https://www.youtube.com/premium?hl=tr&gl=TR",
+  "https://www.amazon.com.tr/gp/help/customer/display.html?nodeId=G34EUPKVMYFW8N2U",
+  "https://one.google.com/about/plans?hl=tr&gl=TR"
  ]
 }

@@ -154,7 +154,7 @@
      "kontrol_tarihi": "2026-11-15",
      "dogrulandi": true,
      "kaynak_notu": "amazon.com.tr okunamadı (503); Dünya, Medyascope, Teknoblog, Webrazzi aynı fiyatı veriyor. 17.06.2026'dan beri Prime Video reklamlı; reklamsız için aylık +59,90 TL ek.",
-     "izleme_url": null,
+     "izleme_url": "https://www.amazon.com.tr/gp/help/customer/display.html?nodeId=G34EUPKVMYFW8N2U",
      "degisim_turu": "zam",
      "degisim_surumu": 1
     }
@@ -178,7 +178,7 @@
      "kontrol_tarihi": "2026-11-15",
      "dogrulandi": true,
      "kaynak_notu": "Resmi sayfa şu an kampanya fiyatı gösteriyor (24.11.2026'ya kadar); normal fiyat resmi sayfadaki 'başlayan' fiyat ve CNBC-e haberiyle teyitli.",
-     "izleme_url": null,
+     "izleme_url": "https://www.disneyplus.com/tr-tr",
      "degisim_turu": "zam",
      "degisim_surumu": 1
     },
@@ -212,7 +212,7 @@
      "kontrol_tarihi": "2026-11-15",
      "dogrulandi": true,
      "kaynak_notu": "Resmi sayfada 'Basic' adıyla; reklamlı eşleşmesi bağlantı parametresinden çıkarım.",
-     "izleme_url": null,
+     "izleme_url": "https://www.disneyplus.com/tr-tr",
      "degisim_turu": null,
      "degisim_surumu": null
     },
@@ -229,7 +229,7 @@
      "kontrol_tarihi": "2026-11-15",
      "dogrulandi": true,
      "kaynak_notu": "Resmi sayfada 'Premium' adıyla; reklamsız eşleşmesi çıkarım.",
-     "izleme_url": null,
+     "izleme_url": "https://www.disneyplus.com/tr-tr",
      "degisim_turu": null,
      "degisim_surumu": null
     }
@@ -253,7 +253,7 @@
      "kontrol_tarihi": "2026-11-15",
      "dogrulandi": true,
      "kaynak_notu": null,
-     "izleme_url": null,
+     "izleme_url": "https://www.hbomax.com/tr/tr",
      "degisim_turu": null,
      "degisim_surumu": null
     },
@@ -270,7 +270,7 @@
      "kontrol_tarihi": "2026-11-15",
      "dogrulandi": true,
      "kaynak_notu": null,
-     "izleme_url": null,
+     "izleme_url": "https://www.hbomax.com/tr/tr",
      "degisim_turu": null,
      "degisim_surumu": null
     },
@@ -287,7 +287,7 @@
      "kontrol_tarihi": "2026-11-15",
      "dogrulandi": true,
      "kaynak_notu": null,
-     "izleme_url": null,
+     "izleme_url": "https://www.hbomax.com/tr/tr",
      "degisim_turu": null,
      "degisim_surumu": null
     },
@@ -304,7 +304,7 @@
      "kontrol_tarihi": "2026-11-15",
      "dogrulandi": true,
      "kaynak_notu": null,
-     "izleme_url": null,
+     "izleme_url": "https://www.hbomax.com/tr/tr",
      "degisim_turu": null,
      "degisim_surumu": null
     }
@@ -700,7 +700,7 @@
      "kontrol_tarihi": "2026-11-15",
      "dogrulandi": true,
      "kaynak_notu": null,
-     "izleme_url": null,
+     "izleme_url": "https://one.google.com/about/plans?hl=tr&gl=TR",
      "degisim_turu": null,
      "degisim_surumu": null
     },
@@ -717,7 +717,7 @@
      "kontrol_tarihi": "2026-11-15",
      "dogrulandi": true,
      "kaynak_notu": null,
-     "izleme_url": null,
+     "izleme_url": "https://one.google.com/about/plans?hl=tr&gl=TR",
      "degisim_turu": null,
      "degisim_surumu": null
     },
@@ -734,7 +734,7 @@
      "kontrol_tarihi": "2026-11-15",
      "dogrulandi": true,
      "kaynak_notu": null,
-     "izleme_url": null,
+     "izleme_url": "https://one.google.com/about/plans?hl=tr&gl=TR",
      "degisim_turu": null,
      "degisim_surumu": null
     }
