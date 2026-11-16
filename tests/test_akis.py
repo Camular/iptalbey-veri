@@ -34,7 +34,9 @@ def test_one_gemini_request_per_url(tmp_path):
     root = make_root(tmp_path)
     gemini = FakeGemini(default_answers())
     summary, gh, git = run(root, gemini=gemini)
-    assert sorted(gemini.calls) == sorted([SPOTIFY_URL, EXXEN_URL, TURKCELL_URL])
+    # Doğrulanan kaynaklar bir kez sorulur; Turkcell örneğinde paket adı sayfada
+    # olmadığından 'unconfirmed' kalır ve yalnız o bir kez yeniden sorulur.
+    assert sorted(gemini.calls) == sorted([SPOTIFY_URL, EXXEN_URL, TURKCELL_URL, TURKCELL_URL])
     assert gh.created_prs == [] and gh.created_issues == []
     assert summary["model"] == "gemini-test"
 
@@ -307,3 +309,79 @@ def test_heartbeat_not_written_on_daily_run(tmp_path):
     root = make_root(tmp_path)
     run(root, gemini=FakeGemini(default_answers()))
     assert not (root / "durum" / "son-calisma.json").exists()
+
+
+class SequenceGemini(FakeGemini):
+    """Aynı URL'ye art arda farklı yanıtlar (ikinci sorgu testleri)."""
+
+    def __init__(self, first, second):
+        super().__init__(first)
+        self.second = second
+
+    def generate_json(self, prompt, schema):
+        data = super().generate_json(prompt, schema)
+        if self.calls.count(self.calls[-1]) > 1:
+            return {"planlar": self.second.get(self.calls[-1], [])}
+        return data
+
+
+def _bad_aile():
+    # Değişmemiş fiyat ama alıntı sayfada yok → unconfirmed (2026-11-16 iCloud vakası).
+    return {
+        SPOTIFY_URL: [
+            answer("spotify/bireysel", 115, "sonra ayda ₺115", False),
+            answer("spotify/aile", 199, "Aile planı ayda ₺199", False),
+        ]
+    }
+
+
+def _decisions(summary):
+    return {d["kayit"]: d for k in summary["kaynaklar"] for d in k["kararlar"]}
+
+
+def test_unconfirmed_is_retried_once_and_upgraded_to_ok(tmp_path):
+    root = make_root(tmp_path)
+    gemini = SequenceGemini(default_answers(**_bad_aile()), default_answers())
+    summary, gh, _ = run(root, gemini=gemini)
+    assert gemini.calls.count(SPOTIFY_URL) == 2
+    assert gemini.calls.count(EXXEN_URL) == 1  # sorunsuz kaynak yeniden sorulmaz
+    d = _decisions(summary)["spotify/aile"]
+    assert d["karar"] == "ok" and "İkinci sorguda doğrulandı." in d["nedenler"]
+    assert gh.created_prs == [] and gh.created_issues == []
+
+
+def test_retry_never_turns_into_pr_or_changes_other_decisions(tmp_path):
+    root = make_root(tmp_path)
+    # İkinci yanıt "zam" iddia etse bile (sayfa ₺199) yalnız ok yükseltmesi kullanılır.
+    second = {
+        SPOTIFY_URL: [
+            answer("spotify/bireysel", 129, "sonra ayda ₺129", True, 0.99),
+            answer("spotify/aile", 219, "Sonra ayda ₺219", True, 0.99),
+        ]
+    }
+    gemini = SequenceGemini(default_answers(**_bad_aile()), default_answers(**second))
+    summary, gh, git = run(root, gemini=gemini)
+    d = _decisions(summary)
+    assert d["spotify/aile"]["karar"] == "unconfirmed"
+    assert d["spotify/aile"]["alinti"] == "Aile planı ayda ₺199"  # teşhis için loglanır
+    assert d["spotify/bireysel"]["karar"] == "ok"
+    assert gh.created_prs == [] and git.published == []
+
+
+class SecondCallFails(FakeGemini):
+    def generate_json(self, prompt, schema):
+        url_calls_before = len(self.calls)
+        data = super().generate_json(prompt, schema)
+        if self.calls.count(self.calls[-1]) > 1 and url_calls_before:
+            raise fk.GeminiUnavailable("HTTP 429 (gemini-test)")
+        return data
+
+
+def test_retry_failure_keeps_first_result_and_is_not_an_error(tmp_path):
+    root = make_root(tmp_path)
+    gemini = SecondCallFails(default_answers(**_bad_aile()))
+    summary, gh, _ = run(root, gemini=gemini)
+    assert gemini.calls.count(SPOTIFY_URL) == 2
+    assert summary["hata"] == 0
+    assert _decisions(summary)["spotify/aile"]["karar"] == "unconfirmed"
+    assert gh.created_prs == []

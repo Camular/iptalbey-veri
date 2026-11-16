@@ -65,7 +65,8 @@ def test_actions_skips_local_sources_and_cleans_old_counters(tmp_path):
     summary, gh, git = run(root, gemini=gemini, page_map=page_map, local_urls=LOCAL)
 
     assert SPOTIFY_URL not in gemini.calls
-    assert sorted(gemini.calls) == sorted([EXXEN_URL, TURKCELL_URL])
+    # Turkcell örneği 'unconfirmed' kalır ve bir kez yeniden sorulur.
+    assert sorted(gemini.calls) == sorted([EXXEN_URL, TURKCELL_URL, TURKCELL_URL])
     spotify = next(k for k in summary["kaynaklar"] if k["url"] == SPOTIFY_URL)
     assert spotify["durum"] == fk.LOCAL_STATUS
     assert summary["hata"] == 0 and gh.created_issues == []

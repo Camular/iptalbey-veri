@@ -2012,7 +2012,35 @@ class Runner:
             return result
         answers = {str(a.get("plan_id")): a for a in data.get("planlar", []) if isinstance(a, dict)}
         result.findings = validate_answers(group, answers, text, self.gemini.model)
+        result.findings = self._retry_unconfirmed(url, group, text, result.findings)
         return result
+
+    def _retry_unconfirmed(self, url: str, group: list[Target], text: str, findings: list[Finding]) -> list[Finding]:
+        """Model ara sıra kötü alıntı verir (2026-11-16 Actions: iCloud 6/12 TB).
+
+        'unconfirmed' kayıt varsa model bir kez daha sorulur; ikinci yanıt YALNIZ
+        'unconfirmed' → 'ok' yükseltmesi için kullanılır ('ok' yalnız değişmemiş
+        fiyatta mümkündür). İkinci yanıt hiçbir zaman PR/issue üretmez ve ilk
+        yanıttaki başka bir kararı değiştirmez.
+        """
+        weak = {f.target.key for f in findings if decide(f) == "unconfirmed"}
+        if not weak or self.gemini is None:
+            return findings
+        try:
+            data = self.gemini.generate_json(build_prompt(url, group, text), RESPONSE_SCHEMA)
+        except GeminiUnavailable:
+            return findings
+        answers = {str(a.get("plan_id")): a for a in data.get("planlar", []) if isinstance(a, dict)}
+        second = {f.target.key: f for f in validate_answers(group, answers, text, self.gemini.model)}
+        out = []
+        for f in findings:
+            g = second.get(f.target.key)
+            if f.target.key in weak and g is not None and decide(g) == "ok":
+                g.reasons.append("İkinci sorguda doğrulandı.")
+                out.append(g)
+            else:
+                out.append(f)
+        return out
 
     def _fallback(self, url: str, group: list[Target], previous: str | None, current: str) -> None:
         if previous is None or previous == current:
@@ -2365,6 +2393,8 @@ class Runner:
                             "guven": round(f.confidence, 2),
                             "nedenler": f.reasons,
                             "notlar": f.notes,
+                            # Teşhis için: herkese açık sayfadan alıntı; yalnız ok olmayanlarda.
+                            **({"alinti": f.quote[:200]} if decide(f) != "ok" and f.quote else {}),
                         }
                         for f in r.findings
                     ],
@@ -2401,6 +2431,9 @@ def render_summary(summary: dict) -> str:
         for d in k["kararlar"]:
             why = " ".join(d.get("nedenler") or [])
             karar = d["karar"] + (f" ({why})" if why else "")
+            if d.get("alinti"):
+                safe = " ".join(d["alinti"].replace("|", " ").split())[:120]
+                karar += f" — alıntı: «{safe}»"
             lines.append(f"|  ↳ `{d['kayit']}` | {karar} | güven {d['guven']} | {d['fiyat']} |")
     for title in summary["acilan_issue"]:
         lines.append(f"- issue: {title}")
