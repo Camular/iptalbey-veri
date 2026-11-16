@@ -548,6 +548,11 @@ def test_local_run_without_key_exits_with_clear_error(monkeypatch, capsys):
 @pytest.mark.veri
 def test_local_sources_exist_in_catalog():
     urls = fk.load_local_sources()
-    assert urls == {"https://help.netflix.com/tr/node/24926", "https://www.youtube.com/premium?hl=tr&gl=TR"}
+    assert urls == {
+        "https://help.netflix.com/tr/node/24926",
+        "https://www.youtube.com/premium?hl=tr&gl=TR",
+        "https://www.amazon.com.tr/gp/help/customer/display.html?nodeId=G34EUPKVMYFW8N2U",
+        "https://one.google.com/about/plans?hl=tr&gl=TR",
+    }
     catalog_urls = set(fk.group_by_url(fk.collect_targets(fk.load_json(REPO / "fiyatlar.json"))))
     assert urls <= catalog_urls
