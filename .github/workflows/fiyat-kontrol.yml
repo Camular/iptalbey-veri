@@ -4,7 +4,8 @@ name: Fiyat kontrol
 
 on:
   schedule:
-    - cron: "0 6 * * *" # 06:00 UTC = 09:00 TR
+    # Saat başı (:00) GitHub yoğunluğunda gecikip atlanabiliyor (2026-11-16 hiç çalışmadı).
+    - cron: "23 5 * * *" # 05:23 UTC = 08:23 TR
   workflow_dispatch:
     inputs:
       dry_run:

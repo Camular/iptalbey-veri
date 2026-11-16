@@ -20,7 +20,7 @@ Yanlış veya eski bir fiyat gördüyseniz bu depoda bir issue açın; kaynağı
 `docs/` klasörü GitHub Pages ile yayınlanır (gizlilik politikası).
 
 ## Otomasyon (günlük fiyat kontrolü)
-`.github/workflows/fiyat-kontrol.yml` her gün **09:00 (TR)** çalışır; elle de başlatılabilir (Actions → Fiyat kontrol → Run workflow; `dry_run` ile hiçbir şey yazmadan dener).
+`.github/workflows/fiyat-kontrol.yml` her gün **08:23 (TR)** çalışır; elle de başlatılabilir (Actions → Fiyat kontrol → Run workflow; `dry_run` ile hiçbir şey yazmadan dener).
 
 - `scripts/fiyat_kontrol.py`, `izleme_url`'si olan her fiyat sayfasını indirir ve sayfadaki fiyatları Gemini'ye karşılaştırtır. Modelin verdiği kanıt alıntısı sayfada birebir geçmiyorsa sonuç "emin değil" sayılır. Fiyat **değişmemişse** (bulunan = katalog), plan adı alıntıya bağlanamasa da (tablo/kart düzeni) şu koşullarla "tamam" sayılır: ad sayfada geçiyor, fiyat o sayfadaki kayıtlar arasında tek, başka kayıt için aynı fiyat bulunmadı, fiyat sayfada başka periyotla ya da (paketlerde) taahhütsüz fiyat olarak geçmiyor. Fiyat **değiştiyse** bu gevşeklik yoktur.
 - **Pull request (PR) = onay bekleyen fiyat değişikliği.** Bot fiyatın değiştiğinden eminse `fiyat/guncelleme` dalında PR açar (açık PR varsa ona ekler): eski → yeni fiyat, % değişim, kanıt alıntısı ve kaynak linkiyle. PR **birleştirilmeden hiçbir fiyat yayınlanmaz**. Fiyat düştüyse ya da %200'den fazla arttıysa PR "olağandışı" etiketi alır.
