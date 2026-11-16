@@ -1009,6 +1009,10 @@ def validate_answer(target: Target, answer: dict | None, page_text: str, model: 
         if len(norm_quote.split()) > MAX_QUOTE_WORDS:
             doubt(f"Kanıt alıntısı {MAX_QUOTE_WORDS} kelimeden uzun.")
         period = answer.get("periyot")
+        # Model bazen enum yerine Türkçe yazımı döndürür ('aylık'); yalnız
+        # yazım katlanır, farklı periyot ('yıllık' ≠ 'aylik') yine şüphelidir.
+        if isinstance(period, str):
+            period = fold(period.strip())
         if not period:
             doubt("Model fiyatın periyodunu belirtmedi.")
         elif period != target.period:

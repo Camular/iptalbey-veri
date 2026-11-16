@@ -226,3 +226,12 @@ def test_fmt_helpers():
     assert fk.fmt_tl(115) == "115 TL"
     assert fk.fmt_pct(12.345) == "+12,3%"
     assert fk.json_price(129.0) == 129 and fk.json_price(129.999) == 130
+
+
+def test_period_turkish_spelling_is_folded_but_other_period_still_doubted():
+    # Gerçek vaka (Actions 2026-11-16, Turkcell One Maksi): model 'aylık' döndürdü.
+    f = fk.validate_answer(target(), ans(periyot="aylık"), PAGE)
+    assert not any("Periyot uyuşmuyor" in r for r in f.reasons)
+    f = fk.validate_answer(target(), ans(periyot="Yıllık"), PAGE)
+    assert any("Periyot uyuşmuyor" in r for r in f.reasons)
+    assert f.confidence <= fk.HALLUCINATION_CONFIDENCE
