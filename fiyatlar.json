@@ -1,7 +1,7 @@
 {
  "sema_surumu": 1,
- "surum": 1,
- "guncelleme": "2026-11-15",
+ "surum": 2,
+ "guncelleme": "2026-11-16",
  "servisler": [
   {
    "id": "netflix",
@@ -327,7 +327,7 @@
      "kaynak": "https://www.karekod.org/blog/exxen-uyelik-ucretleri-exxenspor-fiyati/",
      "kontrol_tarihi": "2026-11-15",
      "dogrulandi": false,
-     "kaynak_notu": "Tahmini: kaynaklar çelişiyor (219 / 275 / 270,50 TL); en yeni tek kaynak (Eylül 2026) esas alındı. Resmi sayfa okunamadı.",
+     "kaynak_notu": "Tahmini: kaynaklar çelişiyor (219 / 275 / 270,50 TL); en yeni tek kaynak (Eylül 2026) esas alındı. Resmi sayfa okunamadı. 2026-11-16: exxen.com fiyatları yalnız üyelik akışında gösteriyor.",
      "izleme_url": null,
      "degisim_turu": null,
      "degisim_surumu": null
@@ -344,7 +344,7 @@
      "kaynak": "https://www.karekod.org/blog/exxen-uyelik-ucretleri-exxenspor-fiyati/",
      "kontrol_tarihi": "2026-11-15",
      "dogrulandi": false,
-     "kaynak_notu": "Tahmini: kaynaklar çelişiyor (309 / 388 / 381,66 TL).",
+     "kaynak_notu": "Tahmini: kaynaklar çelişiyor (309 / 388 / 381,66 TL). 2026-11-16: exxen.com fiyatları yalnız üyelik akışında gösteriyor.",
      "izleme_url": null,
      "degisim_turu": null,
      "degisim_surumu": null
@@ -361,7 +361,7 @@
      "kaynak": "https://www.karekod.org/blog/exxen-uyelik-ucretleri-exxenspor-fiyati/",
      "kontrol_tarihi": "2026-11-15",
      "dogrulandi": false,
-     "kaynak_notu": "Tahmini: 478,05 (Karekod) / 486 (DonanımHaber) çelişiyor.",
+     "kaynak_notu": "Tahmini: 478,05 (Karekod) / 486 (DonanımHaber) çelişiyor. 2026-11-16: exxen.com fiyatları yalnız üyelik akışında gösteriyor.",
      "izleme_url": null,
      "degisim_turu": null,
      "degisim_surumu": null
@@ -385,7 +385,7 @@
      "kaynak": "https://www.webtekno.com/gain-nedir-nasil-kullanilir-ucreti-h120324.html",
      "kontrol_tarihi": "2026-11-15",
      "dogrulandi": false,
-     "kaynak_notu": "Tahmini: resmi sayfa okunamadı; en yeni kaynak Şubat 2026 (Webtekno, Tamindir).",
+     "kaynak_notu": "Tahmini: resmi sayfa okunamadı; en yeni kaynak Şubat 2026 (Webtekno, Tamindir). 2026-11-16: gain.tv yalnız 'ilk 3 ay 129 TL' kampanyasını gösteriyor; normal aylık fiyat yalnız üyelik akışında.",
      "izleme_url": null,
      "degisim_turu": null,
      "degisim_surumu": null
@@ -425,32 +425,32 @@
      "id": "eglence",
      "ad": "Eğlence",
      "seviye": 1,
-     "fiyat_tl": 129,
+     "fiyat_tl": 169,
      "periyot": "aylik",
      "ogrenci": false,
      "onceki_fiyat_tl": null,
      "gecerlilik": null,
-     "kaynak": "https://www.milligazete.com.tr/tod-tv-ucreti-ne-kadar-2026-super-lig-paketi-kac-tl-giris-nasil-yapilir-hangi-diziler-ve-maclar-var",
-     "kontrol_tarihi": "2026-11-15",
-     "dogrulandi": false,
-     "kaynak_notu": "Tahmini: tek güncel kaynak (Milli Gazete 23.09.2026, taahhütsüz aylık); Webtekno Şubat 2026'da 99 TL diyor. tod.tv bot engelli.",
+     "kaynak": "https://www.todtv.com.tr/satinal",
+     "kontrol_tarihi": "2026-11-16",
+     "dogrulandi": true,
+     "kaynak_notu": "Resmi paket sayfası (tarayıcıyla, 2026-11-16): aylık ödemeli Eğlence Paketi ilk ay 9 TL, sonraki aylar 169 TL. Önceki 129 TL, 12 ay taahhütlü yıllık paketin aylık taksitiydi (veri hatası düzeltmesi). Sayfa JS ile yükleniyor; bot okuyamaz.",
      "izleme_url": null,
-     "degisim_turu": null,
-     "degisim_surumu": null
+     "degisim_turu": "duzeltme",
+     "degisim_surumu": 2
     },
     {
      "id": "spor-extra",
-     "ad": "Spor Extra",
+     "ad": "Spor Dünyası",
      "seviye": 2,
      "fiyat_tl": 350,
      "periyot": "aylik",
      "ogrenci": false,
      "onceki_fiyat_tl": null,
      "gecerlilik": null,
-     "kaynak": "https://www.milligazete.com.tr/tod-tv-ucreti-ne-kadar-2026-super-lig-paketi-kac-tl-giris-nasil-yapilir-hangi-diziler-ve-maclar-var",
-     "kontrol_tarihi": "2026-11-15",
+     "kaynak": "https://www.todtv.com.tr/satinal",
+     "kontrol_tarihi": "2026-11-16",
      "dogrulandi": true,
-     "kaynak_notu": "tod.tv bot engelli. Milli Gazete (23.09.2026) ve Webtekno (24.02.2026, https://www.webtekno.com/tod-nedir-nasil-kullanilir-h130876.html) aynı fiyatı veriyor (taahhütsüz aylık).",
+     "kaynak_notu": "Resmi paket sayfası (tarayıcıyla, 2026-11-16): 'Spor Dünyası Paketi' aylık ödemeli 350 TL (eski haberlerde 'Spor Extra'). Yıllık paket 229 TL/ay x12. Sayfa JS ile yükleniyor; bot okuyamaz.",
      "izleme_url": null,
      "degisim_turu": null,
      "degisim_surumu": null
@@ -896,10 +896,10 @@
     }
    ],
    "kaynak": "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one/turkcell-one-plus",
-   "kontrol_tarihi": "2026-11-15",
+   "kontrol_tarihi": "2026-11-16",
    "dogrulandi": false,
    "izleme_url": null,
-   "kaynak_notu": "Resmi sayfa okunamadı (içerik JS ile); fiyat ve içerik tek haber kaynağından (Teknoblog). Sayfada 850 TL de geçiyor olabilir (taahhütsüz?)."
+   "kaynak_notu": "2026-11-16: resmi sayfa kaldırıldı, Turkcell One listesinde yok (yeni satışta değil); mevcut aboneler için tutuluyor. Fiyat ve içerik tek haber kaynağından (Teknoblog)."
   },
   {
    "id": "turkcell-one-premium",
@@ -930,6 +930,40 @@
    "dogrulandi": true,
    "izleme_url": "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one/turkcell-one-premium",
    "kaynak_notu": "12 ay taahhütlü fiyat (taahhütsüz 950 TL)."
+  },
+  {
+   "id": "turkcell-one-elite",
+   "operator": "Turkcell",
+   "ad": "Turkcell One Elite",
+   "fiyat_tl": 990,
+   "periyot": "aylik",
+   "icerir": [
+    {
+     "servis": "netflix",
+     "plan": "premium"
+    },
+    {
+     "servis": "hbo-max",
+     "plan": "standart"
+    },
+    {
+     "servis": "amazon-prime",
+     "plan": "aylik"
+    },
+    {
+     "servis": "youtube-premium",
+     "plan": "bireysel"
+    },
+    {
+     "servis": "disney-plus",
+     "plan": "reklamsiz"
+    }
+   ],
+   "kaynak": "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one/turkcell-one-elite",
+   "kontrol_tarihi": "2026-11-16",
+   "dogrulandi": true,
+   "izleme_url": "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one/turkcell-one-elite",
+   "kaynak_notu": "12 ay taahhütlü fiyat (taahhütsüz 1.300 TL). Sayfaya göre TV+ Premium x HBO Max (HBO Max Standart), Netflix Premium, Amazon Prime, YouTube Premium (bireysel), Disney Reklamsız; ayrıca Wonjo Kids, Lifebox, fizy sesli kitap (katalogda yok)."
   },
   {
    "id": "turkcell-one-ekstra",
@@ -1056,10 +1090,10 @@
     }
    ],
    "kaynak": "https://www.vodafone.com.tr/red",
-   "kontrol_tarihi": "2026-11-15",
+   "kontrol_tarihi": "2026-11-16",
    "dogrulandi": false,
    "izleme_url": null,
-   "kaynak_notu": "YouTube Premium yalnızca ilk 3 ay ücretsiz (kampanya); sonrasında pakette değil. Bu yüzden kesin değil, 'muhtemel' uyarı verir. Fiyat 12 dönem taahhütlü (taahhütsüz 2.070 TL); sayfa içeriği JS ile yükleniyor. Netflix/Spotify/Prime ifadeleri yalnızca kotadan düşmeyen internet, abonelik değil."
+   "kaynak_notu": "Fiyat resmi sayfada tarayıcıyla doğrulandı (2026-11-16, 12 fatura dönemi). YouTube Premium yalnızca ilk 3 ay ücretsiz (kampanya); sonrasında pakette değil. Bu yüzden kesin değil, 'muhtemel' uyarı verir. Fiyat 12 dönem taahhütlü (taahhütsüz 2.070 TL); sayfa içeriği JS ile yükleniyor. Netflix/Spotify/Prime ifadeleri yalnızca kotadan düşmeyen internet, abonelik değil."
   },
   {
    "id": "vodafone-red-60gb",
@@ -1074,10 +1108,10 @@
     }
    ],
    "kaynak": "https://www.vodafone.com.tr/red",
-   "kontrol_tarihi": "2026-11-15",
+   "kontrol_tarihi": "2026-11-16",
    "dogrulandi": false,
    "izleme_url": null,
-   "kaynak_notu": "YouTube Premium yalnızca ilk 3 ay ücretsiz (kampanya); sonrasında pakette değil. Bu yüzden kesin değil, 'muhtemel' uyarı verir. Fiyat 12 dönem taahhütlü (taahhütsüz 2.780 TL); sayfa içeriği JS ile yükleniyor. Netflix/Spotify/Prime ifadeleri yalnızca kotadan düşmeyen internet, abonelik değil."
+   "kaynak_notu": "Fiyat resmi sayfada tarayıcıyla doğrulandı (2026-11-16, 12 fatura dönemi). YouTube Premium yalnızca ilk 3 ay ücretsiz (kampanya); sonrasında pakette değil. Bu yüzden kesin değil, 'muhtemel' uyarı verir. Fiyat 12 dönem taahhütlü (taahhütsüz 2.780 TL); sayfa içeriği JS ile yükleniyor. Netflix/Spotify/Prime ifadeleri yalnızca kotadan düşmeyen internet, abonelik değil."
   },
   {
    "id": "vodafone-red-100gb",
@@ -1092,10 +1126,10 @@
     }
    ],
    "kaynak": "https://www.vodafone.com.tr/red",
-   "kontrol_tarihi": "2026-11-15",
+   "kontrol_tarihi": "2026-11-16",
    "dogrulandi": false,
    "izleme_url": null,
-   "kaynak_notu": "YouTube Premium yalnızca ilk 3 ay ücretsiz (kampanya); sonrasında pakette değil. Bu yüzden kesin değil, 'muhtemel' uyarı verir. Fiyat 12 dönem taahhütlü (taahhütsüz 3.040 TL); sayfa içeriği JS ile yükleniyor. Netflix/Spotify/Prime ifadeleri yalnızca kotadan düşmeyen internet, abonelik değil."
+   "kaynak_notu": "Fiyat resmi sayfada tarayıcıyla doğrulandı (2026-11-16, 12 fatura dönemi). YouTube Premium yalnızca ilk 3 ay ücretsiz (kampanya); sonrasında pakette değil. Bu yüzden kesin değil, 'muhtemel' uyarı verir. Fiyat 12 dönem taahhütlü (taahhütsüz 3.040 TL); sayfa içeriği JS ile yükleniyor. Netflix/Spotify/Prime ifadeleri yalnızca kotadan düşmeyen internet, abonelik değil."
   }
  ]
 }
