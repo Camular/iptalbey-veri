@@ -76,6 +76,30 @@ function Invoke-Komut {
     return $islem.ExitCode
 }
 
+function Start-ActionsKontrol {
+    <# GitHub Actions zamanlamasi (cron) 2026-11-16/17 hic calismadi (KR-023).
+       Bugun Actions'ta fiyat kontrolu yoksa bu bilgisayardan tetiklenir.
+       Ayni gun ikinci kosu sayaclari artirmaz; hata durumunda yerel kosu etkilenmez. #>
+    param([string]$Klasor)
+    try {
+        $gh = Get-Command gh -ErrorAction Stop | Select-Object -First 1 -ExpandProperty Source
+        $bugun = (Get-Date).ToUniversalTime().ToString('yyyy-MM-dd')
+        Push-Location $Klasor
+        try {
+            $tarihler = & $gh run list --workflow fiyat-kontrol.yml --limit 10 --json createdAt --jq '.[].createdAt' 2>$null
+        }
+        finally { Pop-Location }
+        if (@($tarihler | Where-Object { $_ -like "$bugun*" }).Count -gt 0) {
+            Write-Log 'Actions fiyat kontrolu bugun zaten calismis; tetiklenmedi.'
+            return
+        }
+        $ghKod = Invoke-Komut $gh @('workflow', 'run', 'fiyat-kontrol.yml') $Klasor
+        if ($ghKod -ne 0) { Write-Log "UYARI: Actions tetiklenemedi (gh cikis kodu $ghKod)." }
+        else { Write-Log 'Actions fiyat kontrolu tetiklendi.' }
+    }
+    catch { Write-Log ('UYARI: Actions tetikleme atlandi: ' + $_.Exception.Message) }
+}
+
 $kod = 9
 try {
     Write-Log ("=== IptalBey yerel fiyat kontrolu basladi: " + (Get-Date -Format 'yyyy-MM-dd HH:mm:ss') + " ===")
@@ -121,6 +145,7 @@ try {
                 }
                 $kod = Invoke-Komut $python @('scripts/fiyat_kontrol.py', '--yerel') $KlonYolu
                 if ($kod -eq 2) { Write-Log 'HATA: GEMINI_API_KEY tanimli degil; kontrol yapilmadi.' }
+                Start-ActionsKontrol $KlonYolu
             }
         }
     }
