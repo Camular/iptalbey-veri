@@ -1,0 +1,14 @@
+# Yalnız güvenlik: open-pull-requests-limit 0 sürüm güncelleme PR'larını kapatır,
+# güvenlik güncellemeleri (ayrı limit) açık kalır.
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 0
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 0
