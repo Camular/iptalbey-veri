@@ -1,9 +1,9 @@
 {
  "kaynaklar": {
   "https://www.amazon.com.tr/gp/help/customer/display.html?nodeId=G34EUPKVMYFW8N2U": {
-   "ardisik": 2,
+   "ardisik": 3,
    "ilk_hata": "2026-11-20",
-   "son_hata": "2026-11-21",
+   "son_hata": "2026-11-22",
    "neden": "HTTP 403"
   }
  },
