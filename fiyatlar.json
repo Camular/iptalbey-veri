@@ -1,7 +1,7 @@
 {
  "sema_surumu": 1,
- "surum": 2,
- "guncelleme": "2026-11-16",
+ "surum": 3,
+ "guncelleme": "2026-11-23",
  "servisler": [
   {
    "id": "netflix",
@@ -431,7 +431,7 @@
      "onceki_fiyat_tl": null,
      "gecerlilik": null,
      "kaynak": "https://www.todtv.com.tr/satinal",
-     "kontrol_tarihi": "2026-11-16",
+     "kontrol_tarihi": "2026-11-23",
      "dogrulandi": true,
      "kaynak_notu": "Resmi paket sayfası (tarayıcıyla, 2026-11-16): aylık ödemeli Eğlence Paketi ilk ay 9 TL, sonraki aylar 169 TL. Önceki 129 TL, 12 ay taahhütlü yıllık paketin aylık taksitiydi (veri hatası düzeltmesi). Sayfa JS ile yükleniyor; bot okuyamaz.",
      "izleme_url": null,
@@ -448,9 +448,128 @@
      "onceki_fiyat_tl": null,
      "gecerlilik": null,
      "kaynak": "https://www.todtv.com.tr/satinal",
-     "kontrol_tarihi": "2026-11-16",
+     "kontrol_tarihi": "2026-11-23",
      "dogrulandi": true,
      "kaynak_notu": "Resmi paket sayfası (tarayıcıyla, 2026-11-16): 'Spor Dünyası Paketi' aylık ödemeli 350 TL (eski haberlerde 'Spor Extra'). Yıllık paket 229 TL/ay x12. Sayfa JS ile yükleniyor; bot okuyamaz.",
+     "izleme_url": null,
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "eglence-yillik",
+     "ad": "Eğlence (yıllık, 12 taksit)",
+     "seviye": 1,
+     "fiyat_tl": 129,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.todtv.com.tr/satinal",
+     "kontrol_tarihi": "2026-11-23",
+     "dogrulandi": true,
+     "kaynak_notu": "Resmi paket sayfası (tarayıcıyla, 2026-11-23): 'Eğlence Paketi … Yıllık Paket … 129₺/Ayda 12 TAKSİTLE'; yıllık paket, 12 ay, 12 taksit; iptal/iade hakkı yok. Sayfa JS ile yükleniyor; bot okuyamaz.",
+     "izleme_url": null,
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "spor-dunyasi-yillik",
+     "ad": "Spor Dünyası (yıllık, 12 taksit)",
+     "seviye": 2,
+     "fiyat_tl": 229,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.todtv.com.tr/satinal",
+     "kontrol_tarihi": "2026-11-23",
+     "dogrulandi": true,
+     "kaynak_notu": "Resmi paket sayfası (tarayıcıyla, 2026-11-23): 'Spor Dünyası Paketi … Yıllık Paket … 229₺/Ayda 12 TAKSİTLE'; yıllık paket, 12 ay, 12 taksit; iptal/iade hakkı yok. Sayfa JS ile yükleniyor; bot okuyamaz.",
+     "izleme_url": null,
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "taraftar-sezonluk",
+     "ad": "Taraftar (sezonluk, 9 taksit)",
+     "seviye": 3,
+     "fiyat_tl": 419,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.todtv.com.tr/satinal",
+     "kontrol_tarihi": "2026-11-23",
+     "dogrulandi": true,
+     "kaynak_notu": "Resmi paket sayfası (tarayıcıyla, 2026-11-23): 'Taraftar Paketi … Sezonluk Paket … 419₺/Ayda 9 TAKSİTLE'; tuttuğun takımın Süper Lig maçları; sezonluk paket, 2026-2027 sezonu sonuna kadar, 9 taksit; iptal/iade hakkı yok. Sayfa JS ile yükleniyor; bot okuyamaz.",
+     "izleme_url": null,
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "super-lig",
+     "ad": "Süper Lig (aylık)",
+     "seviye": 4,
+     "fiyat_tl": 1590,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.todtv.com.tr/satinal",
+     "kontrol_tarihi": "2026-11-23",
+     "dogrulandi": true,
+     "kaynak_notu": "Resmi paket sayfası (tarayıcıyla, 2026-11-23): 'Süper Lig Paketi … Aylık Ödemeli Paket … Dilediğin zaman iptal et … 1590₺/Aylık'. Sayfa JS ile yükleniyor; bot okuyamaz.",
+     "izleme_url": null,
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "super-lig-sezonluk",
+     "ad": "Süper Lig (sezonluk, 9 taksit)",
+     "seviye": 4,
+     "fiyat_tl": 479,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.todtv.com.tr/satinal",
+     "kontrol_tarihi": "2026-11-23",
+     "dogrulandi": true,
+     "kaynak_notu": "Resmi paket sayfası (tarayıcıyla, 2026-11-23): 'Süper Lig Paketi … Sezonluk Paket … 479₺/Ayda 9 TAKSİTLE'; sezonluk paket, 2026-2027 sezonu sonuna kadar, 9 taksit; iptal/iade hakkı yok. Sayfa JS ile yükleniyor; bot okuyamaz.",
+     "izleme_url": null,
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "super-dolu-sezonluk",
+     "ad": "Süper Dolu (sezonluk, 9 taksit)",
+     "seviye": 5,
+     "fiyat_tl": 529,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.todtv.com.tr/satinal",
+     "kontrol_tarihi": "2026-11-23",
+     "dogrulandi": true,
+     "kaynak_notu": "Resmi paket sayfası (tarayıcıyla, 2026-11-23): 'Süper Dolu Paketi … Sezonluk Paket … 529₺/Ayda 9 TAKSİTLE'; sezonluk paket, 2026-2027 sezonu sonuna kadar, 9 taksit; iptal/iade hakkı yok. Sayfa JS ile yükleniyor; bot okuyamaz.",
+     "izleme_url": null,
+     "degisim_turu": null,
+     "degisim_surumu": null
+    },
+    {
+     "id": "genc-super-dolu-sezonluk",
+     "ad": "Genç Süper Dolu (18-24 yaş, sezonluk, 9 taksit)",
+     "seviye": 5,
+     "fiyat_tl": 259,
+     "periyot": "aylik",
+     "ogrenci": false,
+     "onceki_fiyat_tl": null,
+     "gecerlilik": null,
+     "kaynak": "https://www.todtv.com.tr/satinal",
+     "kontrol_tarihi": "2026-11-23",
+     "dogrulandi": true,
+     "kaynak_notu": "Resmi paket sayfası (tarayıcıyla, 2026-11-23): '18-24 Yaş Arası Gençlere … Genç Süper Dolu Paketi … 259₺/Ayda 9 TAKSİTLE'; sezonluk paket, 2026-2027 sezonu sonuna kadar, 9 taksit; iptal/iade hakkı yok. Sayfa JS ile yükleniyor; bot okuyamaz.",
      "izleme_url": null,
      "degisim_turu": null,
      "degisim_surumu": null
@@ -850,11 +969,11 @@
    "icerir": [
     {
      "servis": "netflix",
-     "plan": "temel"
+     "plan": "premium"
     },
     {
      "servis": "hbo-max",
-     "plan": null
+     "plan": "standart"
     },
     {
      "servis": "amazon-prime",
@@ -866,10 +985,10 @@
     }
    ],
    "kaynak": "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one/turkcell-one-star",
-   "kontrol_tarihi": "2026-11-15",
+   "kontrol_tarihi": "2026-11-23",
    "dogrulandi": true,
    "izleme_url": "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one/turkcell-one-star",
-   "kaynak_notu": "12 ay taahhütlü fiyat (taahhütsüz 750 TL). Sayfada hem 'Netflix Basic' hem 'Netflix Premium' geçiyor; SSS'ye göre Temel (1 cihaz HD) alındı."
+   "kaynak_notu": "12 ay taahhütlü fiyat. 2026-11-23 resmi sayfa: taahhütlü kutuda 'Paket ücreti 500TL’dir. Üyelikte TV+, Amazon Prime, Netflix Premium, YouTube Premium(Bireysel)…'; taahhütsüz (750 TL) kutuda Netflix Basic. Fiyat 500 TL taahhütlü olduğu için Netflix Premium alındı (önceki kayıt Temel'di; SSS hâlâ Basic diyor). TV+ içinde HBO Max Standart (sayfanın SSS'si: 'HBO Max platformunda standard plana erişim')."
   },
   {
    "id": "turkcell-one-plus",
@@ -914,7 +1033,7 @@
     },
     {
      "servis": "hbo-max",
-     "plan": null
+     "plan": "standart"
     },
     {
      "servis": "amazon-prime",
@@ -926,10 +1045,10 @@
     }
    ],
    "kaynak": "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one/turkcell-one-premium",
-   "kontrol_tarihi": "2026-11-15",
+   "kontrol_tarihi": "2026-11-23",
    "dogrulandi": true,
    "izleme_url": "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one/turkcell-one-premium",
-   "kaynak_notu": "12 ay taahhütlü fiyat (taahhütsüz 950 TL)."
+   "kaynak_notu": "12 ay taahhütlü fiyat (taahhütsüz 950 TL). 2026-11-23: fiyat ve içerik resmi sayfada aynı. TV+ içinde HBO Max Standart (sayfanın SSS'si: 'HBO Max platformunda standard plana erişim')."
   },
   {
    "id": "turkcell-one-elite",
@@ -978,7 +1097,7 @@
     },
     {
      "servis": "hbo-max",
-     "plan": null
+     "plan": "standart"
     },
     {
      "servis": "amazon-prime",
@@ -994,10 +1113,10 @@
     }
    ],
    "kaynak": "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one/turkcell-one-ekstra",
-   "kontrol_tarihi": "2026-11-15",
+   "kontrol_tarihi": "2026-11-23",
    "dogrulandi": true,
    "izleme_url": "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one/turkcell-one-ekstra",
-   "kaynak_notu": "12 ay taahhütlü (taahhütsüz 900 TL). Yeni abone alımı 21.09.2026'da kapandı; mevcut aboneler için tutuluyor."
+   "kaynak_notu": "12 ay taahhütlü (taahhütsüz 900 TL). Yeni abone alımı 21.09.2026'da kapandı; mevcut aboneler için tutuluyor. 2026-11-23: fiyat ve içerik resmi sayfada aynı. TV+ içinde HBO Max Standart (sayfanın SSS'si: 'HBO Max platformunda standard plana erişim')."
   },
   {
    "id": "turkcell-one-mega",
@@ -1130,6 +1249,24 @@
    "dogrulandi": false,
    "izleme_url": null,
    "kaynak_notu": "Fiyat resmi sayfada tarayıcıyla doğrulandı (2026-11-16, 12 fatura dönemi). YouTube Premium yalnızca ilk 3 ay ücretsiz (kampanya); sonrasında pakette değil. Bu yüzden kesin değil, 'muhtemel' uyarı verir. Fiyat 12 dönem taahhütlü (taahhütsüz 3.040 TL); sayfa içeriği JS ile yükleniyor. Netflix/Spotify/Prime ifadeleri yalnızca kotadan düşmeyen internet, abonelik değil."
+  },
+  {
+   "id": "turk-telekom-prime-netflix-60gb",
+   "operator": "Türk Telekom",
+   "ad": "Prime Netflix 60GB",
+   "fiyat_tl": 1010,
+   "periyot": "aylik",
+   "icerir": [
+    {
+     "servis": "netflix",
+     "plan": "premium"
+    }
+   ],
+   "kaynak": "https://bireysel.turktelekom.com.tr/mobil/yeni-musteri-tarife-ve-paketleri/faturali-tarifeler/prime-netflix-60gb",
+   "kontrol_tarihi": "2026-11-23",
+   "dogrulandi": true,
+   "izleme_url": null,
+   "kaynak_notu": "Resmi sayfa (tarayıcıyla, 2026-11-23): 'Prime Netflix 60 GB Tarifesi 1.010 TL | Netflix Premium Paket | İlk 6 Ay Ücretsiz | Sonraki 6 ay 499,99 TL'; 12 fatura dönemi taahhütlü, telsiz ücreti hariç. Netflix Premium tarifeye bağlı ve faturadan ödenir: ilk 6 ay tarife ücretine dahil, sonraki 6 ay faturaya ayrıca 499,99 TL eklenir. Yalnız yeni hat / numara taşıma. Sayfa JS ile yükleniyor."
   }
  ]
 }
