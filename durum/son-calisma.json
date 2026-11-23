@@ -1,7 +1,7 @@
 {
- "tarih": "2026-11-16",
+ "tarih": "2026-11-23",
  "kontrol_edilen_kaynak": 13,
  "toplam_kaynak": 13,
- "hata": 0,
+ "hata": 6,
  "model": "gemini-3.5-flash-lite"
 }
