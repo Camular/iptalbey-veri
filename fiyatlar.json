@@ -1264,9 +1264,9 @@
    ],
    "kaynak": "https://bireysel.turktelekom.com.tr/mobil/yeni-musteri-tarife-ve-paketleri/faturali-tarifeler/prime-netflix-60gb",
    "kontrol_tarihi": "2026-11-23",
-   "dogrulandi": true,
+   "dogrulandi": false,
    "izleme_url": null,
-   "kaynak_notu": "Resmi sayfa (tarayıcıyla, 2026-11-23): 'Prime Netflix 60 GB Tarifesi 1.010 TL | Netflix Premium Paket | İlk 6 Ay Ücretsiz | Sonraki 6 ay 499,99 TL'; 12 fatura dönemi taahhütlü, telsiz ücreti hariç. Netflix Premium tarifeye bağlı ve faturadan ödenir: ilk 6 ay tarife ücretine dahil, sonraki 6 ay faturaya ayrıca 499,99 TL eklenir. Yalnız yeni hat / numara taşıma. Sayfa JS ile yükleniyor."
+   "kaynak_notu": "Fiyat resmi sayfada tarayıcıyla doğrulandı (2026-11-23, 12 fatura dönemi; telsiz ücreti hariç, taahhütsüz 2.250 TL). Netflix Premium yalnızca ilk 6 ay ücretsiz (tarifeye dahil); sonraki 6 ay faturaya ayrıca 499,99 TL eklenir, yani sonrasında pakete dahil değil. Bu yüzden kesin değil, 'muhtemel' uyarı verir. Sayfa: 'Prime Netflix 60 GB Tarifesi 1.010 TL | Netflix Premium Paket | İlk 6 Ay Ücretsiz | Sonraki 6 ay 499,99 TL'. Yalnız yeni hat / numara taşıma; sayfa içeriği JS ile yükleniyor."
   }
  ]
 }
