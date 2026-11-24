@@ -61,7 +61,7 @@ CONFIDENCE_THRESHOLD = 0.8
 HALLUCINATION_CONFIDENCE = 0.5
 UNUSUAL_INCREASE_PCT = 200.0
 ERROR_ISSUE_DAYS = 3
-STALE_PR_DAYS = 7
+STALE_PR_DAYS = 2  # açık fiyat PR'ı bu kadar gündür bekliyorsa her gün kontrol edilip hatırlatılır
 MAX_TEXT_CHARS = 30_000
 GEMINI_MIN_INTERVAL = 6.0  # saniye; ≤ 10 istek/dakika
 WINDOW_CHARS = 200
@@ -72,7 +72,12 @@ DEFAULT_MODELS = (
     "gemini-3-flash-preview",
     "gemini-2.5-flash-lite",
 )
-GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+# Yedek model: birincil model geçici hata (429/5xx) ya da kota hatası verince aynı anahtarla
+# denenir; ayrı kotası vardır. Kaynak (2026-11-24 doğrulandı): Google'ın model listesi
+# https://ai.google.dev/gemini-api/docs/models ("Stable") ve fiyat sayfası
+# https://ai.google.dev/gemini-api/docs/pricing (Free tier: "Free of charge").
+FALLBACK_MODEL = "gemini-3.8-flash"
+GEMINI_URL ="https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 
 HTTP_HEADERS = {
     "User-Agent": (
@@ -789,12 +794,24 @@ def to_openapi_schema(schema: Any) -> Any:
     return out
 
 
+# Gemini hata türleri: issue metni ve yedek model kararı buna göre seçilir.
+KIND_TRANSIENT = "gecici"  # 429 (dakika sınırı), 5xx, bağlantı — genelde kendiliğinden geçer
+KIND_QUOTA = "kota"  # günlük kota doldu ya da model ücretsiz katmanda yok (limit: 0)
+KIND_KEY = "anahtar"  # anahtar geçersiz/yetkisiz (400 API key, 401, 403) — kullanıcı K3
+KIND_OTHER = "diger"  # model yok, JSON olmayan yanıt vb.
+TRANSIENT_CODES = (429, 500, 502, 503, 504)
+
+
 class GeminiUnavailable(Exception):
     """Mesaj kısa ve issue'ya yazılabilir (HTTP kodu + model); ayrıntı yalnız loga."""
 
-    def __init__(self, message: str, detail: str = "") -> None:
+    def __init__(
+        self, message: str, detail: str = "", kind: str = KIND_OTHER, model: str | None = None
+    ) -> None:
         super().__init__(message)
         self.detail = detail
+        self.kind = kind
+        self.model = model
 
 
 def _error_message(resp: requests.Response) -> str:
@@ -802,6 +819,18 @@ def _error_message(resp: requests.Response) -> str:
         return str(resp.json().get("error", {}).get("message", ""))[:300]
     except ValueError:
         return resp.text[:300]
+
+
+def classify_error(status: int, raw: str) -> str:
+    """HTTP kodu + ham yanıt metninden (mesaj + ayrıntılar, ör. quotaId) hata türü."""
+    m = raw.lower()
+    if status in (401, 403) or (status == 400 and ("api key" in m or "api_key" in m)):
+        return KIND_KEY
+    if status == 429 and ("perday" in m or "per day" in m or "limit: 0" in m):
+        return KIND_QUOTA
+    if status in TRANSIENT_CODES:
+        return KIND_TRANSIENT
+    return KIND_OTHER
 
 
 def _model_missing(msg: str) -> bool:
@@ -827,6 +856,14 @@ def parse_gemini_response(data: dict) -> dict:
 
 
 class GeminiClient:
+    """Birincil model listesi (ilk çalışan hatırlanır) + isteğe bağlı yedek model.
+
+    Yedek model yalnız birincil model geçici hata ya da kota hatası verince (yeniden
+    denemeden sonra) ya da hiçbir birincil model bulunamayınca, aynı anahtarla denenir.
+    Anahtar hatasında (401/403) yedek denenmez ve sonraki çağrılar istek atmadan aynı
+    hatayı verir (aynı anahtar; boşuna istek atılmaz).
+    """
+
     def __init__(
         self,
         api_key: str,
@@ -836,6 +873,7 @@ class GeminiClient:
         retry_wait: float = 20.0,
         min_interval: float = 0.0,
         clock: Callable[[], float] = time.monotonic,
+        fallback_model: str | None = None,
     ) -> None:
         self._api_key = api_key
         self.min_interval = min_interval  # ücretsiz katmanın dakika başı sınırı için
@@ -845,7 +883,12 @@ class GeminiClient:
         self.session = session or requests.Session()
         self.sleep = sleep
         self.retry_wait = retry_wait
-        self.model: str | None = None
+        self.model: str | None = None  # çalıştığı bilinen birincil model
+        self.fallback_model = fallback_model if fallback_model not in self.models else None
+        self.last_model: str | None = None  # son yanıtı veren model (birincil ya da yedek)
+        self.fallback_answers = 0  # yedek modelin yanıt verdiği çağrı sayısı
+        self._exhausted: set[str] = set()  # bugün kotası dolan modeller (yeniden denenmez)
+        self._fatal: GeminiUnavailable | None = None
         self._schema_field = "responseJsonSchema"
 
     def _post(self, model: str, prompt: str, schema: dict) -> requests.Response:
@@ -870,36 +913,101 @@ class GeminiClient:
                 if attempt == 0:
                     self.sleep(self.retry_wait)
                     continue
-                raise GeminiUnavailable(f"bağlantı hatası ({type(exc).__name__})") from None
-            if resp.status_code in (429, 500, 502, 503, 504) and attempt == 0:
-                self.sleep(self.retry_wait)
+                raise GeminiUnavailable(
+                    f"bağlantı hatası ({type(exc).__name__}, {model})", kind=KIND_TRANSIENT, model=model
+                ) from None
+            if (
+                attempt == 0
+                and resp.status_code in TRANSIENT_CODES
+                and classify_error(resp.status_code, resp.text) == KIND_TRANSIENT
+            ):
+                self.sleep(self.retry_wait)  # günlük kota dolduysa beklemek boşuna
                 continue
             return resp
         assert resp is not None
         return resp
 
-    def generate_json(self, prompt: str, schema: dict) -> dict:
-        models = [self.model] if self.model else list(self.models)
-        missing: list[str] = []
-        for model in models:
+    def _try_model(self, model: str, prompt: str, schema: dict) -> dict | None:
+        """Yanıt sözlüğü; model yoksa None; diğer hatalarda GeminiUnavailable."""
+        resp = self._post(model, prompt, schema)
+        msg = _error_message(resp) if resp.status_code != 200 else ""
+        if (
+            resp.status_code == 400
+            and self._schema_field == "responseJsonSchema"
+            and ("response_json_schema" in msg or "responseJsonSchema" in msg)
+        ):
+            self._schema_field = "responseSchema"
             resp = self._post(model, prompt, schema)
             msg = _error_message(resp) if resp.status_code != 200 else ""
-            if (
-                resp.status_code == 400
-                and self._schema_field == "responseJsonSchema"
-                and ("response_json_schema" in msg or "responseJsonSchema" in msg)
-            ):
-                self._schema_field = "responseSchema"
-                resp = self._post(model, prompt, schema)
-                msg = _error_message(resp) if resp.status_code != 200 else ""
-            if resp.status_code == 200:
-                self.model = model
-                return parse_gemini_response(resp.json())
-            if resp.status_code == 404 or (resp.status_code == 400 and _model_missing(msg)):
+        if resp.status_code == 200:
+            return parse_gemini_response(resp.json())
+        kind = classify_error(resp.status_code, resp.text)
+        if kind != KIND_KEY and (resp.status_code == 404 or (resp.status_code == 400 and _model_missing(msg))):
+            return None
+        if kind == KIND_QUOTA:
+            self._exhausted.add(model)
+        raise GeminiUnavailable(f"HTTP {resp.status_code} ({model})", detail=msg, kind=kind, model=model)
+
+    def _primary(self, prompt: str, schema: dict) -> dict:
+        models = [self.model] if self.model else list(self.models)
+        models = [m for m in models if m not in self._exhausted]
+        if not models:
+            raise GeminiUnavailable("birincil modelin bugünkü kotası doldu", kind=KIND_QUOTA)
+        missing: list[str] = []
+        for model in models:
+            result = self._try_model(model, prompt, schema)
+            if result is None:
                 missing.append(model)
                 continue
-            raise GeminiUnavailable(f"HTTP {resp.status_code} ({model})", detail=msg)
-        raise GeminiUnavailable("çalışan model bulunamadı (denenen: " + ", ".join(missing) + ")")
+            self.model = model
+            return result
+        raise GeminiUnavailable(
+            "çalışan model bulunamadı (denenen: " + ", ".join(missing) + ")", kind=KIND_OTHER
+        )
+
+    def generate_json(self, prompt: str, schema: dict) -> dict:
+        if self._fatal is not None:
+            raise self._fatal
+        self.last_model = None
+        try:
+            result = self._primary(prompt, schema)
+        except GeminiUnavailable as exc:
+            if exc.kind == KIND_KEY:
+                self._fatal = exc
+                raise
+            fallback = self.fallback_model
+            no_primary = exc.model is None and str(exc).startswith("çalışan model bulunamadı")
+            if (
+                not fallback
+                or fallback in self._exhausted
+                or not (exc.kind in (KIND_TRANSIENT, KIND_QUOTA) or no_primary)
+            ):
+                raise
+            try:
+                result = self._try_model(fallback, prompt, schema)
+            except GeminiUnavailable as exc2:
+                if exc2.kind == KIND_KEY:
+                    self._fatal = exc2
+                    raise
+                kinds = {exc.kind, exc2.kind}
+                if kinds == {KIND_QUOTA}:
+                    kind = KIND_QUOTA
+                elif KIND_TRANSIENT in kinds:
+                    kind = KIND_TRANSIENT
+                else:
+                    kind = exc.kind
+                raise GeminiUnavailable(
+                    f"{exc}; yedek model: {exc2}",
+                    detail=" | ".join(d for d in (exc.detail, exc2.detail) if d),
+                    kind=kind,
+                ) from None
+            if result is None:
+                raise GeminiUnavailable(f"{exc}; yedek model ({fallback}) bulunamadı", kind=exc.kind) from None
+            self.last_model = fallback
+            self.fallback_answers += 1
+            return result
+        self.last_model = self.model
+        return result
 
 
 def build_prompt(url: str, targets: list[Target], page_text: str, boundary: str | None = None) -> str:
@@ -1379,7 +1487,7 @@ class GitHub:
     def open_issues(self) -> list[dict]:
         if self.dry_run:
             return []
-        out = self._gh("issue", "list", "--state", "open", "--limit", "300", "--json", "number,title,body")
+        out = self._gh("issue", "list", "--state", "open", "--limit", "300", "--json", "number,title,body,labels")
         return json.loads(out or "[]")
 
     def create_issue(self, title: str, body: str) -> None:
@@ -1391,6 +1499,12 @@ class GitHub:
         if ASSIGNEE:
             args += ["--assignee", ASSIGNEE]
         self._gh(*args, body=body)
+
+    def close_issue(self, number: int, comment: str) -> None:
+        if self.dry_run:
+            self.log(f"[dry-run] issue #{number} kapatılırdı")
+            return
+        self._gh("issue", "close", str(number), "--comment", comment)
 
     def edit_issue(self, number: int, body: str) -> None:
         if self.dry_run:
@@ -1606,6 +1720,7 @@ class IssueTracker:
         self.created: list[str] = []
         self.skipped: list[str] = []
         self.updated: list[str] = []
+        self.closed: list[str] = []
 
     def _issues(self) -> dict[str, dict]:
         if self._open is None:
@@ -1647,6 +1762,38 @@ class IssueTracker:
                 return
             existing["body"] = body
             self.updated.append(title)
+
+    def matching(self, pattern: re.Pattern) -> list[str]:
+        """Açık issue başlıklarından desene uyanlar (liste okunamazsa boş)."""
+        try:
+            return [t for t in self._issues() if pattern.match(t)]
+        except Exception as exc:
+            self._error("issue listesi okunamadı", exc)
+            return []
+
+    def close(self, title: str, comment: str) -> bool:
+        """Sorun düzelince botun kendi issue'sunu yorumla kapatır.
+
+        Yalnız açık, numarası bilinen ve `fiyat-kontrol` etiketli issue kapatılır.
+        """
+        try:
+            existing = self._issues().get(title)
+        except Exception as exc:
+            self._error(f"issue listesi okunamadı: {title}", exc)
+            return False
+        if existing is None or not existing.get("number"):
+            return False
+        labels = {str((lb or {}).get("name")) for lb in existing.get("labels") or []}
+        if ISSUE_LABEL not in labels:
+            return False
+        try:
+            self.gh.close_issue(int(existing["number"]), comment)
+        except Exception as exc:
+            self._error(f"issue kapatılamadı: {title}", exc)
+            return False
+        self._issues().pop(title, None)
+        self.closed.append(title)
+        return True
 
 
 # --------------------------------------------------------------------------
@@ -1707,6 +1854,11 @@ class SourceResult:
     price_samples: list[str] = field(default_factory=list)
     snippets: list[str] = field(default_factory=list)
     findings: list[Finding] = field(default_factory=list)
+    model: str | None = None  # yanıtı veren Gemini modeli (birincil ya da yedek)
+
+
+REMINDER_RE = re.compile(r"^Hatırlatma: fiyat PR'ı #(\d+) ")
+LOCAL_STALE_TITLE = "Otomasyon: yerel fiyat kontrolü çalışmıyor"
 
 
 class Runner:
@@ -1751,6 +1903,8 @@ class Runner:
         self.results: list[SourceResult] = []
         self.pr_note = ""
         self.gemini_errors: list[str] = []
+        self.gemini_error_kinds: list[str] = []
+        self.fallback_sources: list[str] = []  # yedek modelin yanıt verdiği kaynaklar
         self.errors = 0
         self.suppressed_log: list[str] = []
         self._suppressed: set[tuple[str, float]] | None = None
@@ -1770,7 +1924,71 @@ class Runner:
         footer = f"\n\n---\n_Otomatik: {who}, {self.today}"
         if self.gemini is not None and self.gemini.model:
             footer += f", model `{self.gemini.model}`"
+        if self.fallback_sources:
+            footer += f", yedek model `{self._fallback_name()}` ({len(self.fallback_sources)} kaynak)"
         return "\n".join(lines) + footer + "_"
+
+    def _fallback_name(self) -> str | None:
+        return getattr(self.gemini, "fallback_model", None)
+
+    def _answer_model(self) -> str | None:
+        """Son Gemini yanıtını veren model (yedek model devreye girdiyse o)."""
+        return getattr(self.gemini, "last_model", None) or getattr(self.gemini, "model", None)
+
+    def _gemini_titles(self) -> dict[str, str]:
+        prefix = "Otomasyon (yerel): " if self.is_local else "Otomasyon: "
+        return {
+            KIND_KEY: prefix + "Gemini anahtarı çalışmıyor",
+            KIND_QUOTA: prefix + "Gemini günlük kotası doldu",
+            KIND_OTHER: prefix + "Gemini erişilemedi",
+        }
+
+    def _gemini_issue_body(self, kind: str, what: str, errors: list[str]) -> str:
+        shown = errors[:5] + ([f"- … ve {len(errors) - 5} kaynak daha"] if len(errors) > 5 else [])
+        detail = ["", "Ayrıntı:", *shown] if shown else []
+        safe = [
+            "",
+            "**Fiyatlar etkilenmez:** uygulamadaki fiyatlar yalnız senin onayladığın PR ile değişir; "
+            "bu sürede yanlış fiyat gösterilmez. En kötü ihtimalle bir zam geç fark edilir. Bot bu arada "
+            "sayfalardaki fiyat ifadeleri değişti mi diye bakmaya devam eder (yedek plan).",
+            "",
+            "Sorun düzelince bot bu issue'yu kendisi kapatır.",
+        ]
+        if kind == KIND_KEY:
+            where = (
+                "bilgisayardaki `GEMINI_API_KEY` ortam değişkenini yeni anahtarla değiştir: "
+                '`setx GEMINI_API_KEY "<yeni anahtar>"`, sonra Windows oturumunu kapatıp aç.'
+                if self.is_local
+                else "bu depoda Settings → Secrets and variables → Actions → `GEMINI_API_KEY` "
+                "değerini yeni anahtarla güncelle."
+            )
+            body = [
+                f"**Ne oldu:** {what} Gemini anahtarı geçersiz, silinmiş ya da yetkisi kalmamış "
+                "(HTTP 400/401/403). Bu düzelmeden bot fiyat sayfalarını Gemini ile okuyamaz.",
+                "",
+                "**Yapman gereken (K3, `docs/kullanici-gorevleri.md`):**",
+                "1. aistudio.google.com → API key → yeni anahtar oluştur (ücretsiz katman, faturalandırma yok).",
+                f"2. {where}",
+                "3. Anahtarı sohbete, issue'ya ya da bir dosyaya yapıştırma.",
+            ]
+        elif kind == KIND_QUOTA:
+            body = [
+                f"**Ne oldu:** {what} Gemini'nin günlük ücretsiz kotası doldu (birincil ve yedek model).",
+                "",
+                "**Yapman gereken:** genelde bir şey gerekmez; kota her gün yenilenir (TR saatiyle 10:00–11:00 "
+                "arası). Birkaç gün üst üste sürerse aistudio.google.com'da kullanım ve limit sayfasına bak (K3).",
+            ]
+        else:
+            body = [
+                f"**Ne oldu:** {what} Gemini yanıt vermedi (yoğunluk, bağlantı ya da model sorunu); "
+                "birincil ve yedek model denendi.",
+                "",
+                "**Yapman gereken:** genelde bir şey gerekmez, bot ertesi gün yeniden dener.",
+            ]
+        return self._issue_body(*body, *detail, *safe)
+
+    def _unreadable_title(self, group: list[Target]) -> str:
+        return f"Manuel kontrol: {self._source_label(group)} fiyat sayfası okunamıyor"
 
     def _finding_lines(self, f: Finding) -> list[str]:
         t = f.target
@@ -1881,28 +2099,12 @@ class Runner:
                 except Exception as exc:
                     self._fail("açık PR'a uyarı yazılamadı", exc)
 
-        gemini_title = (
-            "Otomasyon (yerel): Gemini erişilemedi" if self.is_local else "Otomasyon: Gemini erişilemedi"
-        )
-        if self.gemini is None and groups and not self.dry_run:
-            self.issues.open(
-                gemini_title,
-                self._issue_body(
-                    f"Gemini çağrılamadı: {self.gemini_skip_reason}.",
-                    "Fiyatlar yalnızca yedek planla (sayfa fiyat özeti değişti mi) izlendi.",
-                ),
-            )
-        elif self.gemini_errors and len(self.gemini_errors) == sum(
-            1 for r in self.results if r.status in ("ok", "gemini-yok")
-        ):
-            self.issues.open(
-                gemini_title,
-                self._issue_body(
-                    "Bugün hiçbir kaynak için Gemini yanıtı alınamadı:",
-                    *[f"- {e}" for e in self.gemini_errors],
-                    "Fiyatlar yalnızca yedek planla izlendi.",
-                ),
-            )
+        self._gemini_issues(groups)
+        if not self.is_local:  # açık fiyat PR'ı hatırlatması her gün (yalnız Actions)
+            try:
+                self._remind_stale_prs()
+            except Exception as exc:
+                self._fail("açık PR hatırlatması yapılamadı", exc)
 
         if self.weekly and not self.is_local:  # haftalık işler yalnız Actions'ta
             try:
@@ -1924,6 +2126,8 @@ class Runner:
                 "toplam_kaynak": len(checked),
                 "hata": self.errors,
                 "model": self.gemini.model if self.gemini is not None else None,
+                "yedek_model": self._fallback_name(),
+                "yedek_model_yanit_veren_kaynak": len(self.fallback_sources),
             }
             if self._write(durum / heartbeat_name, heartbeat):
                 changed_files.append(f"durum/{heartbeat_name}")
@@ -1934,6 +2138,76 @@ class Runner:
             except Exception as exc:
                 self._fail("durum/ commit edilemedi", exc)
         return self.summary()
+
+    def _gemini_issues(self, groups: dict) -> None:
+        """Gemini hiç yanıt vermediyse türüne göre issue açar; yanıt verdiyse eskileri kapatır."""
+        titles = self._gemini_titles()
+        checked = [r for r in self.results if r.status in ("ok", "gemini-yok")]
+        answered = [r for r in checked if r.status == "ok"]
+        if self.gemini is None:
+            if groups and not self.dry_run:
+                self.issues.open(
+                    titles[KIND_KEY],
+                    self._gemini_issue_body(KIND_KEY, f"Gemini çağrılamadı: {self.gemini_skip_reason}.", []),
+                )
+            return
+        if self.gemini_errors and not answered:
+            kinds = set(self.gemini_error_kinds)
+            kind = KIND_KEY if KIND_KEY in kinds else (KIND_QUOTA if kinds == {KIND_QUOTA} else KIND_OTHER)
+            self.issues.open(
+                titles[kind],
+                self._gemini_issue_body(
+                    kind,
+                    "Bugün hiçbir kaynak için Gemini yanıtı alınamadı.",
+                    [f"- {e}" for e in self.gemini_errors],
+                ),
+            )
+            return
+        if not answered:
+            return
+        models = ", ".join(f"`{m}`" for m in dict.fromkeys(r.model for r in answered if r.model)) or "bilinmiyor"
+        comment = (
+            f"Sorun düzeldi: {self.today} koşusunda Gemini {len(checked)} kaynaktan {len(answered)} "
+            f"tanesini okudu (model: {models}). Bot bu issue'yu kendisi kapattı."
+        )
+        for title in titles.values():
+            self.issues.close(title, comment)
+        for r in answered:
+            self.issues.close(
+                self._unreadable_title(r.targets),
+                f"Kaynak {self.today} koşusunda yeniden okundu ve fiyatlar Gemini ile kontrol edildi "
+                "(fiyat değişmişse ayrıca PR ya da issue açılır). Bot bu issue'yu kendisi kapattı.",
+            )
+
+    def _remind_stale_prs(self) -> None:
+        prs = self.gh.open_prs()
+        open_numbers = {int(pr["number"]) for pr in prs}
+        reminded: dict[int, str] = {}
+        for title in self.issues.matching(REMINDER_RE):
+            m = REMINDER_RE.match(title)
+            assert m is not None
+            reminded[int(m.group(1))] = title
+        for number, title in reminded.items():
+            if number not in open_numbers:
+                self.issues.close(
+                    title,
+                    f"PR #{number} artık açık değil (birleşti ya da kapandı). Bot bu hatırlatmayı kapattı.",
+                )
+        for pr in prs:
+            if not str(pr.get("headRefName", "")).startswith("fiyat/") or int(pr["number"]) in reminded:
+                continue
+            created = dt.datetime.fromisoformat(str(pr["createdAt"]).replace("Z", "+00:00"))
+            age = (self.now - created).days
+            if age >= STALE_PR_DAYS:
+                self.issues.open(
+                    f"Hatırlatma: fiyat PR'ı #{pr['number']} {STALE_PR_DAYS} günden uzun süredir açık",
+                    self._issue_body(
+                        f"#{pr['number']} ({pr.get('title', '')}) {age} gündür onay bekliyor.",
+                        f"- {pr.get('url', '')}",
+                        "Onaylanmayan PR hiçbir şeyi yayınlamaz; kontrol edip birleştir ya da kapat.",
+                        "PR birleşince ya da kapanınca bot bu hatırlatmayı kendisi kapatır.",
+                    ),
+                )
 
     def _write(self, path: Path, data: Any) -> bool:
         content = dump_json(data)
@@ -1963,7 +2237,7 @@ class Runner:
                 else []
             )
             self.issues.open(
-                f"Manuel kontrol: {self._source_label(group)} fiyat sayfası okunamıyor",
+                self._unreadable_title(group),
                 self._issue_body(
                     f"Fiyat sayfası {days} gündür üst üste okunamadı.",
                     f"- Adres: {url}",
@@ -2007,11 +2281,16 @@ class Runner:
             if exc.detail:
                 self.log(f"Gemini hatası ({url}): {exc.detail}")
             self.gemini_errors.append(f"{url}: {exc}")  # yalnız kısa özet (HTTP kodu + model)
+            self.gemini_error_kinds.append(exc.kind)
             result.status, result.detail = "gemini-yok", str(exc)
             self._fallback(url, group, previous, fingerprint)
             return result
+        result.model = self._answer_model()
+        if result.model and result.model == self._fallback_name():
+            self.fallback_sources.append(url)
+            self.log(f"Yedek model yanıt verdi ({url}): {result.model}")
         answers = {str(a.get("plan_id")): a for a in data.get("planlar", []) if isinstance(a, dict)}
-        result.findings = validate_answers(group, answers, text, self.gemini.model)
+        result.findings = validate_answers(group, answers, text, result.model)
         result.findings = self._retry_unconfirmed(url, group, text, result.findings)
         return result
 
@@ -2031,7 +2310,7 @@ class Runner:
         except GeminiUnavailable:
             return findings
         answers = {str(a.get("plan_id")): a for a in data.get("planlar", []) if isinstance(a, dict)}
-        second = {f.target.key: f for f in validate_answers(group, answers, text, self.gemini.model)}
+        second = {f.target.key: f for f in validate_answers(group, answers, text, self._answer_model())}
         out = []
         for f in findings:
             g = second.get(f.target.key)
@@ -2213,7 +2492,11 @@ class Runner:
         self.pr_note = f"Açık PR #{open_pr['number']} güncellendi"
 
     def _pr_section(self, applied: list[AppliedChange]) -> str:
-        model = next((c.finding.model for c in applied if c.finding.model), None)
+        fallback = self._fallback_name()
+        models = [
+            f"`{m}`" + (" (yedek model)" if m == fallback else "")
+            for m in dict.fromkeys(c.finding.model for c in applied if c.finding.model)
+        ]
         source = (
             "yerel (TR) — Türkiye IP'li bilgisayardaki günlük koşu"
             if self.is_local
@@ -2221,7 +2504,7 @@ class Runner:
         )
         lines = [
             f"## Fiyat değişiklikleri — {self.today}",
-            f"Model: `{model or 'bilinmiyor'}`",
+            f"Model: {', '.join(models) or '`bilinmiyor`'}",
             f"Kaynak koşu: {source}",
             "",
             "| Kayıt | Eski | Yeni | Değişim | Tür |",
@@ -2326,20 +2609,6 @@ class Runner:
                 self._issue_body("`iptal-rehberleri.json` içindeki şu kaynak linkleri açılmıyor:", *lines),
             )
 
-        for pr in self.gh.open_prs():
-            if not str(pr.get("headRefName", "")).startswith("fiyat/"):
-                continue
-            created = dt.datetime.fromisoformat(str(pr["createdAt"]).replace("Z", "+00:00"))
-            age = (self.now - created).days
-            if age >= STALE_PR_DAYS:
-                self.issues.open(
-                    f"Hatırlatma: fiyat PR'ı #{pr['number']} {STALE_PR_DAYS} günden uzun süredir açık",
-                    self._issue_body(
-                        f"#{pr['number']} ({pr.get('title', '')}) {age} gündür onay bekliyor.",
-                        f"- {pr.get('url', '')}",
-                        "Onaylanmayan PR hiçbir şeyi yayınlamaz; kontrol edip birleştir ya da kapat.",
-                    ),
-                )
 
     def _check_local_heartbeat(self, errors_state: dict, local_in_catalog: bool) -> None:
         """Her Actions koşusunda: yerel koşu LOCAL_STALE_DAYS gündür çalışmadıysa issue açar.
@@ -2361,9 +2630,15 @@ class Runner:
             first = errors_state.setdefault("yerel_kosu_yok", {"ilk_fark": self.today})["ilk_fark"]
             age = (today - dt.date.fromisoformat(first)).days
             reason = f"yerel kontrol hiç çalışmadı (`durum/yerel-son-calisma.json` yok; ilk fark: {first})"
-        if age >= LOCAL_STALE_DAYS:
+        if age < LOCAL_STALE_DAYS:
+            if last:
+                self.issues.close(
+                    LOCAL_STALE_TITLE,
+                    f"Yerel kontrol yeniden çalışıyor (son koşu: {last}). Bot bu issue'yu kendisi kapattı.",
+                )
+        else:
             self.issues.open(
-                "Otomasyon: yerel fiyat kontrolü çalışmıyor",
+                LOCAL_STALE_TITLE,
                 self._issue_body(
                     f"Türkiye IP'si gereken kaynakların (Netflix, YouTube) {reason}.",
                     "Bilgisayar kapalı kalmış, Görev Zamanlayıcı görevi kurulmamış/silinmiş ya da hata "
@@ -2377,11 +2652,14 @@ class Runner:
             "tarih": self.today,
             "mod": self.mode,
             "model": self.gemini.model if self.gemini is not None else None,
+            "yedek_model": self._fallback_name(),
+            "yedek_model_kaynaklari": self.fallback_sources,
             "kaynaklar": [
                 {
                     "url": r.url,
                     "durum": r.status,
                     "ayrinti": r.detail,
+                    "model": r.model,
                     "metin_uzunlugu": r.text_len,
                     "fiyat_ornekleri": r.price_samples,
                     "metin_ornekleri": r.snippets,
@@ -2407,6 +2685,7 @@ class Runner:
             "acilan_issue": self.issues.created,
             "guncellenen_issue": self.issues.updated,
             "zaten_acik_issue": self.issues.skipped,
+            "kapatilan_issue": self.issues.closed,
             "hata": self.errors,
         }
 
@@ -2416,10 +2695,13 @@ def render_summary(summary: dict) -> str:
     lines = [
         f"# {title} — {summary['tarih']}",
         f"- Model: {summary['model'] or 'yok'}",
+        f"- Yedek model: {summary.get('yedek_model') or 'yok'} "
+        f"(yanıt verdiği kaynak: {len(summary.get('yedek_model_kaynaklari') or [])})",
         f"- Hata sayısı: {summary['hata']}",
         f"- PR: {summary['pr'] or 'yok'}",
         f"- Açılan issue: {len(summary['acilan_issue'])}, güncellenen: {len(summary['guncellenen_issue'])}, "
-        f"zaten açık: {len(summary['zaten_acik_issue'])}",
+        f"zaten açık: {len(summary['zaten_acik_issue'])}, "
+        f"kapatılan: {len(summary.get('kapatilan_issue') or [])}",
         "",
         "| Kaynak | Durum | Metin | Fiyat örnekleri |",
         "|---|---|---|---|",
@@ -2427,6 +2709,8 @@ def render_summary(summary: dict) -> str:
     for k in summary["kaynaklar"]:
         samples = ", ".join(k["fiyat_ornekleri"][:5])
         status = k["durum"] + (f" ({k['ayrinti']})" if k["ayrinti"] else "")
+        if k.get("model") and k["model"] == summary.get("yedek_model"):
+            status += f" [yedek model: {k['model']}]"
         lines.append(f"| {k['url']} | {status} | {k['metin_uzunlugu']} | {samples} |")
         for d in k["kararlar"]:
             why = " ".join(d.get("nedenler") or [])
@@ -2437,6 +2721,8 @@ def render_summary(summary: dict) -> str:
             lines.append(f"|  ↳ `{d['kayit']}` | {karar} | güven {d['guven']} | {d['fiyat']} |")
     for title in summary["acilan_issue"]:
         lines.append(f"- issue: {title}")
+    for title in summary.get("kapatilan_issue") or []:
+        lines.append(f"- kapatılan issue: {title}")
     for item in summary["bastirilan_tespitler"]:
         lines.append(f"- yanlış tespit olarak bastırıldı: {item}")
     for item in summary["basarisiz_islemler"]:
@@ -2481,7 +2767,11 @@ def main(argv: list[str] | None = None) -> int:
     skip_reason = None
     if api_key:
         gemini = GeminiClient(
-            api_key, [env_model] if env_model else DEFAULT_MODELS, session, min_interval=GEMINI_MIN_INTERVAL
+            api_key,
+            [env_model] if env_model else DEFAULT_MODELS,
+            session,
+            min_interval=GEMINI_MIN_INTERVAL,
+            fallback_model=FALLBACK_MODEL,
         )
     else:
         skip_reason = "GEMINI_API_KEY tanımlı değil"

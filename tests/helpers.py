@@ -165,6 +165,7 @@ class FakeGitHub:
         self.comments: dict[int, list[str]] = {}
         self.created_issues: list[tuple[str, str]] = []
         self.edited_issues: list[tuple[int, str]] = []
+        self.closed_issues: list[tuple[int, str]] = []
         self.created_prs: list[dict] = []
         self.edited_prs: list[dict] = []
 
@@ -188,7 +189,14 @@ class FakeGitHub:
     def create_issue(self, title, body):
         self._maybe_fail("create_issue")
         self.created_issues.append((title, body))
-        self.issues.append({"number": 100 + len(self.issues), "title": title, "body": body})
+        self.issues.append(
+            {"number": 100 + len(self.issues), "title": title, "body": body, "labels": [{"name": fk.ISSUE_LABEL}]}
+        )
+
+    def close_issue(self, number, comment):
+        self._maybe_fail("close_issue")
+        self.closed_issues.append((number, comment))
+        self.issues = [i for i in self.issues if i.get("number") != number]
 
     def edit_issue(self, number, body):
         self.edited_issues.append((number, body))

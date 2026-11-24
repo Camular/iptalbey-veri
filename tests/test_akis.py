@@ -297,7 +297,7 @@ def test_weekly_tasks(tmp_path):
     assert "hbo-max/standart" in gh.edited_issues[0][1]
     titles = [t for t, _ in gh.created_issues]
     assert "Kırık iptal rehberi linki: spotify" in titles
-    assert "Hatırlatma: fiyat PR'ı #3 7 günden uzun süredir açık" in titles
+    assert "Hatırlatma: fiyat PR'ı #3 2 günden uzun süredir açık" in titles
     assert not any("#4" in t for t in titles)
     heartbeat = json.loads((root / "durum" / "son-calisma.json").read_text(encoding="utf-8"))
     assert heartbeat["tarih"] == "2026-11-17" and heartbeat["model"] == "gemini-test"
