@@ -985,7 +985,7 @@
    "id": "tivibu-ev",
    "ad": "Tivibu Ev",
    "kategori": "video",
-   "hesap_url": "https://www.tivibu.com.tr/giris-yonlendirme",
+   "hesap_url": null,
    "kontrol_tarihi": "2026-11-25"
   },
   {
@@ -1206,22 +1206,8 @@
    "kontrol_tarihi": "2026-11-25"
   },
   {
-   "id": "trendyol-plus",
-   "ad": "Trendyol Plus",
-   "kategori": "alisveris",
-   "hesap_url": null,
-   "kontrol_tarihi": "2026-11-25"
-  },
-  {
    "id": "hepsiburada-premium",
    "ad": "Hepsiburada Premium",
-   "kategori": "alisveris",
-   "hesap_url": null,
-   "kontrol_tarihi": "2026-11-25"
-  },
-  {
-   "id": "yemeksepeti-ypro",
-   "ad": "Ypro",
    "kategori": "alisveris",
    "hesap_url": null,
    "kontrol_tarihi": "2026-11-25"
@@ -1279,13 +1265,6 @@
    "id": "kaspersky",
    "ad": "Kaspersky",
    "kategori": "guvenlik",
-   "hesap_url": null,
-   "kontrol_tarihi": "2026-11-25"
-  },
-  {
-   "id": "headspace",
-   "ad": "Headspace",
-   "kategori": "saglik",
    "hesap_url": null,
    "kontrol_tarihi": "2026-11-25"
   },
