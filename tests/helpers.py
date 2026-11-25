@@ -38,9 +38,10 @@ def plan(pid, ad, seviye, fiyat, url, dogrulandi=True, periyot="aylik"):
 
 def catalog() -> dict:
     return {
-        "sema_surumu": 1,
+        "sema_surumu": 2,
         "surum": 1,
         "guncelleme": "2026-11-01",
+        "taninan_servisler": [],
         "servisler": [
             {
                 "id": "spotify",

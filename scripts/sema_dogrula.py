@@ -32,7 +32,9 @@ def _yukle(yol: Path) -> tuple[object | None, str | None]:
 def tekrarlar(katalog: dict) -> list[str]:
     hatalar: list[str] = []
     servisler = [s for s in katalog.get("servisler", []) if isinstance(s, dict)]
-    for sid, n in Counter(s.get("id") for s in servisler).items():
+    taninan = [s for s in katalog.get("taninan_servisler", []) if isinstance(s, dict)]
+    # Fiyatlı ve yalnız tanınan servisler tek kimlik alanını paylaşır (KR-055).
+    for sid, n in Counter(s.get("id") for s in servisler + taninan).items():
         if n > 1:
             hatalar.append(f"servis id'si tekrarlı: '{sid}' ({n} kez)")
     for s in servisler:
@@ -44,7 +46,12 @@ def tekrarlar(katalog: dict) -> list[str]:
 
 
 def rehber_referanslari(katalog: dict, rehberler: dict) -> list[str]:
-    ids = {s.get("id") for s in katalog.get("servisler", []) if isinstance(s, dict)}
+    ids = {
+        s.get("id")
+        for anahtar in ("servisler", "taninan_servisler")
+        for s in katalog.get(anahtar, [])
+        if isinstance(s, dict)
+    }
     return [
         f"iptal rehberi '{r.get('id', '?')}': katalogda olmayan servis '{r.get('servis')}'"
         for r in rehberler.get("rehberler", [])
