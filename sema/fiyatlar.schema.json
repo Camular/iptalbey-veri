@@ -4,12 +4,13 @@
   "title": "İptalBey fiyat kataloğu",
   "type": "object",
   "additionalProperties": false,
-  "required": ["sema_surumu", "surum", "guncelleme", "servisler", "operator_paketleri"],
+  "required": ["sema_surumu", "surum", "guncelleme", "servisler", "taninan_servisler", "operator_paketleri"],
   "properties": {
-    "sema_surumu": { "const": 1 },
+    "sema_surumu": { "const": 2 },
     "surum": { "type": "integer", "minimum": 1 },
     "guncelleme": { "$ref": "#/$defs/tarih" },
     "servisler": { "type": "array", "items": { "$ref": "#/$defs/servis" } },
+    "taninan_servisler": { "type": "array", "items": { "$ref": "#/$defs/taninan" } },
     "operator_paketleri": { "type": "array", "items": { "$ref": "#/$defs/paket" } }
   },
   "$defs": {
@@ -21,6 +22,20 @@
     "metinVeyaNull": { "type": ["string", "null"] },
     "fiyat": { "type": "number", "exclusiveMinimum": 0 },
     "periyot": { "enum": ["haftalik", "aylik", "yillik"] },
+    "kategori": { "enum": ["video", "muzik", "bulut", "yapay-zeka", "kitap", "spor", "oyun", "haber", "yazilim", "guvenlik", "egitim", "saglik", "tanisma", "internet", "alisveris", "ulasim", "diger"] },
+    "taninan": {
+      "description": "2. katman (KR-055): yalnız tanınan servis; fiyat alanı YOKTUR ve şema fiyat alanını reddeder (additionalProperties: false).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "ad", "kategori", "kontrol_tarihi"],
+      "properties": {
+        "id": { "$ref": "#/$defs/kimlik" },
+        "ad": { "type": "string", "minLength": 1 },
+        "kategori": { "$ref": "#/$defs/kategori" },
+        "hesap_url": { "$ref": "#/$defs/urlVeyaNull" },
+        "kontrol_tarihi": { "$ref": "#/$defs/tarih" }
+      }
+    },
     "servis": {
       "type": "object",
       "additionalProperties": false,
@@ -28,7 +43,7 @@
       "properties": {
         "id": { "$ref": "#/$defs/kimlik" },
         "ad": { "type": "string", "minLength": 1 },
-        "kategori": { "enum": ["video", "muzik", "bulut", "yapay-zeka", "kitap", "spor", "oyun", "diger"] },
+        "kategori": { "$ref": "#/$defs/kategori" },
         "planlar": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/plan" } }
       }
     },

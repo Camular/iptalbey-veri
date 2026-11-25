@@ -1,7 +1,7 @@
 {
- "sema_surumu": 1,
- "surum": 3,
- "guncelleme": "2026-11-23",
+ "sema_surumu": 2,
+ "surum": 4,
+ "guncelleme": "2026-11-25",
  "servisler": [
   {
    "id": "netflix",
@@ -957,6 +957,351 @@
      "degisim_surumu": null
     }
    ]
+  }
+ ],
+ "taninan_servisler": [
+  {
+   "id": "mubi",
+   "ad": "MUBI",
+   "kategori": "video",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "d-smart",
+   "ad": "D-Smart",
+   "kategori": "video",
+   "hesap_url": "https://onlineislemler.dsmart.com.tr/giris-yap",
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "digiturk",
+   "ad": "Digiturk",
+   "kategori": "video",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "tivibu-ev",
+   "ad": "Tivibu Ev",
+   "kategori": "video",
+   "hesap_url": "https://www.tivibu.com.tr/giris-yonlendirme",
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "tivibu-go",
+   "ad": "Tivibu GO",
+   "kategori": "video",
+   "hesap_url": "https://www.tivibu.com.tr/giris-yonlendirme",
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "turkcell-tv-plus",
+   "ad": "TV+",
+   "kategori": "video",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "ufc-fight-pass",
+   "ad": "UFC Fight Pass",
+   "kategori": "spor",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "bein-connect",
+   "ad": "beIN CONNECT",
+   "kategori": "spor",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "s-sport-plus",
+   "ad": "S Sport Plus",
+   "kategori": "spor",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "muud",
+   "ad": "Muud",
+   "kategori": "muzik",
+   "hesap_url": "https://www.muud.com.tr/faq",
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "youtube-music-premium",
+   "ad": "YouTube Music Premium",
+   "kategori": "muzik",
+   "hesap_url": "https://www.youtube.com/paid_memberships",
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "fizy",
+   "ad": "fizy",
+   "kategori": "muzik",
+   "hesap_url": "https://fizy.com/yardim/abonelik-ve-planlar/premium-planini-iptal-etme/",
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "deezer",
+   "ad": "Deezer",
+   "kategori": "muzik",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "kitapyurdu-e-kitap",
+   "ad": "Kitapyurdu E-Kitap",
+   "kategori": "kitap",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "kitapyurdu-sesli-kitap",
+   "ad": "Kitapyurdu Sesli Kitap",
+   "kategori": "kitap",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "sozcu-plus",
+   "ad": "SÖZCÜ Plus",
+   "kategori": "haber",
+   "hesap_url": "https://uyelik.sozcu.com.tr/",
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "cumhuriyet-e-gazete",
+   "ad": "Cumhuriyet e-Gazete",
+   "kategori": "haber",
+   "hesap_url": "https://egazete.cumhuriyet.com.tr/abone-girisi",
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "turkiye-gazetesi-dijital",
+   "ad": "Türkiye Gazetesi Dijital",
+   "kategori": "haber",
+   "hesap_url": "https://uye.turkiyegazetesi.com.tr/login",
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "ea-play",
+   "ad": "EA Play",
+   "kategori": "oyun",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "ubisoft-plus",
+   "ad": "Ubisoft+",
+   "kategori": "oyun",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "playstation-plus",
+   "ad": "PlayStation Plus",
+   "kategori": "oyun",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "xbox-game-pass",
+   "ad": "Xbox Game Pass",
+   "kategori": "oyun",
+   "hesap_url": "https://account.microsoft.com/services",
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "adobe-creative-cloud",
+   "ad": "Adobe Creative Cloud",
+   "kategori": "yazilim",
+   "hesap_url": "https://account.adobe.com/plans",
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "adobe-acrobat",
+   "ad": "Adobe Acrobat",
+   "kategori": "yazilim",
+   "hesap_url": "https://account.adobe.com/plans",
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "todoist",
+   "ad": "Todoist",
+   "kategori": "yazilim",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "eset",
+   "ad": "ESET HOME Security",
+   "kategori": "guvenlik",
+   "hesap_url": "https://home.eset.com/",
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "bitdefender",
+   "ad": "Bitdefender",
+   "kategori": "guvenlik",
+   "hesap_url": "https://central.bitdefender.com/home",
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "macfit",
+   "ad": "MACFit",
+   "kategori": "saglik",
+   "hesap_url": "https://portal.macfit.com/",
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "gym-factory",
+   "ad": "Gym Factory",
+   "kategori": "saglik",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "tinder",
+   "ad": "Tinder",
+   "kategori": "tanisma",
+   "hesap_url": "https://www.help.tinder.com/hc/en-us/articles/115003554466-Cancel-your-subscription",
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "turkcell",
+   "ad": "Turkcell",
+   "kategori": "internet",
+   "hesap_url": "https://www.turkcell.com.tr/hesabim",
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "vodafone",
+   "ad": "Vodafone",
+   "kategori": "internet",
+   "hesap_url": "https://www.vodafone.com.tr/login",
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "turk-telekom",
+   "ad": "Türk Telekom",
+   "kategori": "internet",
+   "hesap_url": "https://onlineislemler.turktelekom.com.tr/",
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "superonline",
+   "ad": "Turkcell Superonline",
+   "kategori": "internet",
+   "hesap_url": "https://www.superonline.net/hesabim",
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "millenicom",
+   "ad": "Millenicom",
+   "kategori": "internet",
+   "hesap_url": "https://oim.milleni.com.tr",
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "trendyol-plus",
+   "ad": "Trendyol Plus",
+   "kategori": "alisveris",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "hepsiburada-premium",
+   "ad": "Hepsiburada Premium",
+   "kategori": "alisveris",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "yemeksepeti-ypro",
+   "ad": "Ypro",
+   "kategori": "alisveris",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "microsoft-365",
+   "ad": "Microsoft 365",
+   "kategori": "yazilim",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "dropbox",
+   "ad": "Dropbox",
+   "kategori": "bulut",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "grammarly",
+   "ad": "Grammarly",
+   "kategori": "yazilim",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "github-copilot",
+   "ad": "GitHub Copilot",
+   "kategori": "yazilim",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "cursor",
+   "ad": "Cursor",
+   "kategori": "yazilim",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "claude",
+   "ad": "Claude",
+   "kategori": "yapay-zeka",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "perplexity-pro",
+   "ad": "Perplexity Pro",
+   "kategori": "yapay-zeka",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "kaspersky",
+   "ad": "Kaspersky",
+   "kategori": "guvenlik",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "headspace",
+   "ad": "Headspace",
+   "kategori": "saglik",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "linkedin-premium",
+   "ad": "LinkedIn Premium",
+   "kategori": "diger",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
+  },
+  {
+   "id": "duolingo-super",
+   "ad": "Super Duolingo",
+   "kategori": "egitim",
+   "hesap_url": null,
+   "kontrol_tarihi": "2026-11-25"
   }
  ],
  "operator_paketleri": [

@@ -57,3 +57,79 @@ def test_tekrarli_plan_id():
     k = catalog()
     k["servisler"][0]["planlar"].append(copy.deepcopy(k["servisler"][0]["planlar"][0]))
     assert any("plan id" in h for h in sd.tekrarlar(k))
+
+
+# --- Şema 2: yalnız tanınan servisler (KR-055, F2.36) ---
+
+
+def taninan(**ek):
+    kayit = {
+        "id": "deezer-test",
+        "ad": "Deezer",
+        "kategori": "muzik",
+        "hesap_url": "https://www.deezer.com/tr/account",
+        "kontrol_tarihi": "2026-11-25",
+    }
+    kayit.update(ek)
+    return kayit
+
+
+def test_taninan_servis_gecerli(tmp_path):
+    k = catalog()
+    k["taninan_servisler"] = [taninan(), taninan(id="mubi", ad="MUBI", hesap_url=None, kategori="video")]
+    assert sd.main(yaz(tmp_path, k)) == 0
+
+
+def test_taninan_hesap_url_istege_bagli(tmp_path):
+    k = catalog()
+    kayit = taninan()
+    del kayit["hesap_url"]
+    k["taninan_servisler"] = [kayit]
+    assert sd.main(yaz(tmp_path, k)) == 0
+
+
+def test_taninan_fiyat_alani_reddedilir(tmp_path, capsys):
+    for alan, deger in (("fiyat_tl", 99), ("planlar", []), ("fiyat", 10), ("periyot", "aylik")):
+        k = catalog()
+        k["taninan_servisler"] = [taninan(**{alan: deger})]
+        assert sd.main(yaz(tmp_path, k)) == 1, alan
+        assert "BAŞARISIZ" in capsys.readouterr().out
+
+
+def test_taninan_zorunlu_alan_ve_kategori(tmp_path):
+    k = catalog()
+    k["taninan_servisler"] = [taninan(kategori="bilinmeyen")]
+    assert sd.main(yaz(tmp_path, k)) == 1
+    k["taninan_servisler"] = [{"id": "x", "ad": "X", "kategori": "diger"}]  # kontrol_tarihi yok
+    assert sd.main(yaz(tmp_path, k)) == 1
+
+
+def test_taninan_url_https_olmali(tmp_path):
+    k = catalog()
+    k["taninan_servisler"] = [taninan(hesap_url="http://example.com")]
+    assert sd.main(yaz(tmp_path, k)) == 1
+
+
+def test_taninan_id_fiyatli_servisle_cakisamaz(tmp_path, capsys):
+    k = catalog()
+    k["taninan_servisler"] = [taninan(id="spotify")]
+    assert sd.main(yaz(tmp_path, k)) == 1
+    assert "tekrarlı" in capsys.readouterr().out
+
+
+def test_taninan_taninan_id_tekrari():
+    k = catalog()
+    k["taninan_servisler"] = [taninan(), taninan()]
+    assert any("tekrarlı" in h for h in sd.tekrarlar(k))
+
+
+def test_sema_1_reddedilir(tmp_path):
+    k = catalog()
+    k["sema_surumu"] = 1
+    assert sd.main(yaz(tmp_path, k)) == 1
+
+
+def test_taninan_servis_rehbere_baglanabilir():
+    k = catalog()
+    k["taninan_servisler"] = [taninan()]
+    assert sd.rehber_referanslari(k, {"rehberler": [{"id": "g", "servis": "deezer-test"}]}) == []
