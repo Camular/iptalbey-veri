@@ -1,11 +1,17 @@
 {
  "kaynaklar": {},
  "planlar": {
-  "paket/turkcell-one-premium": {
+  "disney-plus/reklamli": {
    "ardisik": 1,
-   "ilk_hata": "2026-11-24",
-   "son_hata": "2026-11-24",
-   "neden": "Sayfada bu planın fiyatı bulunamadı."
+   "ilk_hata": "2026-11-25",
+   "son_hata": "2026-11-25",
+   "neden": "Aynı kanıt alıntısı başka bir planda farklı fiyatla kullanıldı."
+  },
+  "disney-plus/reklamli-yillik": {
+   "ardisik": 1,
+   "ilk_hata": "2026-11-25",
+   "son_hata": "2026-11-25",
+   "neden": "Aynı kanıt alıntısı başka bir planda farklı fiyatla kullanıldı."
   }
  }
 }
