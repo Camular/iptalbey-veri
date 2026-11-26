@@ -1,8 +1,8 @@
 {
- "tarih": "2026-11-25",
- "kontrol_edilen_kaynak": 3,
+ "tarih": "2026-11-26",
+ "kontrol_edilen_kaynak": 4,
  "toplam_kaynak": 4,
- "hata": 1,
+ "hata": 0,
  "model": "gemini-3.5-flash-lite",
  "yedek_model": "gemini-3.8-flash",
  "yedek_model_yanit_veren_kaynak": 0
