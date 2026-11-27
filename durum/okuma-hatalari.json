@@ -1,23 +1,11 @@
 {
  "kaynaklar": {},
  "planlar": {
-  "paket/turkcell-one-star": {
-   "ardisik": 1,
-   "ilk_hata": "2026-11-26",
-   "son_hata": "2026-11-26",
-   "neden": "Sayfada bu planın fiyatı bulunamadı."
-  },
   "disney-plus/reklamli": {
-   "ardisik": 1,
+   "ardisik": 2,
    "ilk_hata": "2026-11-26",
-   "son_hata": "2026-11-26",
-   "neden": "Aynı kanıt alıntısı başka bir planda farklı fiyatla kullanıldı."
-  },
-  "paket/turkcell-one-ekstra": {
-   "ardisik": 1,
-   "ilk_hata": "2026-11-26",
-   "son_hata": "2026-11-26",
-   "neden": "Sayfada bu planın fiyatı bulunamadı."
+   "son_hata": "2026-11-27",
+   "neden": "Kanıt alıntısı sayfa metninde birebir bulunamadı."
   }
  }
 }
