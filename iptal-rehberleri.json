@@ -1,7 +1,7 @@
 {
   "sema_surumu": 1,
-  "surum": 3,
-  "guncelleme": "2026-11-16",
+  "surum": 4,
+  "guncelleme": "2026-11-27",
   "rehberler": [
     {
       "servis": "netflix",
@@ -536,6 +536,157 @@
         }
       ],
       "notlar": "Web'den başlattığın abonelik yalnız web sitesinden iptal edilir. Web'den başlatılmış ücretsiz denemeyi iptal edersen deneme hemen sona erer. Hangi kanaldan abone olduğunu bilmiyorsan hesap sayfasındaki Ödemeler bölümüne bak (Apple_IAS / Google_IAS mağaza aboneliğidir). Uygulamayı silmek iptal etmez."
+    },
+    {
+      "servis": "deezer",
+      "yollar": [
+        {
+          "kanal": "web",
+          "adimlar": [
+            "Deezer'a bilgisayardan giriş yap ve profilini aç",
+            "Hesap ayarlarında \"Üyeliğimi yönet\"i seç",
+            "\"Üyeliğimi iptal et\"i seç, nedeni belirt ve onayla",
+            "Gelen onay e-postasını sakla"
+          ],
+          "kaynak": "https://support.deezer.com/hc/tr/articles/214349245",
+          "kontrol_tarihi": "2026-11-27"
+        },
+        {
+          "kanal": "app_store",
+          "adimlar": [
+            "iPhone'da Ayarlar > adın > Abonelikler yolunu aç",
+            "Deezer aboneliğini seç",
+            "\"Aboneliği İptal Et\"e dokun"
+          ],
+          "kaynak": "https://support.apple.com/tr-tr/118428",
+          "kontrol_tarihi": "2026-11-27"
+        }
+      ],
+      "notlar": "Ödenmiş dönemin sonuna kadar Premium sürer, sonra hesap ücretsiz plana döner. Apple üzerinden alınan üyelik yalnız Apple'dan iptal edilir. Uygulamayı silmek iptal etmez."
+    },
+    {
+      "servis": "mubi",
+      "yollar": [
+        {
+          "kanal": "web",
+          "adimlar": [
+            "MUBI'ye web'den giriş yap",
+            "mubi.com/subscription adresinde abonelik ayarlarını aç",
+            "Aboneliği iptal et"
+          ],
+          "kaynak": "https://help.mubi.com/article/68-how-do-i-cancel-my-subscription-if-i-purchased-it-online-through-the-web",
+          "kontrol_tarihi": "2026-11-27"
+        },
+        {
+          "kanal": "app_store",
+          "adimlar": [
+            "iPhone'da Ayarlar > adın > Abonelikler yolunu aç",
+            "MUBI aboneliğini seç",
+            "\"Aboneliği İptal Et\"e dokun"
+          ],
+          "kaynak": "https://support.apple.com/tr-tr/118428",
+          "kontrol_tarihi": "2026-11-27"
+        }
+      ],
+      "notlar": "Ödenmiş süre iptalden sonra da kullanılır. App Store'dan alınan abonelik yalnız App Store ayarlarından iptal edilir. Uygulamayı silmek iptal etmez."
+    },
+    {
+      "servis": "s-sport-plus",
+      "yollar": [
+        {
+          "kanal": "web",
+          "adimlar": [
+            "ssportplus.com'a giriş yap",
+            "Sağ üst köşedeki menüyü aç",
+            "\"Üyelik Bilgileri\"ne gir",
+            "Üyelik iptal talebini tamamla"
+          ],
+          "kaynak": "https://www.ssportplus.com/destek/s-sport-plus-servisi-aboneligimi-nasil-iptal-edebilirim/",
+          "kontrol_tarihi": "2026-11-27"
+        },
+        {
+          "kanal": "google_play",
+          "adimlar": [
+            "Google Play'de aboneliğin bağlı olduğu Google Hesabı ile oturum aç",
+            "Play Store'da Abonelikler sayfasını aç",
+            "S Sport Plus aboneliğini seç",
+            "\"Aboneliği iptal et\"e dokun ve ekrandaki adımları izle"
+          ],
+          "kaynak": "https://support.google.com/googleplay/answer/7018481?hl=tr",
+          "kontrol_tarihi": "2026-11-27"
+        },
+        {
+          "kanal": "app_store",
+          "adimlar": [
+            "iPhone'da Ayarlar > adın > Abonelikler yolunu aç",
+            "S Sport Plus aboneliğini seç",
+            "\"Aboneliği İptal Et\"e dokun"
+          ],
+          "kaynak": "https://support.apple.com/tr-tr/118428",
+          "kontrol_tarihi": "2026-11-27"
+        }
+      ],
+      "notlar": "İptalden sonra üyelik yenilenmez; dönem sonuna kadar izlemeye devam edersin. Üyeliği mobil uygulamadan başlattıysan iptal mağaza hesabından yapılır."
+    },
+    {
+      "servis": "playstation-plus",
+      "yollar": [
+        {
+          "kanal": "web",
+          "adimlar": [
+            "Tarayıcıda PlayStation Hesap Yönetimi'ne giriş yap",
+            "Soldaki menüden \"Abonelik\"i seç",
+            "PlayStation Plus'ın yanındaki \"Aboneliği İptal Et\"i seç"
+          ],
+          "kaynak": "https://www.playstation.com/tr-tr/support/subscriptions/cancel-playstation-plus/",
+          "kontrol_tarihi": "2026-11-27"
+        }
+      ],
+      "notlar": "PS5'ten: Ayarlar > Kullanıcılar ve Hesaplar > Hesap > Ödeme ve Abonelikler > Abonelikler > PlayStation Plus > Aboneliği İptal Et. PS4'ten: PlayStation Plus > Üyeliği Yönet > Abonelik > Aboneliği İptal Et. Ödeme dönemi sonuna kadar avantajlar sürer; sonra abonelikle indirilen oyunlar ve çevrimiçi oyun kapanır."
+    },
+    {
+      "servis": "microsoft-365",
+      "yollar": [
+        {
+          "kanal": "web",
+          "adimlar": [
+            "Aboneliği aldığın Microsoft hesabıyla account.microsoft.com/services/microsoft365 adresine giriş yap",
+            "\"Aboneliği iptal et\"i (ya da \"Yükselt veya İptal Et\"i) seç",
+            "Sayfanın altında \"Aboneliğimi istemiyorum\"u seçip iptali tamamla"
+          ],
+          "kaynak": "https://support.microsoft.com/tr-tr/office/microsoft-365-aboneli%C4%9Fini-iptal-etme-46e2634c-c64b-4c65-94b9-2cc9c960e91b",
+          "kontrol_tarihi": "2026-11-27"
+        }
+      ],
+      "notlar": "Süre dolana kadar kullanmaya devam edersin; sonra OneDrive alanı 5 GB'a düşer. Aile ya da Premium iptali paylaştığın herkesi etkiler. Google Play, App Store gibi mağazadan alındıysa iptal oradan yapılır."
+    },
+    {
+      "servis": "youtube-music-premium",
+      "yollar": [
+        {
+          "kanal": "web",
+          "adimlar": [
+            "youtube.com/paid_memberships adresini aç",
+            "\"Üyeliği yönet\"i, sonra \"Devre dışı bırak\"ı seç",
+            "\"Devam\"a tıkla, iptal nedenini seçip \"İleri\"ye tıkla",
+            "\"Evet, iptal et\"i seç"
+          ],
+          "kaynak": "https://support.google.com/youtubemusic/answer/6308278?hl=tr",
+          "kontrol_tarihi": "2026-11-27"
+        },
+        {
+          "kanal": "google_play",
+          "adimlar": [
+            "Google Play'de aboneliğin bağlı olduğu Google Hesabı ile oturum aç",
+            "Play Store'da Abonelikler sayfasını aç",
+            "YouTube Music Premium aboneliğini seç",
+            "\"Aboneliği iptal et\"e dokun ve ekrandaki adımları izle"
+          ],
+          "kaynak": "https://support.google.com/googleplay/answer/7018481?hl=tr",
+          "kontrol_tarihi": "2026-11-27"
+        }
+      ],
+      "notlar": "Fatura döneminin sonuna kadar avantajlar sürer. iPhone uygulamasından alındıysa iptal Apple hesabından yapılır. Uygulamayı silmek iptal etmez."
     }
   ]
 }
