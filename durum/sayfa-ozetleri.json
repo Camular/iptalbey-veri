@@ -48,7 +48,19 @@
   "degisim_tarihi": "2026-11-16"
  },
  "https://www.turkcell.com.tr/paket-ve-tarifeler/turkcell-one/turkcell-one-elite": {
-  "karma": "5e13eeff5ced60a529ee74ae7879b282fb451a32d57000be93fcc54020a3c873",
-  "degisim_tarihi": "2026-11-23"
+  "karma": "a5280f5f2ba5d613bac640fac2092025c3c04d65378e702ea1c555ca9af31694",
+  "degisim_tarihi": "2026-11-27"
+ },
+ "https://www.ssportplus.com/": {
+  "karma": "346c55eb55d21946caa2e6c804047327c3b8e73b672a724b8e3cbc28e1a86e26",
+  "degisim_tarihi": "2026-11-27"
+ },
+ "https://www.playstation.com/tr-tr/ps-plus/": {
+  "karma": "5c3c4a5eede8d8e9b7c054ce35c1113f6969957e32caa8b646df43fffcfc9160",
+  "degisim_tarihi": "2026-11-27"
+ },
+ "https://www.microsoft.com/tr-tr/microsoft-365/buy/compare-all-microsoft-365-products": {
+  "karma": "200d51243c708466ca27649c839f107ac7d568e7348f72c2065d0278ed3aff52",
+  "degisim_tarihi": "2026-11-27"
  }
 }
