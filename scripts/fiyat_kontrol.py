@@ -461,6 +461,33 @@ _PERIOD_RES = {
     "yillik": re.compile(r"/\s?yil\b|\byillik\b|\byilda\b|\bher yil\b|\byear|\bannual"),
     "haftalik": re.compile(r"/\s?hafta\b|\bhaftalik\b|\bhaftada\b|\bweek"),
 }
+# "12 Aylık Abonelik" yıllıktır, "3 aylık" ne aylık ne yıllıktır (katalogda
+# karşılığı yok); "1 aylık" aylıktır. Sayılı süre önce kendi periyoduna çevrilir.
+_N_MONTH_RE = re.compile(r"\b(\d{1,2})\s?ay(?:lik)?\b")
+MULTI_MONTH = "coklu_ay"
+
+
+def period_set(folded_text: str) -> set[str]:
+    """Katlanmış metindeki periyot ifadeleri (sayılı ay süreleri dahil)."""
+    multi = False
+
+    def repl(m: re.Match[str]) -> str:
+        nonlocal multi
+        n = int(m.group(1))
+        if n == 1:
+            return " aylik "
+        if n == 12:
+            return " yillik "
+        multi = True
+        return " "
+
+    text = _N_MONTH_RE.sub(repl, folded_text)
+    out = {p for p, rx in _PERIOD_RES.items() if rx.search(text)}
+    if multi:
+        out.add(MULTI_MONTH)
+    return out
+
+
 MAX_QUOTE_WORDS = 25
 CAMPAIGN_NEAR_CHARS = 30
 
@@ -505,9 +532,9 @@ def quote_context(quote: str, m: re.Match, campaign_re: re.Pattern = _CAMPAIGN_R
     # Aynı yan cümlede, "ardından" olmadan önce gelen ₺0 → kampanya.
     campaign = campaign or any(0.0 in match_value(x) for x in PRICE_RE.finditer(before))
     clause = before + " " + after
-    periods = {p for p, rx in _PERIOD_RES.items() if rx.search(clause)}
+    periods = period_set(clause)
     if not periods:
-        periods = {p for p, rx in _PERIOD_RES.items() if rx.search(folded)}
+        periods = period_set(folded)
     return QuoteContext(before, after, campaign, periods)
 
 
@@ -535,6 +562,10 @@ _GENERIC_WORDS = {
     "aylik",
     "yillik",
     "haftalik",
+    # Süre sözcükleri ("Essential (12 ay)") periyottur, plan adı değil.
+    "ay",
+    "yil",
+    "hafta",
     "one",
     "turkcell",
     "vodafone",
@@ -1177,7 +1208,7 @@ def price_periods_on_page(price: float, page_text: str) -> list[set[str]]:
         if sep:
             after = after[: sep.start()]
         clause = before + " " + after
-        out.append({p for p, rx in _PERIOD_RES.items() if rx.search(clause)})
+        out.append(period_set(clause))
     return out
 
 

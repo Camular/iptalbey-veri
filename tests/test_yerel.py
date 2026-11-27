@@ -556,6 +556,7 @@ def test_local_sources_exist_in_catalog():
         "https://one.google.com/about/plans?hl=tr&gl=TR",
         "https://mubi.com/tr/subscribe",
         "https://www.youtube.com/musicpremium?hl=tr&gl=TR",
+        "https://www.deezer.com/tr/offers",
     }
     catalog_urls = set(fk.group_by_url(fk.collect_targets(fk.load_json(REPO / "fiyatlar.json"))))
     assert urls <= catalog_urls
