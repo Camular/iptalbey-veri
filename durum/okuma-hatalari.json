@@ -1,4 +1,17 @@
 {
  "kaynaklar": {},
- "planlar": {}
+ "planlar": {
+  "disney-plus/reklamli": {
+   "ardisik": 1,
+   "ilk_hata": "2026-11-28",
+   "son_hata": "2026-11-28",
+   "neden": "Aynı kanıt alıntısı başka bir planda farklı fiyatla kullanıldı."
+  },
+  "disney-plus/reklamli-yillik": {
+   "ardisik": 1,
+   "ilk_hata": "2026-11-28",
+   "son_hata": "2026-11-28",
+   "neden": "Aynı kanıt alıntısı başka bir planda farklı fiyatla kullanıldı."
+  }
+ }
 }
