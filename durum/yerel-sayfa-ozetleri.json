@@ -14,5 +14,17 @@
  "https://one.google.com/about/plans?hl=tr&gl=TR": {
   "karma": "cd74448297414f1ece5192d0b04b37f85f93f0bb215739c53faf05e3a7982938",
   "degisim_tarihi": "2026-11-16"
+ },
+ "https://www.deezer.com/tr/offers": {
+  "karma": "da0ecf65c38f7292ed5633630e85e12cc27e5185a7e47669ef5c4c3851ea08fd",
+  "degisim_tarihi": "2026-11-28"
+ },
+ "https://mubi.com/tr/subscribe": {
+  "karma": "b6a5af0638ab0854ed85637209ac44b4eddbdfabc17b8f6829d069895464c8cf",
+  "degisim_tarihi": "2026-11-28"
+ },
+ "https://www.youtube.com/musicpremium?hl=tr&gl=TR": {
+  "karma": "cacae265fca72623dfc7829e8b34e97bef99f5c23c6acc034ee75236aaf80fed",
+  "degisim_tarihi": "2026-11-28"
  }
 }
