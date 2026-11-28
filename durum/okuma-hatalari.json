@@ -1,11 +1,4 @@
 {
  "kaynaklar": {},
- "planlar": {
-  "paket/turkcell-one-elite": {
-   "ardisik": 1,
-   "ilk_hata": "2026-11-27",
-   "son_hata": "2026-11-27",
-   "neden": "Sayfada bu planın fiyatı bulunamadı."
-  }
- }
+ "planlar": {}
 }
